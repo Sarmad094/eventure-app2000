@@ -1,7 +1,7 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 
-const UserProfile = () => {
+const Profile = () => {
   const { id } = useParams();
   
   // In a real application, you might fetch user data based on this ID
@@ -12,18 +12,20 @@ const UserProfile = () => {
 
   const user = userData[id];
 
-  if (!user) {
-    return <h1>User not found</h1>;
-  }
-
   return (
     <div>
       <h1>User Profile</h1>
       <p>ID: {id}</p>
-      <p>Name: {user.name}</p>
-      <p>Email: {user.email}</p>
+      {user ? (
+        <>
+          <p>Name: {user.name}</p>
+          <p>Email: {user.email}</p>
+        </>
+      ) : (
+        <p>User not found</p>
+      )}
     </div>
   );
 };
 
-export default UserProfile;
+export default Profile;

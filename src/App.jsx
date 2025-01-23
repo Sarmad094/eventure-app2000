@@ -1,6 +1,9 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
-import UserProfile from './Components/UserProfile'; // Importerer UserProfile fra en ekstern fil
+import Welcome from './Components/Welcome';
+import Login from './Components/Login';
+import Home from './Components/Home';
+import Profile from './Components/Profile';
 
 const App = () => {
   return (
@@ -8,28 +11,22 @@ const App = () => {
       <div>
         <nav>
           <ul>
-            <li><Link to="/">Home</Link></li>
-            <li><Link to="/user/1">User 1</Link></li>
-            <li><Link to="/user/2">User 2</Link></li>
+            <li><Link to="/home/1">Home</Link></li>
+            <li><Link to="/welcome/1">Welcome</Link></li>
+            <li><Link to="/login/1">Login</Link></li>
+            <li><Link to="/profile/1">Profile</Link></li>
           </ul>
         </nav>
 
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/user/:id" element={<UserProfile />} />
+          <Route path="/home/:id" element={<Home />} />
+          <Route path="/welcome/:id" element={<Welcome />} />
+          <Route path="/login/:id" element={<Login />} />
+          <Route path="/profile/:id" element={<Profile />} />
         </Routes>
       </div>
     </Router>
   );
 };
 
-const Home = () => <h1>Home Page</h1>; // Holder Home-komponenten lokalt
-
-<<<<<<< HEAD:src/App.jsx
-=======
-const UserProfile = () => {
-  // We'll implement this component next
-};
-
->>>>>>> 3e050958db41868817147732ee1d16ae1e85af89:src/App.js
 export default App;
