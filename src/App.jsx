@@ -25,4 +25,11 @@ const App = () => {
 
 const Home = () => <h1>Home Page</h1>; // Holder Home-komponenten lokalt
 
+<<<<<<< HEAD:src/App.jsx
+=======
+const UserProfile = () => {
+  // We'll implement this component next
+};
+
+>>>>>>> 3e050958db41868817147732ee1d16ae1e85af89:src/App.js
 export default App;
