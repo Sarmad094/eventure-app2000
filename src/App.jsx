@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
+import UserProfile from './Components/UserProfile'; // Importerer UserProfile fra en ekstern fil
 
 const App = () => {
   return (
@@ -22,10 +23,6 @@ const App = () => {
   );
 };
 
-const Home = () => <h1>Home Page</h1>;
-
-const UserProfile = () => {
-  // We'll implement this component next
-};
+const Home = () => <h1>Home Page</h1>; // Holder Home-komponenten lokalt
 
 export default App;
