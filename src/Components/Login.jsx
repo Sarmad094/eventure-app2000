@@ -3,6 +3,12 @@ import { useParams } from 'react-router-dom';
 import '../Styles/Login.css';
 
 
+const mockUsers = {
+  "sarmad@usn.no": { id: 1, password: "sarmad" },
+  "zaurbek@usn.no": { id: 2, password: "zaurbek" }
+};
+
+
 const Login = () => {
   const { id } = useParams(); // Hent ID fra URL-en
   const [formData, setFormData] = useState({
