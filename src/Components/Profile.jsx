@@ -6,8 +6,8 @@ const Profile = () => {
   
   // In a real application, you might fetch user data based on this ID
   const userData = {
-    1: { name: 'Alice', email: 'alice@example.com' },
-    2: { name: 'Bob', email: 'bob@example.com' }
+    1: { name: 'Sarmad', email: 'sarmad@usn.no' },
+    2: { name: 'Zaurbek', email: 'zaurbek@usn.no' }
   };
 
   const user = userData[id];
