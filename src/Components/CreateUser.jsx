@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom'; // Import useParams
-import './Styles/CreateUser.css';  // Import CSS for styling
+import { useParams } from 'react-router-dom';
+import '../Styles/CreateUser.css';
 
 const CreateUser = () => {
   const [formData, setFormData] = useState({
@@ -11,12 +11,14 @@ const CreateUser = () => {
   });
 
   const [message, setMessage] = useState('');
-  
-  // Use useParams to get the 'id' from the URL
-  const { id } = useParams();
+  const { id } = useParams(); // Get ID from the URL
 
   useEffect(() => {
-    console.log('Received ID from URL:', id); // Logs the id from the URL
+    if (id) {
+      console.log('Received ID from URL:', id); // Log ID from URL
+    } else {
+      console.error('No ID found in the URL.');
+    }
   }, [id]);
 
   const handleChange = (e) => {
@@ -27,17 +29,17 @@ const CreateUser = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (formData.password !== formData.confirmPassword) {
-      alert("Passwords do not match!");
+      alert('Passwords do not match!');
       return;
     }
-    // Logic for user registration (e.g., API call)
-    console.log("Registration data:", formData);
-    setMessage("User registered successfully!");  // Message shown upon successful registration
+    console.log('Registration data:', formData);
+    setMessage('User successfully registered!');
   };
 
   return (
     <div className="register-container">
       <h1>Create an Account</h1>
+      {id && <p>Your ID from the URL: {id}</p>}
       {message && <p style={{ color: 'green' }}>{message}</p>}
       <form onSubmit={handleSubmit}>
         <div className="form-group">
@@ -60,7 +62,7 @@ const CreateUser = () => {
             name="email"
             value={formData.email}
             onChange={handleChange}
-            placeholder="Enter your email"
+            placeholder="Enter your email address"
             required
           />
         </div>
@@ -93,7 +95,7 @@ const CreateUser = () => {
         </div>
       </form>
       <div className="form-footer">
-        <p>Already have an account? <a href="/login">Login here</a></p>
+        <p>Already have an account? <a href="/login">Log in here</a></p>
       </div>
     </div>
   );

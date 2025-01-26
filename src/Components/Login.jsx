@@ -1,25 +1,15 @@
 import React, { useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import '../Styles/Login.css';
-
 
 const Login = () => {
   const { id } = useParams(); // Hent ID fra URL-en
+  const navigate = useNavigate(); // Hook for navigasjon
   const [formData, setFormData] = useState({
     email: '',
     password: ''
   });
 
-  // Simulere data basert på ID-en
-  const loginData = {
-    1: { data: '' },
-    2: { data: '' },
-    3: { data: '' }
-  };
-
-  const user = loginData[id];
-
-  // Håndter endringer i inputfeltene
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -28,11 +18,13 @@ const Login = () => {
     });
   };
 
-  // Håndter innsending av skjemaet
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Legg til logikk for innsending av skjema her
     console.log('Form submitted:', formData);
+  };
+
+  const handleRegister = () => {
+    navigate(`/cuser/${id}`); // Naviger til CreateUser-siden med ID
   };
 
   return (
@@ -70,17 +62,14 @@ const Login = () => {
             <button type="submit" className="button">Login</button>
           </div>
         </form>
-        
-        <div className="form-footer">
-          <p>Don't have an account? <a href="/register" className="link">Register here</a></p>
-        </div>
 
-        {/* Dynamisk visning av data basert på ID */}
-        <div className="user-data">
-          <p>Login page ID: {id}</p>
-          <p>Username: {user ? user.data : 'Not found'}</p>
-          <p>Password: {user ? user.data : 'Not found'}</p>
-          <p>Create new user: {user ? user.data : 'Not found'}</p>
+        <div className="form-footer">
+          <p>
+            Don't have an account?{' '}
+            <button onClick={handleRegister} className="link-button">
+              Register here
+            </button>
+          </p>
         </div>
       </div>
     </div>
