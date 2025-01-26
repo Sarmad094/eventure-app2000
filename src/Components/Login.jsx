@@ -2,6 +2,16 @@ import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import '../Styles/Login.css';
 
+<<<<<<< HEAD
+=======
+
+const mockUsers = {
+  "sarmad@usn.no": { id: 1, password: "sarmad" },
+  "zaurbek@usn.no": { id: 2, password: "zaurbek" }
+};
+
+
+>>>>>>> e717dfe55bf79b5c1db7afdea5d2af407bfa77e6
 const Login = () => {
   const { id } = useParams(); // Hent ID fra URL-en
   const navigate = useNavigate(); // Hook for navigasjon
