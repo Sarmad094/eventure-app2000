@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import '../Styles/CreateUser.css';
 
 const CreateUser = () => {
@@ -11,15 +11,7 @@ const CreateUser = () => {
   });
 
   const [message, setMessage] = useState('');
-  const { id } = useParams(); // Get ID from the URL
-
-  useEffect(() => {
-    if (id) {
-      console.log('Received ID from URL:', id); // Log ID from URL
-    } else {
-      console.error('No ID found in the URL.');
-    }
-  }, [id]);
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -34,12 +26,23 @@ const CreateUser = () => {
     }
     console.log('Registration data:', formData);
     setMessage('User successfully registered!');
+    
+    // Lagre brukerdata i localStorage
+    const userData = {
+      email: formData.email,
+      password: formData.password,
+    };
+    localStorage.setItem('user', JSON.stringify(userData)); // Lagre brukeren
+    
+    // Naviger til login etter registrering
+    setTimeout(() => {
+      navigate('/login'); 
+    }, 1000);
   };
 
   return (
     <div className="register-container">
       <h1>Create an Account</h1>
-      {id && <p>Your ID from the URL: {id}</p>}
       {message && <p style={{ color: 'green' }}>{message}</p>}
       <form onSubmit={handleSubmit}>
         <div className="form-group">

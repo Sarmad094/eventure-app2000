@@ -4,12 +4,13 @@ import AuthProvider from './State management/AuthContext';
 import UserProvider from './State management/UserContext';
 import { EventProvider } from './State management/EventContext';
 import Home from './Components/Home';
-import Welcome from './Components/Welcome';
 import Login from './Components/Login';
 import Profile from './Components/Profile';
 import CreateUser from './Components/CreateUser';
+import WelcomePage from './Components/WelcomePage'; // Endret fra Welcome til WelcomePage
 import './Styles/Login.css';
 import './Styles/CreateUser.css';
+import './Styles/WelcomePage.css';
 
 const App = () => {
   return (
@@ -30,7 +31,7 @@ const App = () => {
 
               <Routes>
                 <Route path="/home/:id" element={<Home />} />
-                <Route path="/welcome/:id" element={<Welcome />} />
+                <Route path="/welcome/:id" element={<WelcomePage />} /> {/* Endret her */}
                 <Route path="/login/:id" element={<Login />} />
                 <Route path="/profile/:id" element={<Profile />} />
                 <Route path="/cuser/:id" element={<CreateUser />} />

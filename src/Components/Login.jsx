@@ -1,20 +1,9 @@
 import React, { useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import '../Styles/Login.css';
 
-<<<<<<< HEAD
-=======
-
-const mockUsers = {
-  "sarmad@usn.no": { id: 1, password: "sarmad" },
-  "zaurbek@usn.no": { id: 2, password: "zaurbek" }
-};
-
-
->>>>>>> e717dfe55bf79b5c1db7afdea5d2af407bfa77e6
 const Login = () => {
-  const { id } = useParams(); // Hent ID fra URL-en
-  const navigate = useNavigate(); // Hook for navigasjon
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: '',
     password: ''
@@ -31,10 +20,20 @@ const Login = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log('Form submitted:', formData);
+
+    // Hent lagrede brukerdata fra localStorage
+    const storedUser = JSON.parse(localStorage.getItem('user'));
+
+    // Sjekk om de lagrede dataene matcher det brukeren har skrevet inn
+    if (storedUser && formData.email === storedUser.email && formData.password === storedUser.password) {
+      navigate(`/home/1`); // Naviger til Home med ID 1
+    } else {
+      alert('Invalid credentials');
+    }
   };
 
   const handleRegister = () => {
-    navigate(`/cuser/${id}`); // Naviger til CreateUser-siden med ID
+    navigate('/cuser'); // Naviger til CreateUser-siden
   };
 
   return (
