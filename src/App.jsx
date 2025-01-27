@@ -7,10 +7,13 @@ import Home from './Components/Home';
 import Login from './Components/Login';
 import Profile from './Components/Profile';
 import CreateUser from './Components/CreateUser';
-import WelcomePage from './Components/WelcomePage'; // Endret fra Welcome til WelcomePage
+import WelcomePage from './Components/WelcomePage';
 import './Styles/Login.css';
 import './Styles/CreateUser.css';
 import './Styles/WelcomePage.css';
+import './Styles/Home.css';
+
+
 
 const App = () => {
   return (
@@ -21,20 +24,20 @@ const App = () => {
             <div>
               <nav>
                 <ul>
-                  <li><Link to="/home/1">Home</Link></li>
                   <li><Link to="/welcome/1">Welcome</Link></li>
+                  <li><Link to="/home/1">Home</Link></li>
                   <li><Link to="/login/1">Login</Link></li>
                   <li><Link to="/profile/1">Profile</Link></li>
-                  <li><Link to="/cuser/1">Create User</Link></li>
+                  <li><Link to="/cuser">Create User</Link></li>
                 </ul>
               </nav>
 
               <Routes>
+                <Route path="/welcome/:id" element={<WelcomePage />} />
                 <Route path="/home/:id" element={<Home />} />
-                <Route path="/welcome/:id" element={<WelcomePage />} /> {/* Endret her */}
-                <Route path="/login/:id" element={<Login />} />
+                <Route path="/login/:id" element={<Login />} /> 
                 <Route path="/profile/:id" element={<Profile />} />
-                <Route path="/cuser/:id" element={<CreateUser />} />
+                <Route path="/cuser" element={<CreateUser />} />
               </Routes>
             </div>
           </EventProvider>

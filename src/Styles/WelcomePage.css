@@ -1,21 +1,20 @@
-/* WelcomePage.css */
 
 .center-content {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background: linear-gradient(135deg, #ffffff, #a3cfff, #66c2ff, #007bb5); /* Fra hvit til blå */
+    background: linear-gradient(135deg, #ffffff, #a3cfff, #66c2ff, #007bb5); 
     position: relative;
   }
   
   
   
   .logo {
-    position: absolute; /* Plasserer logoen absolutt i forhold til parent container */
-    top: 20px; /* Plassere logoen 20px fra toppen */
-    left: 20px; /* Plassere logoen 20px fra venstre */
-    width: 300px; /* Juster størrelsen på logoen */
+    position: absolute; 
+    top: 20px; 
+    left: 20px; 
+    width: 300px; 
   }
   
   .card-wrapper {

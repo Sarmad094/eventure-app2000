@@ -1,39 +1,33 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import '../Styles/Login.css';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import "../Styles/Login.css";
+import { login } from "../Services/userService";
 
 const Login = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    email: '',
-    password: ''
+    email: "",
+    password: "",
   });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value
-    });
+    setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Form submitted:', formData);
-
-    // Hent lagrede brukerdata fra localStorage
-    const storedUser = JSON.parse(localStorage.getItem('user'));
-
-    // Sjekk om de lagrede dataene matcher det brukeren har skrevet inn
-    if (storedUser && formData.email === storedUser.email && formData.password === storedUser.password) {
-      navigate(`/home/1`); // Naviger til Home med ID 1
-    } else {
-      alert('Invalid credentials');
+    try {
+      const user = await login(formData.email, formData.password);
+      console.log("User logged in:", user);
+      navigate(`/home/${user.id}`); 
+    } catch (error) {
+      alert(error.message);
     }
   };
 
   const handleRegister = () => {
-    navigate('/cuser'); // Naviger til CreateUser-siden
+    navigate("/cuser"); 
   };
 
   return (
@@ -71,10 +65,9 @@ const Login = () => {
             <button type="submit" className="button">Login</button>
           </div>
         </form>
-
         <div className="form-footer">
           <p>
-            Don't have an account?{' '}
+            Don't have an account?{" "}
             <button onClick={handleRegister} className="link-button">
               Register here
             </button>

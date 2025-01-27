@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 const Profile = () => {
   const { id } = useParams();
   
-  // In a real application, you might fetch user data based on this ID
+ 
   const userData = {
     1: { name: 'Sarmad', email: 'sarmad@usn.no' },
     2: { name: 'Zaurbek', email: 'zaurbek@usn.no' }

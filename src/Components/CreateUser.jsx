@@ -1,16 +1,17 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import '../Styles/CreateUser.css';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import "../Styles/CreateUser.css";
+import { register } from "../Services/userService";
 
 const CreateUser = () => {
   const [formData, setFormData] = useState({
-    fullName: '',
-    email: '',
-    password: '',
-    confirmPassword: ''
+    fullName: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
   });
 
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState("");
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -18,32 +19,26 @@ const CreateUser = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (formData.password !== formData.confirmPassword) {
-      alert('Passwords do not match!');
+      alert("Passwords do not match!");
       return;
     }
-    console.log('Registration data:', formData);
-    setMessage('User successfully registered!');
-    
-    // Lagre brukerdata i localStorage
-    const userData = {
-      email: formData.email,
-      password: formData.password,
-    };
-    localStorage.setItem('user', JSON.stringify(userData)); // Lagre brukeren
-    
-    // Naviger til login etter registrering
-    setTimeout(() => {
-      navigate('/login'); 
-    }, 1000);
+    try {
+      const user = await register(formData.email, formData.password, formData.fullName);
+      console.log("User registered:", user);
+      setMessage("User successfully registered!");
+      setTimeout(() => navigate("/login"), 1000);
+    } catch (error) {
+      alert(error.message);
+    }
   };
 
   return (
     <div className="register-container">
       <h1>Create an Account</h1>
-      {message && <p style={{ color: 'green' }}>{message}</p>}
+      {message && <p style={{ color: "green" }}>{message}</p>}
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label htmlFor="fullName">Full Name</label>

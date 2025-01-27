@@ -1,26 +1,74 @@
-import React from 'react';
-import { useParams } from 'react-router-dom';
+import React, { useState } from "react";
+import "../Styles/Home.css";
 
-const Home = () => {
-  const { id } = useParams();
+export default function Home() {
+  const [searchQuery, setSearchQuery] = useState("");
 
-  // Hent lagret bruker fra localStorage
-  const storedUser = JSON.parse(localStorage.getItem('user'));
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value);
+  };
+
+  const events = [
+    { id: 1, title: "Tech Conference 2025", date: "Feb 15, 2025" },
+    { id: 2, title: "Coding Bootcamp", date: "Feb 20, 2025" },
+    { id: 3, title: "AI Workshop", date: "Feb 25, 2025" },
+  ];
+
+  const handleEventRegistration = (eventTitle) => {
+    alert(`You have registered for ${eventTitle}`);
+  };
 
   return (
-    <div>
-      <h1>Welcome to the Homepage!</h1>
-      <p>ID: {id}</p>
-      {storedUser ? (
-        <>
-          <p>Hello, {storedUser.email}!</p>
-          <p>This is the homepage where you can explore the services, upcoming events, and resources.</p>
-        </>
-      ) : (
-        <p>User not found. Please try with a valid ID.</p>
-      )}
+    <div className="homepage">
+     
+      <header className="header">
+        <nav className="nav">
+          <ul className="nav-links">
+            <li><a href="#other">Other</a></li>
+            <li><a href="#events">Events</a></li>
+            <li><a href="#faq">FAQ</a></li>
+            <li><a href="#contact">Contact</a></li>
+            <li><a href="#logout" className="log-out-link">Log Out</a></li>
+          </ul>
+        </nav>
+      </header>
+
+     
+      <div className="hello-message">
+        <h1>Hello Student</h1>
+      </div>
+
+    
+      <div className="search-container">
+        <input
+          type="text"
+          placeholder="Search events/courses..."
+          value={searchQuery}
+          onChange={handleSearchChange}
+          className="search-bar"
+        />
+      </div>
+
+      
+      <div className="upcoming-events" id="events">
+        <h2>Upcoming Events</h2>
+        <div className="event-row">
+          {events
+            .filter((event) =>
+              event.title.toLowerCase().includes(searchQuery.toLowerCase())
+            )
+            .map((event) => (
+              <div
+                key={event.id}
+                className="event-card"
+                onClick={() => handleEventRegistration(event.title)}
+              >
+                <h3>{event.title}</h3>
+                <p>{event.date}</p>
+              </div>
+            ))}
+        </div>
+      </div>
     </div>
   );
-};
-
-export default Home;
+}

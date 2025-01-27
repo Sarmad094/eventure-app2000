@@ -1,0 +1,128 @@
+
+.home {
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    padding: 2rem;
+  }
+  
+  .header {
+    background-color: #238aff; 
+    padding: 1rem;
+    display: flex;
+    justify-content: flex-end; 
+    align-items: center;
+    color: white;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 100;
+  }
+  
+  .nav-links {
+    list-style: none;
+    display: flex;
+    gap: 1.5rem;
+    margin-right: 2rem;
+  }
+  
+  .nav a {
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+    transition: color 0.3s ease;
+  }
+  
+  .nav a:hover {
+    color: #f0f0f0;
+  }
+  
+  .log-out-link {
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+    transition: color 0.3s ease;
+  }
+  
+  .log-out-link:hover {
+    color: #f0f0f0;
+  }
+  
+  
+  .hello-message {
+    text-align: center;
+    margin-top: 6rem; 
+  }
+  
+  .hello-message h1 {
+    font-size: 2.5rem;
+    color: #333;
+  }
+  
+  
+  .search-container {
+    text-align: center;
+    margin-top: 1rem;
+  }
+  
+  .search-bar {
+    padding: 0.8rem;
+    width: 60%;
+    max-width: 500px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+    outline: none;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .search-bar:focus {
+    border-color: #238aff;
+  }
+  
+  
+  .upcoming-events {
+    margin-top: 3rem;
+    text-align: center;
+  }
+  
+  .upcoming-events h2 {
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 1.5rem;
+  }
+  
+  .event-row {
+    display: flex;
+    gap: 1.5rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  
+  .event-card {
+    background-color: white;
+    padding: 1.5rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    width: 250px;
+  }
+  
+  .event-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+  }
+  
+  .event-card h3 {
+    font-size: 1.2rem;
+    color: #333;
+  }
+  
+  .event-card p {
+    font-size: 1rem;
+    color: #666;
+    margin-top: 0.5rem;
+  }
+  

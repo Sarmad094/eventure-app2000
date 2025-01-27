@@ -1,8 +1,16 @@
 import React from "react";
-import "../Styles/WelcomePage.css"; // Endret fra ./Styles/WelcomePage.css til ../Styles/WelcomePage.css
-import logo from '../Styles/logo.png'; // Endret fra ./Styles/logo.png til ../Styles/logo.png
+import { useNavigate } from 'react-router-dom'; 
+import "../Styles/WelcomePage.css";
+import logo from '../Styles/logo.png';
 
 export default function WelcomePage() {
+  const navigate = useNavigate(); 
+
+ 
+  const handleStudentClick = () => {
+    navigate('/login/1'); 
+  };
+
   return (
     <div className="center-content">
       <img src={logo} alt="Logo" className="logo" />
@@ -13,7 +21,7 @@ export default function WelcomePage() {
             <p className="subtitle">We're excited to have you here. Choose your path below.</p>
             <div className="button-group">
               <button className="custom-button">We are a company</button>
-              <button className="custom-button">I am a student</button>
+              <button className="custom-button" onClick={handleStudentClick}>I am a student</button>
             </div>
           </div>
         </div>
