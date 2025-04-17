@@ -19,16 +19,16 @@ const OrgLoginPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const user = await login(formData.orgId, formData.password, "organization");
-      console.log("Organization logged in:", user);
-      navigate(`/home/${user.id}`);
+      const account = await login(formData.orgId, formData.password, "organization");
+      console.log("Organization logged in:", account);
+      navigate(`/comphome/`);
     } catch (error) {
       alert(error.message);
     }
   };
 
   const handleCreateOrganization = () => {
-    navigate("/orglogin");
+    navigate("/corganization");
   };
 
   return (

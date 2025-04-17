@@ -29,7 +29,7 @@ const CreateUser = () => {
       const user = await register(formData.email, formData.password, formData.fullName);
       console.log("User registered:", user);
       setMessage("User successfully registered!");
-      setTimeout(() => navigate("/login"), 1000);
+      setTimeout(() => navigate("/login/1"), 1000);
     } catch (error) {
       alert(error.message);
     }

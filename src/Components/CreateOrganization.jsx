@@ -34,7 +34,7 @@ const CreateOrganization = () => {
       );
       console.log("Organization registered:", org);
       setMessage("Organization successfully registered!");
-      setTimeout(() => navigate("/login"), 1000);
+      setTimeout(() => navigate("/orglogin"), 1000);
     } catch (error) {
       alert(error.message);
     }
@@ -95,7 +95,6 @@ const CreateOrganization = () => {
         </div>
         <div className="form-group">
           <button type="submit">Register</button>
-          <a href="/orglogin"></a>
         </div>
       </form>
       <div className="form-footer">
