@@ -6,7 +6,10 @@ import logo from '../Styles/logo.png';
 export default function WelcomePage() {
   const navigate = useNavigate(); 
 
- 
+  const handleCompanyClick = () => {
+    navigate('/orglogin');
+  };
+  
   const handleStudentClick = () => {
     navigate('/login/1'); 
   };
@@ -20,7 +23,7 @@ export default function WelcomePage() {
             <h1 className="title">Welcome to Eventure!</h1>
             <p className="subtitle">We're excited to have you here. Choose your path below.</p>
             <div className="button-group">
-              <button className="custom-button">We are a company</button>
+              <button className="custom-button"onClick={handleCompanyClick}>We are a company</button>
               <button className="custom-button" onClick={handleStudentClick}>I am a student</button>
             </div>
           </div>

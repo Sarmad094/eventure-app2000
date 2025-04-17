@@ -28,7 +28,7 @@ const OrgLoginPage = () => {
   };
 
   const handleCreateOrganization = () => {
-    navigate("/orglogin");
+    navigate("/corganization");
   };
 
   return (

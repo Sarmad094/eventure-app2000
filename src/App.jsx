@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-=======
-// src/App.jsx
-// hanjii
->>>>>>> a603f77247880c56972f85a223366175f629196e
+
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import AuthProvider from './State management/AuthContext';
