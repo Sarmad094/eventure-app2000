@@ -28,7 +28,7 @@ export default function Home() {
             <li><a href="#events">Events</a></li>
             <li><a href="#faq">FAQ</a></li>
             <li><a href="#contact">Contact</a></li>
-            <li><a href="#logout" className="log-out-link">Log Out</a></li>
+            <li><a href="#profile" className="profile">Profile</a></li>
           </ul>
         </nav>
       </header>
