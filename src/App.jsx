@@ -10,9 +10,11 @@ import CreateUser from './Components/CreateUser';
 import WelcomePage from './Components/WelcomePage';
 import StudentProfile from './Components/StudentProfile';
 import OrganizationHome from './Components/OrganizationHome';
-import OrgLoginPage from './Components/OrgLoginPage'; // ✅ default import
+import OrgLoginPage from './Components/OrgLoginPage'; //
 import CreateOrganization from './Components/CreateOrganization';
 import FaqPage from './Components/FaqPage';
+import StudentConfirm from './StudentConfirm';
+import './Styles/StudentConfirm.css';
 import './Styles/CreateOrganization.css';
 import './Styles/StudentProfile.css';
 import './Styles/Login.css';
@@ -41,6 +43,10 @@ const App = () => {
                   <li><Link to="/orglogin">Company Login</Link></li>
                   <li><Link to="/corganization">Create organization account</Link></li>
                   <li><Link to="/FaqPage">Faq</Link></li>
+                  <li><Link to="/studentconfirm">Student confirm</Link></li>
+                  
+                  
+
                 </ul>
               </nav>
             
@@ -58,6 +64,8 @@ const App = () => {
                 <Route path="/" element={<Navigate to="Welcome/1" replace />} />
                 <Route path="/welcome/:id" element={<WelcomePage />} />
                 
+                <Route path="/studentconfirm" element={<StudentConfirm />} />
+
               </Routes>
             </div>
           </EventProvider>
