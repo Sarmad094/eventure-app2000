@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes, Link, Navigate } from 'react-router-dom';
 import AuthProvider from './State management/AuthContext';
@@ -10,9 +9,10 @@ import CreateUser from './Components/CreateUser';
 import WelcomePage from './Components/WelcomePage';
 import StudentProfile from './Components/StudentProfile';
 import OrganizationHome from './Components/OrganizationHome';
-import OrgLoginPage from './Components/OrgLoginPage'; //
+import OrgLoginPage from './Components/OrgLoginPage';
 import CreateOrganization from './Components/CreateOrganization';
 import FaqPage from './Components/FaqPage';
+import Contact from './Components/Contact';
 import StudentConfirm from './StudentConfirm';
 import './Styles/StudentConfirm.css';
 import './Styles/CreateOrganization.css';
@@ -24,7 +24,8 @@ import './Styles/Home.css';
 import './Styles/OrganizationHome.css';
 import './Styles/OrgLoginPage.css';
 import './Styles/FaqPage.css';
-import { BrowserRouter } from 'react-router-dom';
+import './Styles/Contact.css';
+
 const App = () => {
   return (
     <Router>
@@ -43,13 +44,11 @@ const App = () => {
                   <li><Link to="/orglogin">Company Login</Link></li>
                   <li><Link to="/corganization">Create organization account</Link></li>
                   <li><Link to="/FaqPage">Faq</Link></li>
+                  <li><Link to="/contact">Contact</Link></li>
                   <li><Link to="/studentconfirm">Student confirm</Link></li>
-                  
-                  
-
                 </ul>
               </nav>
-            
+              
               <Routes>
                 <Route path="/welcome/:id" element={<WelcomePage />} />
                 <Route path="/home/:id" element={<Home />} />
@@ -60,12 +59,9 @@ const App = () => {
                 <Route path="/orglogin" element={<OrgLoginPage />} />
                 <Route path="/corganization" element={<CreateOrganization />} />
                 <Route path="/FaqPage" element={<FaqPage />} />
-
+                <Route path="/contact" element={<Contact />} />
                 <Route path="/" element={<Navigate to="Welcome/1" replace />} />
-                <Route path="/welcome/:id" element={<WelcomePage />} />
-                
                 <Route path="/studentconfirm" element={<StudentConfirm />} />
-
               </Routes>
             </div>
           </EventProvider>

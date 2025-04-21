@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import '../Styles/OrganizationHome.css';
+import { useNavigate } from 'react-router-dom';
 
 const OrganizationHome = () => {
   const [showStatistics, setShowStatistics] = useState(false);
@@ -15,6 +16,8 @@ const OrganizationHome = () => {
     date: '',
     agreeToTerms: false
   });
+
+  const navigate = useNavigate();
 
   const courseStats = {
     courseName: "IT MICROSOFT COURSE",
@@ -42,6 +45,10 @@ const OrganizationHome = () => {
     console.log('Form submitted:', formData);
   };
 
+  const handleNavigation = (path) => {
+    navigate(path);
+  };
+
   return (
     <div className="organization-home">
       <nav className="top-nav">
@@ -61,8 +68,14 @@ const OrganizationHome = () => {
           >
             Statistics
           </button>
-          <a href="/faq">FAQ</a>
-          <a href="/contact">Contact</a>
+          <a href="/faq" onClick={(e) => {
+            e.preventDefault();
+            handleNavigation('/FaqPage');
+          }}>FAQ</a>
+          <a href="/contact" onClick={(e) => {
+            e.preventDefault();
+            handleNavigation('/contact');
+          }}>Contact</a>
         </div>
       </nav>
 
@@ -138,7 +151,7 @@ const OrganizationHome = () => {
 
             <div className="button-group">
               <button type="submit" className="publish-btn">Publish</button>
-              <button type="button" className="contact-btn">Contact</button>
+              <button type="button" className="contact-btn" onClick={() => handleNavigation('/contact')}>Contact</button>
             </div>
           </form>
         </main>
