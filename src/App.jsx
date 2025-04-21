@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Link, Navigate } from 'react-router-dom';
 import AuthProvider from './State management/AuthContext';
 import UserProvider from './State management/UserContext';
 import { EventProvider } from './State management/EventContext';
@@ -22,7 +22,7 @@ import './Styles/Home.css';
 import './Styles/OrganizationHome.css';
 import './Styles/OrgLoginPage.css';
 import './Styles/FaqPage.css';
-
+import { BrowserRouter } from 'react-router-dom';
 const App = () => {
   return (
     <Router>
@@ -43,7 +43,7 @@ const App = () => {
                   <li><Link to="/FaqPage">Faq</Link></li>
                 </ul>
               </nav>
-
+            
               <Routes>
                 <Route path="/welcome/:id" element={<WelcomePage />} />
                 <Route path="/home/:id" element={<Home />} />
@@ -54,6 +54,10 @@ const App = () => {
                 <Route path="/orglogin" element={<OrgLoginPage />} />
                 <Route path="/corganization" element={<CreateOrganization />} />
                 <Route path="/FaqPage" element={<FaqPage />} />
+
+                <Route path="/" element={<Navigate to="Welcome/1" replace />} />
+                <Route path="/welcome/:id" element={<WelcomePage />} />
+                
               </Routes>
             </div>
           </EventProvider>
