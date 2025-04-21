@@ -1,11 +1,4 @@
 
-<<<<<<< HEAD
-
-// src/App.jsx
-// hanjii
-
-=======
->>>>>>> 1e468ee02c643e79dffbc49e2fda2855eb946bc3
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import AuthProvider from './State management/AuthContext';
@@ -19,6 +12,7 @@ import StudentProfile from './Components/StudentProfile';
 import OrganizationHome from './Components/OrganizationHome';
 import OrgLoginPage from './Components/OrgLoginPage'; // ✅ default import
 import CreateOrganization from './Components/CreateOrganization';
+import FaqPage from './Components/FaqPage';
 import './Styles/CreateOrganization.css';
 import './Styles/StudentProfile.css';
 import './Styles/Login.css';
@@ -27,6 +21,7 @@ import './Styles/WelcomePage.css';
 import './Styles/Home.css';
 import './Styles/OrganizationHome.css';
 import './Styles/OrgLoginPage.css';
+import './Styles/FaqPage.css';
 
 const App = () => {
   return (
@@ -45,6 +40,7 @@ const App = () => {
                   <li><Link to="/comphome">Company Home</Link></li>
                   <li><Link to="/orglogin">Company Login</Link></li>
                   <li><Link to="/corganization">Create organization account</Link></li>
+                  <li><Link to="/FaqPage">Faq</Link></li>
                 </ul>
               </nav>
 
@@ -57,6 +53,7 @@ const App = () => {
                 <Route path="/comphome" element={<OrganizationHome />} />
                 <Route path="/orglogin" element={<OrgLoginPage />} />
                 <Route path="/corganization" element={<CreateOrganization />} />
+                <Route path="/FaqPage" element={<FaqPage />} />
               </Routes>
             </div>
           </EventProvider>

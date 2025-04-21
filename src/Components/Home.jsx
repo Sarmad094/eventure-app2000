@@ -1,8 +1,12 @@
 import React, { useState } from "react";
 import "../Styles/Home.css";
+import { useNavigate } from "react-router-dom";
+
 
 export default function Home() {
   const [searchQuery, setSearchQuery] = useState("");
+
+  const navigate = useNavigate();
 
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value);
