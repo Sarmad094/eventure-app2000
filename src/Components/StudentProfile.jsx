@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { getstudentProfile } from '../Services/getStudentProfile';  // Oppdatert sti
+import { getstudentProfile } from '../Services/getStudentProfile';  
 import "../Styles/StudentProfile.css";
 
 const StudentProfile = () => {

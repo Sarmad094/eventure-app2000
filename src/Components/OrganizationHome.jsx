@@ -43,7 +43,9 @@ const OrganizationHome = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log('Form submitted:', formData);
+    navigate('/OrganizationPublish');
   };
+  
 
   const handleNavigation = (path) => {
     navigate(path);
