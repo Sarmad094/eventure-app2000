@@ -14,6 +14,7 @@ import CreateOrganization from './Components/CreateOrganization';
 import FaqPage from './Components/FaqPage';
 import Contact from './Components/Contact';
 import StudentConfirm from './StudentConfirm';
+import OrganizationWelcome from './Components/OrganizationWelcome';
 import './Styles/StudentConfirm.css';
 import './Styles/CreateOrganization.css';
 import './Styles/StudentProfile.css';
@@ -46,6 +47,7 @@ const App = () => {
                   <li><Link to="/FaqPage">Faq</Link></li>
                   <li><Link to="/contact">Contact</Link></li>
                   <li><Link to="/studentconfirm">Student confirm</Link></li>
+                  <li><Link to="/OrganizationWelcome">Welcome Organizattion</Link></li>
                 </ul>
               </nav>
               
@@ -62,6 +64,7 @@ const App = () => {
                 <Route path="/contact" element={<Contact />} />
                 <Route path="/" element={<Navigate to="Welcome/1" replace />} />
                 <Route path="/studentconfirm" element={<StudentConfirm />} />
+                <Route path="/OrganizationWelcome" element={<OrganizationWelcome />} />
               </Routes>
             </div>
           </EventProvider>
