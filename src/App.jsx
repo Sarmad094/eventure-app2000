@@ -13,6 +13,8 @@ import OrganizationHome from './Components/OrganizationHome';
 import OrgLoginPage from './Components/OrgLoginPage'; // ✅ default import
 import CreateOrganization from './Components/CreateOrganization';
 import FaqPage from './Components/FaqPage';
+import StudentConfirm from './StudentConfirm';
+import './Styles/StudentConfirm.css';
 import './Styles/CreateOrganization.css';
 import './Styles/StudentProfile.css';
 import './Styles/Login.css';
@@ -41,6 +43,10 @@ const App = () => {
                   <li><Link to="/orglogin">Company Login</Link></li>
                   <li><Link to="/corganization">Create organization account</Link></li>
                   <li><Link to="/FaqPage">Faq</Link></li>
+                  <li><Link to="/studentconfirm">Student confirm</Link></li>
+                  
+                  
+
                 </ul>
               </nav>
 
@@ -54,6 +60,7 @@ const App = () => {
                 <Route path="/orglogin" element={<OrgLoginPage />} />
                 <Route path="/corganization" element={<CreateOrganization />} />
                 <Route path="/FaqPage" element={<FaqPage />} />
+                <Route path="/studentconfirm" element={<StudentConfirm />} />
               </Routes>
             </div>
           </EventProvider>
