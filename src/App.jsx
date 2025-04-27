@@ -14,7 +14,7 @@ import CreateOrganization from './Components/CreateOrganization';
 import FaqPage from './Components/FaqPage';
 import Contact from './Components/Contact';
 import StudentConfirm from './StudentConfirm';
-import OrganizationWelcome from './Components/OrganizationWelcome';
+
 import './Styles/StudentConfirm.css';
 import './Styles/CreateOrganization.css';
 import './Styles/StudentProfile.css';
@@ -26,6 +26,7 @@ import './Styles/OrganizationHome.css';
 import './Styles/OrgLoginPage.css';
 import './Styles/FaqPage.css';
 import './Styles/Contact.css';
+import OrganizationWelcome from './Components/OrganizationWelcome';
 
 const App = () => {
   return (
@@ -47,7 +48,9 @@ const App = () => {
                   <li><Link to="/FaqPage">Faq</Link></li>
                   <li><Link to="/contact">Contact</Link></li>
                   <li><Link to="/studentconfirm">Student confirm</Link></li>
-                  <li><Link to="/OrganizationWelcome">Welcome Organizattion</Link></li>
+                  <li><Link to="/OrganizationWelcome">Welcome organization </Link></li>
+                  <li><Link to="/OrganizationPublish">Publish page</Link></li>
+
                 </ul>
               </nav>
               
@@ -65,6 +68,8 @@ const App = () => {
                 <Route path="/" element={<Navigate to="Welcome/1" replace />} />
                 <Route path="/studentconfirm" element={<StudentConfirm />} />
                 <Route path="/OrganizationWelcome" element={<OrganizationWelcome />} />
+                <Route path="/OrganizationPublish" element={<organizationPublish />} />
+
               </Routes>
             </div>
           </EventProvider>
