@@ -1,7 +1,36 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "../Styles/EventDetail.css";
 
-export default function EventDetail({ event, onClose, onPay }) {
+export default function EventDetail(props) {
+  const {
+    event,
+    onClose,
+    onPay,
+    onLike = () => {}, // fallback
+  } = props;
+
+  const [isLiked, setIsLiked] = useState(false);
+
+  useEffect(() => {
+    const liked = JSON.parse(localStorage.getItem("likedCourses")) || [];
+    setIsLiked(liked.includes(event.title));
+  }, [event.title]);
+
+  const handleLike = () => {
+    const liked = JSON.parse(localStorage.getItem("likedCourses")) || [];
+    let updated;
+
+    if (liked.includes(event.title)) {
+      updated = liked.filter((title) => title !== event.title);
+    } else {
+      updated = [...liked, event.title];
+    }
+
+    localStorage.setItem("likedCourses", JSON.stringify(updated));
+    setIsLiked(!isLiked);
+    onLike(event.title); // trygg
+  };
+
   if (!event) return null;
 
   return (
@@ -34,9 +63,14 @@ export default function EventDetail({ event, onClose, onPay }) {
           <p>{event.description}</p>
         </div>
 
-        <button className="pay-apply-btn" onClick={() => onPay(event)}>
-          Pay and Apply
-        </button>
+        <div className="event-actions">
+          <button className="like-btn" onClick={handleLike}>
+            {isLiked ? "♥" : "♡"}
+          </button>
+          <button className="pay-apply-btn" onClick={() => onPay(event)}>
+            Pay and Apply
+          </button>
+        </div>
       </div>
     </div>
   );

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { getstudentProfile } from "../Services/getStudentProfile";
+import { getStudentProfile } from "../Services/getStudentProfile";
 import "../Styles/StudentProfile.css";
 import { useNavigate } from "react-router-dom";
 
@@ -9,10 +9,11 @@ const StudentProfile = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const data = await getstudentProfile();
+      const data = await getStudentProfile();
+      const likedCourses = JSON.parse(localStorage.getItem("likedCourses")) || [];
       setProfile({
         ...data,
-        likedCourses: data.likedCourses || [],
+        likedCourses,
         appliedEvents: data.appliedEvents || [],
       });
     };
@@ -30,7 +31,7 @@ const StudentProfile = () => {
       <header className="header">
         <nav className="nav">
           <ul className="nav-links">
-            <li><a href="#other" onClick={(e) => { e.preventDefault(); handleNavigation('/home/1'); }}>Home</a></li>
+            <li><a href="#home" onClick={(e) => { e.preventDefault(); handleNavigation('/home/1'); }}>Home</a></li>
             <li><a href="#events">Events</a></li>
             <li><a href="#faq" onClick={(e) => { e.preventDefault(); handleNavigation('/FaqPage'); }}>FAQ</a></li>
             <li><a href="#contact" onClick={(e) => { e.preventDefault(); handleNavigation('/contact'); }}>Contact</a></li>
