@@ -30,7 +30,7 @@ const StudentProfile = () => {
       <header className="header">
         <nav className="nav">
           <ul className="nav-links">
-            <li><a href="#other">Other</a></li>
+            <li><a href="#other" onClick={(e) => { e.preventDefault(); handleNavigation('/home/1'); }}>Home</a></li>
             <li><a href="#events">Events</a></li>
             <li><a href="#faq" onClick={(e) => { e.preventDefault(); handleNavigation('/FaqPage'); }}>FAQ</a></li>
             <li><a href="#contact" onClick={(e) => { e.preventDefault(); handleNavigation('/contact'); }}>Contact</a></li>
