@@ -83,9 +83,6 @@ const OrganizationHome = () => {
 
       {!showStatistics ? (
         <main className="main-content">
-          <h1>Hello business owner!</h1>
-          <h2>create and publish your event now</h2>
-
           <form onSubmit={handleSubmit} className="event-form">
             <div className="form-grid">
               <div className="form-column">
