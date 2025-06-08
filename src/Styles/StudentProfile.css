@@ -1,130 +1,98 @@
-/* src/Styles/StudentProfile.css */
-
-/* General profile container */
-.profile-container {
-  max-width: 1000px;
-  margin: 20px auto;
-  padding: 40px;
-  background-color: #ffffff;
-  border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  font-family: 'Arial', sans-serif;
-  background-color: #f7f9fc;
+/* HEADER - BEHOLDT SAMME SOM I HOME */
+.header {
+  background-color: #238aff;
+  padding: 1rem;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  color: white;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 100;
 }
 
-/* Profile header */
-.profile-header {
-  text-align: center;
-  color: #238aff; /* Endret blåfarge */
-  font-size: 3em;
-  margin-bottom: 40px;
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 1.5rem;
+  margin-right: 2rem;
+}
+
+.nav a {
+  text-decoration: none;
+  color: white;
   font-weight: bold;
+  transition: color 0.3s ease;
 }
 
-/* Section title */
-.section-title {
-  color: #238aff; /* Endret blåfarge */
-  font-size: 1.6em;
-  margin-bottom: 20px;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  border-bottom: 2px solid #238aff; /* Endret blåfarge */
-  padding-bottom: 5px;
+.nav a:hover {
+  color: #f0f0f0;
 }
 
-/* Personal Information */
-.profile-info {
-  background-color: #ffffff;
-  padding: 25px;
-  border-radius: 8px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  margin-bottom: 30px;
+
+/* PAGE BACKGROUND & BASE STIL */
+.profile-page {
+  font-family: Arial, sans-serif;
+  background-color: #f9f9f9;
+  padding-top: 6rem;
+  padding: 2rem;
+  min-height: 100vh;
 }
 
-.profile-info p {
-  font-size: 1.2em;
-  margin: 10px 0;
+.hello-message {
+  text-align: center;
+  margin-top: 1rem;
+}
+
+.hello-message h1 {
+  font-size: 2.5rem;
   color: #333;
 }
 
-.profile-info strong {
-  color: #238aff; /* Endret blåfarge */
+.profile-section {
+  margin-top: 2rem;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
-/* Courses and Events Section */
-.courses-section, .events-section {
-  margin-top: 40px;
+.profile-section h2 {
+  font-size: 1.5rem;
+  margin-top: 2rem;
+  color: #238aff;
+  border-bottom: 2px solid #ddd;
+  padding-bottom: 0.5rem;
 }
 
-.courses-container, .events-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  justify-content: space-evenly;
+.profile-list,
+.simple-list {
+  list-style: none;
+  padding-left: 0;
+  margin-top: 1rem;
 }
 
-/* Course box */
-.course-box, .event-box {
-  background-color: #ffffff;
-  padding: 20px;
-  width: 250px;
-  border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-  text-align: center;
-  transition: transform 0.3s ease-in-out;
+.profile-list li,
+.simple-list li {
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #eee;
+  color: #333;
 }
 
-.course-box:hover, .event-box:hover {
-  transform: scale(1.05);
+.paid {
+  color: green;
+  font-weight: bold;
 }
 
-/* Payment status dots */
-.payment-status {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 10px;
+.pending {
+  color: orange;
+  font-weight: bold;
 }
 
-.status-dot {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  margin-right: 8px;
-}
-
-.green {
-  background-color: #27ae60;
-}
-
-.orange {
-  background-color: #f39c12;
-}
-
-/* Loading text */
 .loading {
-  font-size: 1.5em;
   text-align: center;
-  color: #7f8c8d;
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-  .profile-container {
-    padding: 20px;
-  }
-
-  .profile-header {
-    font-size: 2.5em;
-  }
-
-  .courses-container, .events-container {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .course-box, .event-box {
-    width: 80%;
-    margin-bottom: 20px;
-  }
+  margin-top: 5rem;
+  font-size: 1.5rem;
+  color: #555;
 }

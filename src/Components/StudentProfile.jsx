@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { getstudentProfile } from '../Services/getStudentProfile';  
+import { getstudentProfile } from "../Services/getStudentProfile";
 import "../Styles/StudentProfile.css";
+import { useNavigate } from "react-router-dom";
 
 const StudentProfile = () => {
   const [profile, setProfile] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -11,69 +13,74 @@ const StudentProfile = () => {
       setProfile({
         ...data,
         likedCourses: data.likedCourses || [],
-        appliedEvents: data.appliedEvents || []
+        appliedEvents: data.appliedEvents || [],
       });
     };
     fetchData();
   }, []);
 
-  if (!profile) {
-    return <div className="loading">Loading...</div>;
-  }
+  const handleNavigation = (path) => {
+    navigate(path);
+  };
+
+  if (!profile) return <div className="loading">Loading...</div>;
 
   return (
-    <div className="profile-container">
-      <h1 className="profile-header">Student Profile</h1>
-      
-      <div className="info-section">
-        <div className="profile-info">
-          <h2 className="section-title">Personal Information</h2>
-          <p><strong>First Name:</strong> {profile.firstName}</p>
-          <p><strong>Last Name:</strong> {profile.lastName}</p>
-          <p><strong>Age:</strong> {profile.age}</p>
-          <p><strong>University:</strong> {profile.university}</p>
-          <p><strong>Field of Study:</strong> {profile.fieldOfStudy}</p>
-          <p><strong>Phone Number:</strong> {profile.phone}</p>
-          <p><strong>Email:</strong> {profile.email}</p>
-        </div>
+    <div className="profile-page">
+      <header className="header">
+        <nav className="nav">
+          <ul className="nav-links">
+            <li><a href="#other">Other</a></li>
+            <li><a href="#events">Events</a></li>
+            <li><a href="#faq" onClick={(e) => { e.preventDefault(); handleNavigation('/FaqPage'); }}>FAQ</a></li>
+            <li><a href="#contact" onClick={(e) => { e.preventDefault(); handleNavigation('/contact'); }}>Contact</a></li>
+            <li><a href="#profile" className="profile" onClick={(e) => { e.preventDefault(); handleNavigation('/profile'); }}>Profile</a></li>
+          </ul>
+        </nav>
+      </header>
+
+      <div className="hello-message">
+        <h1>Hello Student</h1>
       </div>
 
-      <div className="courses-section">
-        <h2 className="section-title">Liked Courses</h2>
-        <div className="courses-container">
-          {profile.likedCourses && profile.likedCourses.length > 0 ? (
-            profile.likedCourses.map((course, index) => (
-              <div key={index} className="course-box">
-                <p>{course}</p>
-              </div>
-            ))
-          ) : (
-            <p>No liked courses</p>
-          )}
-        </div>
-      </div>
+      <div className="profile-section">
+        <h2>Profile Information</h2>
+        <ul className="profile-list">
+          <li><strong>First Name:</strong> {profile.firstName}</li>
+          <li><strong>Last Name:</strong> {profile.lastName}</li>
+          <li><strong>Age:</strong> {profile.age}</li>
+          <li><strong>University:</strong> {profile.university}</li>
+          <li><strong>Field of Study:</strong> {profile.fieldOfStudy}</li>
+          <li><strong>Phone:</strong> {profile.phone}</li>
+          <li><strong>Email:</strong> {profile.email}</li>
+        </ul>
 
-      <div className="events-section">
-        <h2 className="section-title">Applied Events & Payment Status</h2>
-        <div className="events-container">
-          {profile.appliedEvents && profile.appliedEvents.length > 0 ? (
-            profile.appliedEvents.map((event, index) => (
-              <div key={index} className="event-box">
-                <p>{event.name}</p>
-                <div className={`payment-status ${event.paymentStatus === "Paid" ? "paid" : "pending"}`}>
-                  {event.paymentStatus === "Paid" ? (
-                    <span className="status-dot green"></span>
-                  ) : (
-                    <span className="status-dot orange"></span>
-                  )}
-                  <span>{event.paymentStatus}</span>
-                </div>
-              </div>
-            ))
-          ) : (
-            <p>No applied events</p>
-          )}
-        </div>
+        <h2>Liked Courses</h2>
+        {profile.likedCourses.length > 0 ? (
+          <ul className="simple-list">
+            {profile.likedCourses.map((course, i) => (
+              <li key={i}>{course}</li>
+            ))}
+          </ul>
+        ) : (
+          <p>No liked courses</p>
+        )}
+
+        <h2>Applied Events & Payment Status</h2>
+        {profile.appliedEvents.length > 0 ? (
+          <ul className="simple-list">
+            {profile.appliedEvents.map((event, i) => (
+              <li key={i}>
+                {event.name} -{" "}
+                <span className={event.paymentStatus === "Paid" ? "paid" : "pending"}>
+                  {event.paymentStatus}
+                </span>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p>No applied events</p>
+        )}
       </div>
     </div>
   );
