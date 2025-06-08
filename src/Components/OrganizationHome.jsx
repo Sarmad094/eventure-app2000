@@ -72,11 +72,11 @@ const OrganizationHome = () => {
           </button>
           <a href="/faq" onClick={(e) => {
             e.preventDefault();
-            handleNavigation('/FaqPage');
+            handleNavigation('/organization-faq');
           }}>FAQ</a>
           <a href="/contact" onClick={(e) => {
             e.preventDefault();
-            handleNavigation('/contact');
+            handleNavigation('/organization-contact');
           }}>Contact</a>
         </div>
       </nav>
@@ -150,7 +150,7 @@ const OrganizationHome = () => {
 
             <div className="button-group">
               <button type="submit" className="publish-btn">Publish</button>
-              <button type="button" className="contact-btn" onClick={() => handleNavigation('/contact')}>Contact</button>
+              <button type="button" className="contact-btn" onClick={() => handleNavigation('/organization-contact')}>Contact</button>
             </div>
           </form>
         </main>

@@ -1,5 +1,5 @@
-import React from 'react';
-import { BrowserRouter as Router, Route, Routes, Link, Navigate } from 'react-router-dom';
+import React, { useState } from 'react';
+import { BrowserRouter as Router, Route, Routes, Link, Navigate, useNavigate } from 'react-router-dom';
 import AuthProvider from './State management/AuthContext';
 import UserProvider from './State management/UserContext';
 import { EventProvider } from './State management/EventContext';
@@ -30,6 +30,58 @@ import './Styles/FaqPage.css';
 import './Styles/Contact.css';
 import OrganizationWelcome from './Components/OrganizationWelcome';
 
+// Organization Contact Component
+const OrganizationContact = () => {
+  const navigate = useNavigate();
+  const [showStatistics, setShowStatistics] = useState(false);
+  
+  return (
+    <Contact 
+      isOrganization={true}
+      showStatistics={showStatistics}
+      setShowStatistics={setShowStatistics}
+      onNavigate={(action) => {
+        if (action === 'home') {
+          navigate('/comphome', { state: { showStatistics: false } });
+        }
+        if (action === 'statistics') {
+          navigate('/comphome', { state: { showStatistics: true } });
+        }
+        if (action.startsWith('/')) {
+          navigate(action);
+        }
+      }} 
+    />
+  );
+};
+
+// Organization FAQ Component
+const OrganizationFaq = () => {
+  const navigate = useNavigate();
+  const [showStatistics, setShowStatistics] = useState(false);
+  
+  return (
+    <FaqPage 
+      isOrganization={true}
+      showStatistics={showStatistics}
+      onNavigate={(action) => {
+        if (action === 'home') {
+          navigate('/comphome', { state: { showStatistics: false } });
+        }
+        if (action === 'statistics') {
+          navigate('/comphome', { state: { showStatistics: true } });
+        }
+        if (action === '/organization-contact') {
+          navigate('/organization-contact');
+        }
+        if (action.startsWith('/')) {
+          navigate(action);
+        }
+      }} 
+    />
+  );
+};
+
 const App = () => {
   return (
     <Router>
@@ -47,16 +99,16 @@ const App = () => {
                   <li><Link to="/comphome">Company Home</Link></li>
                   <li><Link to="/orglogin">Company Login</Link></li>
                   <li><Link to="/corganization">Create organization account</Link></li>
-                  <li><Link to="/FaqPage">Faq</Link></li>
+                  <li><Link to="/organization-faq">Organization FAQ</Link></li>
                   <li><Link to="/contact">Contact</Link></li>
+                  <li><Link to="/organization-contact">Organization Contact</Link></li>
                   <li><Link to="/studentconfirm">Student confirm</Link></li>
                   <li><Link to="/OrganizationWelcome">Welcome organization </Link></li>
                   <li><Link to="/OrganizationPublish">Publish page</Link></li>
                   <li><Link to="/Payment">Payment Page </Link></li>
-
-                </ul>
+                 </ul>
               </nav>
-              
+                             
               <Routes>
                 <Route path="/welcome/:id" element={<WelcomePage />} />
                 <Route path="/home/:id" element={<Home />} />
@@ -67,14 +119,15 @@ const App = () => {
                 <Route path="/orglogin" element={<OrgLoginPage />} />
                 <Route path="/corganization" element={<CreateOrganization />} />
                 <Route path="/FaqPage" element={<FaqPage />} />
+                <Route path="/organization-faq" element={<OrganizationFaq />} />
                 <Route path="/contact" element={<Contact />} />
+                <Route path="/organization-contact" element={<OrganizationContact />} />
                 <Route path="/" element={<Navigate to="Welcome/1" replace />} />
                 <Route path="/studentconfirm" element={<StudentConfirm />} />
                 <Route path="/OrganizationWelcome" element={<OrganizationWelcome />} />
                 <Route path="/OrganizationPublish" element={<OrganizationPublish />} />
                 <Route path="/payment" element={<PaymentPage />} />
-
-              </Routes>
+               </Routes>
             </div>
           </EventProvider>
         </UserProvider>
