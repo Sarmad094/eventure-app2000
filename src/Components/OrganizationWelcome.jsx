@@ -1,11 +1,12 @@
 import React from 'react';
 import '../Styles/OrganizationWelcome.css';
-
+import { useNavigate } from 'react-router-dom';
 
 export default function OrganizationWelcome() {
+  const navigate = useNavigate();
+
   return (
     <div className="organization-welcome">
-      {/* Top Navigation */}
       <nav className="top-nav">
         <div className="logo">
           <img src="/api/placeholder/180/40" alt="Eventure" />
@@ -17,21 +18,23 @@ export default function OrganizationWelcome() {
           <a href="#" className="nav-link">Contact</a>
         </div>
       </nav>
-      
-      {/* Main Content */}
+
       <div className="main-content">
         <div className="card">
           <h1 className="title">Business page</h1>
-          <p className="subtitle">choose your task today</p>
-          
+          <p className="subtitle">Welcome</p>
+
           <div className="button-container">
-            <button className="action-button">Create event</button>
-            <button className="action-button">Check statistics</button>
+            <button
+              className="action-button"
+              onClick={() => navigate('/comphome')} // <-- her er endringen
+            >
+              Create event
+            </button>
           </div>
         </div>
       </div>
-      
-      {/* Footer */}
+
       <footer className="footer">
         <img src="/api/placeholder/120/30" alt="Eventure" />
       </footer>

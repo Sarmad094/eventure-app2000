@@ -14,6 +14,7 @@ import CreateOrganization from './Components/CreateOrganization';
 import FaqPage from './Components/FaqPage';
 import Contact from './Components/Contact';
 import StudentConfirm from './StudentConfirm';
+import PaymentPage from './Components/PaymentPage';
 
 import './Styles/StudentConfirm.css';
 import './Styles/CreateOrganization.css';
@@ -50,6 +51,7 @@ const App = () => {
                   <li><Link to="/studentconfirm">Student confirm</Link></li>
                   <li><Link to="/OrganizationWelcome">Welcome organization </Link></li>
                   <li><Link to="/OrganizationPublish">Publish page</Link></li>
+                  <li><Link to="/Payment">Payment Page </Link></li>
 
                 </ul>
               </nav>
@@ -69,6 +71,7 @@ const App = () => {
                 <Route path="/studentconfirm" element={<StudentConfirm />} />
                 <Route path="/OrganizationWelcome" element={<OrganizationWelcome />} />
                 <Route path="/OrganizationPublish" element={<organizationPublish />} />
+                <Route path="/payment" element={<PaymentPage />} />
 
               </Routes>
             </div>
