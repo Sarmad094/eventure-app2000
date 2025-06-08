@@ -1,54 +1,87 @@
-/* Contact.css */
+/* HEADER STIL */
+.header {
+  background-color: #238aff;
+  padding: 1rem;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  color: white;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 100;
+}
+ 
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 1.5rem;
+  margin-right: 2rem;
+}
+ 
+.nav a {
+  text-decoration: none;
+  color: white;
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+ 
+.nav a:hover {
+  color: #f0f0f0;
+}
+
+/* CONTACT INNHOLD */
 .contact-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background-color: #f8f8f8;
-    padding: 1rem;
-  }
-  
-  .contact-card {
-    background-color: white;
-    border-radius: 15px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    padding: 2rem;
-    max-width: 700px;
-    width: 100%;
-  }
-  
-  .contact-title {
-    font-size: 2rem;
-    font-weight: bold;
-    color: #238aff;
-    margin-bottom: 2rem;
-    text-align: center;
-  }
-  
-  .contact-info {
-    margin-bottom: 1.5rem;
-  }
-  
-  .contact-item {
-    margin-bottom: 1rem;
-  }
-  
-  .contact-label {
-    font-size: 1.2rem;
-    font-weight: bold;
-    color: #333;
-    margin-right: 0.5rem;
-  }
-  
-  .contact-value {
-    font-size: 1.2rem;
-    color: #555;
-  }
-  
-  .contact-response-time {
-    font-size: 1rem;
-    color: #555;
-    margin-top: 1.5rem;
-    text-align: center;
-    font-style: italic;
-  }
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f8f8f8;
+  padding: 1rem;
+  height: 100vh;
+}
+
+.contact-card {
+  background-color: white;
+  border-radius: 15px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+  max-width: 700px;
+  width: 100%;
+}
+
+.contact-title {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #238aff;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.contact-info {
+  margin-bottom: 1.5rem;
+}
+
+.contact-item {
+  margin-bottom: 1rem;
+}
+
+.contact-label {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #333;
+  margin-right: 0.5rem;
+}
+
+.contact-value {
+  font-size: 1.2rem;
+  color: #555;
+}
+
+.contact-response-time {
+  font-size: 1rem;
+  color: #555;
+  margin-top: 1.5rem;
+  text-align: center;
+  font-style: italic;
+}
