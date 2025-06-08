@@ -23,7 +23,7 @@ const PaymentPage = () => {
       <header className="header">
         <nav className="nav">
           <ul className="nav-links">
-            <li><a href="/home/1">Home</a></li>
+            <li><a href="/home">Home</a></li>
             <li><a href="/faq">FAQ</a></li>
             <li><a href="/contact">Contact</a></li>
           </ul>

@@ -1,0 +1,131 @@
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.modal {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 2.5rem;
+  width: 95%;
+  max-width: 640px;
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+  position: relative;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  animation: slideUp 0.3s ease-in-out;
+}
+
+.close-btn {
+  position: absolute;
+  top: 18px;
+  right: 22px;
+  font-size: 1.8rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #888;
+  transition: color 0.2s ease;
+}
+
+.close-btn:hover {
+  color: #333;
+}
+
+.modal h2 {
+  margin-top: 0;
+  font-size: 2rem;
+  color: #2a2a2a;
+  margin-bottom: 0.5rem;
+}
+
+.event-subtitle {
+  font-size: 1rem;
+  color: #666;
+  margin-bottom: 1.5rem;
+}
+
+.event-detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem 2rem;
+  margin-top: 1.5rem;
+}
+
+.event-detail-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.event-detail-item span.label {
+  font-size: 0.85rem;
+  color: #999;
+  margin-bottom: 0.2rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.event-detail-item span.value {
+  font-size: 1rem;
+  color: #333;
+  font-weight: 500;
+}
+
+.modal-description {
+  margin-top: 2rem;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #444;
+  padding-top: 1rem;
+  border-top: 1px solid #eee;
+}
+
+/* Pay and Apply button styling */
+.pay-apply-btn {
+  margin-top: 2rem;
+  padding: 0.75rem 1.5rem;
+  background-color: #007bff; /* Blåfarge */
+  color: white;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  box-shadow: 0 4px 8px rgba(0, 123, 255, 0.3);
+  align-self: flex-start;
+}
+
+.pay-apply-btn:hover {
+  background-color: #0056b3; /* Mørkere blå ved hover */
+  box-shadow: 0 6px 12px rgba(0, 86, 179, 0.5);
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    background-color: rgba(0, 0, 0, 0);
+  }
+  to {
+    background-color: rgba(0, 0, 0, 0.6);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(40px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
