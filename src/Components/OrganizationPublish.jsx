@@ -5,7 +5,7 @@ const OrganizationPublish = () => {
   const navigate = useNavigate();
 
   const handleOrganizationHomeClick = () => {
-    navigate('/OrganizationHome'); // Navigerer til Home-siden med ID 1
+    navigate('/comphome'); // Navigerer til Home-siden med ID 1
   };
 
   return (

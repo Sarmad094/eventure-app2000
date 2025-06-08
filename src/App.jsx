@@ -15,6 +15,7 @@ import FaqPage from './Components/FaqPage';
 import Contact from './Components/Contact';
 import StudentConfirm from './StudentConfirm';
 import PaymentPage from './Components/PaymentPage';
+import OrganizationPublish from './Components/OrganizationPublish';
 
 import './Styles/StudentConfirm.css';
 import './Styles/CreateOrganization.css';
@@ -70,7 +71,7 @@ const App = () => {
                 <Route path="/" element={<Navigate to="Welcome/1" replace />} />
                 <Route path="/studentconfirm" element={<StudentConfirm />} />
                 <Route path="/OrganizationWelcome" element={<OrganizationWelcome />} />
-                <Route path="/OrganizationPublish" element={<organizationPublish />} />
+                <Route path="/OrganizationPublish" element={<OrganizationPublish />} />
                 <Route path="/payment" element={<PaymentPage />} />
 
               </Routes>
