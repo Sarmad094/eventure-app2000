@@ -60,7 +60,7 @@ const Contact = ({ isOrganization = false, onNavigate, showStatistics, setShowSt
             </button>
             <a href="/faq" onClick={(e) => {
               e.preventDefault();
-              onNavigate && onNavigate('/FaqPage');
+              onNavigate && onNavigate('/organization-faq');
             }}>FAQ</a>
             <a href="/contact" onClick={(e) => {
               e.preventDefault();
