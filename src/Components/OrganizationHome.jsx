@@ -10,6 +10,7 @@ const OrganizationHome = () => {
     organizationName: '',
     email: '',
     subjectArea: 'IT and Informatics',
+    location: 'Oslo',
     participants: '10',
     price: '',
     description: '',
@@ -20,13 +21,13 @@ const OrganizationHome = () => {
   const navigate = useNavigate();
 
   const courseStats = {
-    courseName: "IT MICROSOFT COURSE",
+    courseName: "IT Microsoft Course",
     totalSpots: 30,
     appliedParticipants: 25,
     paidParticipants: 22,
     startDate: "2025-03-15",
     endDate: "2025-06-15",
-    revenue: 1078,
+    revenue: 107800, // NOK
     status: "Active",
     completionRate: 73,
     waitlist: 5
@@ -34,8 +35,8 @@ const OrganizationHome = () => {
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
-    setFormData(prevState => ({
-      ...prevState,
+    setFormData(prev => ({
+      ...prev,
       [name]: type === 'checkbox' ? checked : value
     }));
   };
@@ -45,7 +46,6 @@ const OrganizationHome = () => {
     console.log('Form submitted:', formData);
     navigate('/OrganizationPublish');
   };
-  
 
   const handleNavigation = (path) => {
     navigate(path);
@@ -58,26 +58,14 @@ const OrganizationHome = () => {
           <img src="/eventure-logo.svg" alt="Eventure" />
         </div>
         <div className="nav-links">
-          <button 
-            onClick={() => setShowStatistics(false)} 
-            className={`nav-button ${!showStatistics ? 'active' : ''}`}
-          >
+          <button onClick={() => setShowStatistics(false)} className={`nav-button ${!showStatistics ? 'active' : ''}`}>
             Home
           </button>
-          <button 
-            onClick={() => setShowStatistics(true)} 
-            className={`nav-button ${showStatistics ? 'active' : ''}`}
-          >
+          <button onClick={() => setShowStatistics(true)} className={`nav-button ${showStatistics ? 'active' : ''}`}>
             Statistics
           </button>
-          <a href="/faq" onClick={(e) => {
-            e.preventDefault();
-            handleNavigation('/organization-faq');
-          }}>FAQ</a>
-          <a href="/contact" onClick={(e) => {
-            e.preventDefault();
-            handleNavigation('/organization-contact');
-          }}>Contact</a>
+          <a href="/faq" onClick={(e) => { e.preventDefault(); handleNavigation('/organization-faq'); }}>FAQ</a>
+          <a href="/contact" onClick={(e) => { e.preventDefault(); handleNavigation('/organization-contact'); }}>Contact</a>
         </div>
       </nav>
 
@@ -87,12 +75,12 @@ const OrganizationHome = () => {
             <div className="form-grid">
               <div className="form-column">
                 <div className="form-group">
-                  <label>Name of the course leader</label>
+                  <label>Course leader name</label>
                   <input type="text" name="courseName" value={formData.courseName} onChange={handleInputChange} />
                 </div>
 
                 <div className="form-group">
-                  <label>Company Id</label>
+                  <label>Company ID</label>
                   <input type="text" name="companyId" value={formData.companyId} onChange={handleInputChange} />
                 </div>
 
@@ -112,13 +100,19 @@ const OrganizationHome = () => {
                   <label>Subject area</label>
                   <select name="subjectArea" value={formData.subjectArea} onChange={handleInputChange}>
                     <option value="IT and Informatics">IT and Informatics</option>
+                    <option value="Health and Care">Health and Care</option>
+                    <option value="Construction">Construction</option>
+                    <option value="Education">Education</option>
+                    <option value="Management and Admin">Management and Admin</option>
                   </select>
                 </div>
 
                 <div className="form-group">
-                  <label>Participants</label>
+                  <label>Number of participants</label>
                   <select name="participants" value={formData.participants} onChange={handleInputChange}>
                     <option value="10">10</option>
+                    <option value="20">20</option>
+                    <option value="30">30</option>
                   </select>
                 </div>
 
@@ -128,14 +122,28 @@ const OrganizationHome = () => {
                 </div>
 
                 <div className="form-group">
-                  <label>Price</label>
-                  <input type="number" name="price" value={formData.price} onChange={handleInputChange} />
+                  <label>Price per participant (NOK)</label>
+                  <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <input type="number" name="price" value={formData.price} onChange={handleInputChange} />
+                    <span style={{ marginLeft: '0.5rem' }}>kr</span>
+                  </div>
                 </div>
               </div>
 
               <div className="form-column">
-                <div className="form-group date-picker">
-                  <label>Select date</label>
+                <div className="form-group">
+                  <label>Location</label>
+                  <select name="location" value={formData.location} onChange={handleInputChange}>
+                    <option value="Oslo">Oslo</option>
+                    <option value="Bergen">Bergen</option>
+                    <option value="Trondheim">Trondheim</option>
+                    <option value="Stavanger">Stavanger</option>
+                    <option value="Tromsø">Tromsø</option>
+                  </select>
+                </div>
+
+                <div className="form-group">
+                  <label>Date</label>
                   <input type="date" name="date" value={formData.date} onChange={handleInputChange} />
                 </div>
               </div>
@@ -144,7 +152,7 @@ const OrganizationHome = () => {
             <div className="terms-section">
               <label>
                 <input type="checkbox" name="agreeToTerms" checked={formData.agreeToTerms} onChange={handleInputChange} />
-                Agree to terms
+                I agree to the terms
               </label>
             </div>
 
@@ -160,35 +168,17 @@ const OrganizationHome = () => {
           <div className="stats-card">
             <div className="stats-header">
               <h4>{courseStats.courseName}</h4>
-              <span className={`status-badge ${courseStats.status.toLowerCase()}`}>
-                {courseStats.status}
-              </span>
+              <span className={`status-badge ${courseStats.status.toLowerCase()}`}>{courseStats.status}</span>
             </div>
             <div className="stats-grid">
-              <div className="stat-item">
-                <span>Total Spots: {courseStats.totalSpots}</span>
-              </div>
-              <div className="stat-item">
-                <span>Applied: {courseStats.appliedParticipants}</span>
-              </div>
-              <div className="stat-item">
-                <span>Paid: {courseStats.paidParticipants}</span>
-              </div>
-              <div className="stat-item">
-                <span>Start Date: {courseStats.startDate}</span>
-              </div>
-              <div className="stat-item">
-                <span>End Date: {courseStats.endDate}</span>
-              </div>
-              <div className="stat-item">
-                <span>Revenue: ${courseStats.revenue}</span>
-              </div>
-              <div className="stat-item">
-                <span>Completion Rate: {courseStats.completionRate}%</span>
-              </div>
-              <div className="stat-item">
-                <span>Waitlist: {courseStats.waitlist}</span>
-              </div>
+              <div className="stat-item"><span>Total spots: {courseStats.totalSpots}</span></div>
+              <div className="stat-item"><span>Applied: {courseStats.appliedParticipants}</span></div>
+              <div className="stat-item"><span>Paid: {courseStats.paidParticipants}</span></div>
+              <div className="stat-item"><span>Start date: {courseStats.startDate}</span></div>
+              <div className="stat-item"><span>End date: {courseStats.endDate}</span></div>
+              <div className="stat-item"><span>Revenue: {courseStats.revenue.toLocaleString('no-NO')} NOK</span></div>
+              <div className="stat-item"><span>Completion rate: {courseStats.completionRate}%</span></div>
+              <div className="stat-item"><span>Waitlist: {courseStats.waitlist}</span></div>
             </div>
             <div className="stats-actions">
               <button>View Details</button>

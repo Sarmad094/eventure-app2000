@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom'; // ✅ Importer useNavigate
 import '../Styles/PaymentPage.css';
 
 const PaymentPage = () => {
@@ -8,6 +9,8 @@ const PaymentPage = () => {
     cvv: '',
   });
 
+  const navigate = useNavigate(); // ✅ Hent navigasjonsfunksjon
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
@@ -15,7 +18,11 @@ const PaymentPage = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    // Her kan du evt. validere betaling først
+
     alert('Betaling sendt! (simulert)');
+    navigate('/studentconfirm'); // ✅ Naviger til bekreftelsesside
   };
 
   return (
@@ -23,7 +30,7 @@ const PaymentPage = () => {
       <header className="header">
         <nav className="nav">
           <ul className="nav-links">
-            <li><a href="/home">Home</a></li>
+            <li><a href="/home/1">Home</a></li>
             <li><a href="/faq">FAQ</a></li>
             <li><a href="/contact">Contact</a></li>
           </ul>
