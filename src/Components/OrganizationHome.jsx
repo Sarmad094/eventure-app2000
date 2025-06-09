@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import '../Styles/OrganizationHome.css';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../State management/AuthContext';
 
 const OrganizationHome = () => {
   const [formData, setFormData] = useState({
@@ -18,6 +19,7 @@ const OrganizationHome = () => {
   });
 
   const navigate = useNavigate();
+  const { logout } = useAuth();
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -34,7 +36,16 @@ const OrganizationHome = () => {
   };
 
   const handleNavigation = (path) => {
+    // Ikke naviger hvis vi allerede er på home og trykker Home
+    if (path === '/' || path === '/comphome') {
+      return; // Gjør ingenting
+    }
     navigate(path);
+  };
+
+  const handleLogout = () => {
+    logout();
+    navigate('/orglogin');
   };
 
   return (
@@ -44,10 +55,9 @@ const OrganizationHome = () => {
           <img src="/eventure-logo.svg" alt="Eventure" />
         </div>
         <div className="nav-links">
-          {/* Her fjernet jeg knappen som togglet statistikk og endret slik at Statistics-knappen navigerer til egen side */}
           <button
             className="nav-button active"
-            onClick={() => handleNavigation('/')}
+            onClick={() => handleNavigation('/comphome')}
           >
             Home
           </button>
@@ -60,6 +70,12 @@ const OrganizationHome = () => {
           <a href="/faq" onClick={(e) => { e.preventDefault(); handleNavigation('/organization-faq'); }}>FAQ</a>
           <a href="/contact" onClick={(e) => { e.preventDefault(); handleNavigation('/organization-contact'); }}>Contact</a>
         </div>
+        <button
+          className="logout-nav-btn"
+          onClick={handleLogout}
+        >
+          Logg ut
+        </button>
       </nav>
 
       <main className="main-content">

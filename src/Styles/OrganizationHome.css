@@ -57,6 +57,28 @@
     font-weight: bold;
 }
 
+.nav-links a.active {
+    background-color: white;
+    color: var(--primary-blue);
+    font-weight: bold;
+}
+
+.logout-nav-btn {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: all 0.3s ease;
+}
+
+.logout-nav-btn:hover {
+    background-color: #c82333;
+    transform: translateY(-1px);
+}
+
 .main-content {
     text-align: center;
 }
@@ -197,7 +219,6 @@
     transform: translateY(-1px);
 }
 
-/* Checkbox styling */
 .blue-checkbox {
     color: var(--dark-blue);
 }
@@ -208,29 +229,6 @@
 
 .blue-checkbox input:checked ~ .checkmark {
     background-color: var(--primary-blue);
-}
-
-/* Statistics Section Styles */
-.statistics-section {
-    padding: 20px;
-}
-
-.stats-card {
-    background-color: white;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 102, 255, 0.15);
-    padding: 24px;
-    transition: transform 0.3s ease;
-    border-top: 4px solid var(--primary-blue);
-}
-
-.stats-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-    border-bottom: 1px solid var(--secondary-blue);
-    padding-bottom: 10px;
 }
 
 .stats-grid {
@@ -287,34 +285,13 @@
     font-size: 20px;
 }
 
-.overview-section {
-    margin-top: 40px;
-    background-color: white;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 102, 255, 0.15);
-    border-top: 4px solid var(--primary-blue);
-}
-
-.overview-content {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 20px;
-}
-
-.event-filter {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-}
-
-.blue-footer {
+.footer {
     margin-top: 40px;
     padding: 20px;
     text-align: center;
     border-top: 1px solid var(--accent-blue);
 }
+
 .confirmation-message {
     background-color: #d4edda;
     color: #155724;
@@ -324,5 +301,58 @@
     margin: 20px auto;
     max-width: 600px;
     font-weight: bold;
-  }
-  
+}
+
+/* Contact styling for organization pages */
+.contact-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.contact-card {
+    background-color: white;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0, 102, 255, 0.15);
+    padding: 2rem;
+    width: 100%;
+    border-top: 4px solid var(--primary-blue);
+}
+
+.contact-title {
+    font-size: 2rem;
+    font-weight: bold;
+    color: var(--primary-blue);
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.contact-info {
+    margin-bottom: 1.5rem;
+}
+
+.contact-item {
+    margin-bottom: 1rem;
+}
+
+.contact-label {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var(--dark-blue);
+    margin-right: 0.5rem;
+}
+
+.contact-value {
+    font-size: 1.2rem;
+    color: #555;
+}
+
+.contact-response-time {
+    font-size: 1rem;
+    color: #555;
+    margin-top: 1.5rem;
+    text-align: center;
+    font-style: italic;
+}

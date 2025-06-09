@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { BrowserRouter as Router, Route, Routes, Link, Navigate, useNavigate } from 'react-router-dom';
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes, Link, Navigate } from 'react-router-dom';
 import AuthProvider from './State management/AuthContext';
 import UserProvider from './State management/UserContext';
 import { EventProvider } from './State management/EventContext';
@@ -17,6 +17,8 @@ import StudentConfirm from './StudentConfirm';
 import PaymentPage from './Components/PaymentPage';
 import OrganizationPublish from './Components/OrganizationPublish';
 import Statistics from './Components/Statistics';
+import OrganizationLayout from './Components/OrganizationLayout';
+import OrganizationWelcome from './Components/OrganizationWelcome';
 
 import './Styles/StudentConfirm.css';
 import './Styles/CreateOrganization.css';
@@ -31,61 +33,33 @@ import './Styles/FaqPage.css';
 import './Styles/Contact.css';
 import './Styles/Statistics.css';
 
+// Organization wrapper components
+const OrganizationContact = () => (
+  <OrganizationLayout currentPage="contact">
+    <div className="contact-container">
+      <div className="contact-card">
+        <h2 className="contact-title">Contact Us</h2>
+        <div className="contact-info">
+          <div className="contact-item">
+            <span className="contact-label">Telephone:</span>
+            <span className="contact-value">12345678</span>
+          </div>
+          <div className="contact-item">
+            <span className="contact-label">Email:</span>
+            <span className="contact-value">Eventure@gmail.com</span>
+          </div>
+        </div>
+        <p className="contact-response-time">We will get to you in 24 hours.</p>
+      </div>
+    </div>
+  </OrganizationLayout>
+);
 
-
-import OrganizationWelcome from './Components/OrganizationWelcome';
-
-// Organization Contact Component
-const OrganizationContact = () => {
-  const navigate = useNavigate();
-  const [showStatistics, setShowStatistics] = useState(false);
-  
-  return (
-    <Contact 
-      isOrganization={true}
-      showStatistics={showStatistics}
-      setShowStatistics={setShowStatistics}
-      onNavigate={(action) => {
-        if (action === 'home') {
-          navigate('/comphome', { state: { showStatistics: false } });
-        }
-        if (action === 'statistics') {
-          navigate('/comphome', { state: { showStatistics: true } });
-        }
-        if (action.startsWith('/')) {
-          navigate(action);
-        }
-      }} 
-    />
-  );
-};
-
-// Organization FAQ Component
-const OrganizationFaq = () => {
-  const navigate = useNavigate();
-  const [showStatistics, setShowStatistics] = useState(false);
-  
-  return (
-    <FaqPage 
-      isOrganization={true}
-      showStatistics={showStatistics}
-      onNavigate={(action) => {
-        if (action === 'home') {
-          navigate('/comphome', { state: { showStatistics: false } });
-        }
-        if (action === 'statistics') {
-          navigate('/comphome', { state: { showStatistics: true } });
-        }
-        if (action === '/organization-contact') {
-          navigate('/organization-contact');
-        }
-        if (action.startsWith('/')) {
-          navigate(action);
-        }
-      }} 
-    />
-  );
-};
+const OrganizationFaq = () => (
+  <OrganizationLayout currentPage="faq">
+    <FaqPage isOrganization={true} />
+  </OrganizationLayout>
+);
 
 const App = () => {
   return (
@@ -134,8 +108,6 @@ const App = () => {
                 <Route path="/OrganizationPublish" element={<OrganizationPublish />} />
                 <Route path="/payment" element={<PaymentPage />} />
                 <Route path="/statistics" element={<Statistics />} />
-
-
                </Routes>
             </div>
           </EventProvider>

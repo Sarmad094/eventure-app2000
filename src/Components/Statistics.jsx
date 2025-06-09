@@ -1,13 +1,11 @@
 import React, { useState } from 'react';
 import '../Styles/Statistics.css';
-import { useNavigate } from 'react-router-dom';
+import OrganizationLayout from './OrganizationLayout';
 
 const Statistics = () => {
   const [selectedCourse, setSelectedCourse] = useState('');
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [confirmationType, setConfirmationType] = useState('');
-  
-  const navigate = useNavigate();
 
   // Mock data - replace with real data from your backend
   const courses = [
@@ -62,10 +60,6 @@ const Statistics = () => {
     setSelectedCourse(e.target.value);
   };
 
-  const handleNavigation = (path) => {
-    navigate(path);
-  };
-
   const handleCancelEvent = () => {
     setConfirmationType('cancel');
     setShowConfirmation(true);
@@ -94,137 +88,113 @@ const Statistics = () => {
   };
 
   return (
-    <div className="statistics-page">
-      <nav className="top-nav">
-        <div className="logo">
-          <img src="/eventure-logo.svg" alt="Eventure" />
-        </div>
-        <div className="nav-links">
-          <button
-            className="nav-button"
-            onClick={() => handleNavigation('/comphome')}
-          >
-            Home
-          </button>
-          <button
-            className="nav-button active"
-            onClick={() => handleNavigation('/statistics')}
-          >
-            Statistics
-          </button>
-          <a href="/faq" onClick={(e) => { e.preventDefault(); handleNavigation('/organization-faq'); }}>FAQ</a>
-          <a href="/contact" onClick={(e) => { e.preventDefault(); handleNavigation('/organization-contact'); }}>Contact</a>
-        </div>
-      </nav>
+    <OrganizationLayout currentPage="statistics">
+      <div className="statistics-container">
+        <h1 className="blue-heading">Course Statistics</h1>
+        <p className="blue-subheading">Select a course to view detailed statistics</p>
 
-      <main className="main-content">
-        <div className="statistics-container">
-          <h1 className="blue-heading">Course Statistics</h1>
-          <p className="blue-subheading">Select a course to view detailed statistics</p>
-
-          <div className="course-selector">
-            <div className="form-group">
-              <label>Select Course</label>
-              <select
-                value={selectedCourse}
-                onChange={handleCourseSelect}
-                className="blue-select course-select"
-              >
-                <option value="">Choose a course...</option>
-                {courses.map(course => (
-                  <option key={course.id} value={course.id}>
-                    {course.name} - {course.location} ({course.startDate})
-                  </option>
-                ))}
-              </select>
-            </div>
+        <div className="course-selector">
+          <div className="form-group">
+            <label>Select Course</label>
+            <select
+              value={selectedCourse}
+              onChange={handleCourseSelect}
+              className="blue-select course-select"
+            >
+              <option value="">Choose a course...</option>
+              {courses.map(course => (
+                <option key={course.id} value={course.id}>
+                  {course.name} - {course.location} ({course.startDate})
+                </option>
+              ))}
+            </select>
           </div>
+        </div>
 
-          {selectedCourseData && (
-            <div className="stats-display">
-              <div className="course-header">
-                <h2 className="blue-card-title">{selectedCourseData.name}</h2>
-                <span className={`status-badge ${selectedCourseData.status}`}>
-                  {selectedCourseData.status.toUpperCase()}
+        {selectedCourseData && (
+          <div className="stats-display">
+            <div className="course-header">
+              <h2 className="blue-card-title">{selectedCourseData.name}</h2>
+              <span className={`status-badge ${selectedCourseData.status}`}>
+                {selectedCourseData.status.toUpperCase()}
+              </span>
+            </div>
+
+            <div className="course-info">
+              <div className="info-item">
+                <span className="info-label">Subject Area:</span>
+                <span className="info-value">{selectedCourseData.subjectArea}</span>
+              </div>
+              <div className="info-item">
+                <span className="info-label">Location:</span>
+                <span className="info-value">{selectedCourseData.location}</span>
+              </div>
+              <div className="info-item">
+                <span className="info-label">Price:</span>
+                <span className="info-value">{selectedCourseData.price} NOK</span>
+              </div>
+            </div>
+
+            <div className="stats-grid">
+              <div className="stat-item">
+                <span className="stat-label">Total Spots</span>
+                <span className="blue-stat">{selectedCourseData.totalSpots}</span>
+              </div>
+              
+              <div className="stat-item">
+                <span className="stat-label">Applications Received</span>
+                <span className="blue-stat">{selectedCourseData.applied}</span>
+              </div>
+              
+              <div className="stat-item">
+                <span className="stat-label">Payments Completed</span>
+                <span className="blue-stat">{selectedCourseData.paid}</span>
+              </div>
+              
+              <div className="stat-item">
+                <span className="stat-label">Completion Rate</span>
+                <span className="blue-stat">
+                  {calculateCompletionRate(selectedCourseData.paid, selectedCourseData.applied)}%
                 </span>
               </div>
+            </div>
 
-              <div className="course-info">
-                <div className="info-item">
-                  <span className="info-label">Subject Area:</span>
-                  <span className="info-value">{selectedCourseData.subjectArea}</span>
-                </div>
-                <div className="info-item">
-                  <span className="info-label">Location:</span>
-                  <span className="info-value">{selectedCourseData.location}</span>
-                </div>
-                <div className="info-item">
-                  <span className="info-label">Price:</span>
-                  <span className="info-value">{selectedCourseData.price} NOK</span>
-                </div>
+            <div className="date-info">
+              <div className="date-item">
+                <span className="date-label">Start Date:</span>
+                <span className="date-value">{new Date(selectedCourseData.startDate).toLocaleDateString('en-GB')}</span>
               </div>
-
-              <div className="stats-grid">
-                <div className="stat-item">
-                  <span className="stat-label">Total Spots</span>
-                  <span className="blue-stat">{selectedCourseData.totalSpots}</span>
-                </div>
-                
-                <div className="stat-item">
-                  <span className="stat-label">Applications Received</span>
-                  <span className="blue-stat">{selectedCourseData.applied}</span>
-                </div>
-                
-                <div className="stat-item">
-                  <span className="stat-label">Payments Completed</span>
-                  <span className="blue-stat">{selectedCourseData.paid}</span>
-                </div>
-                
-                <div className="stat-item">
-                  <span className="stat-label">Completion Rate</span>
-                  <span className="blue-stat">
-                    {calculateCompletionRate(selectedCourseData.paid, selectedCourseData.applied)}%
-                  </span>
-                </div>
-              </div>
-
-              <div className="date-info">
-                <div className="date-item">
-                  <span className="date-label">Start Date:</span>
-                  <span className="date-value">{new Date(selectedCourseData.startDate).toLocaleDateString('en-GB')}</span>
-                </div>
-                <div className="date-item">
-                  <span className="date-label">End Date:</span>
-                  <span className="date-value">{new Date(selectedCourseData.endDate).toLocaleDateString('en-GB')}</span>
-                </div>
-              </div>
-
-              <div className="action-buttons">
-                <button
-                  className="cancel-btn"
-                  onClick={handleCancelEvent}
-                  disabled={selectedCourseData.status !== 'active'}
-                >
-                  Cancel Event
-                </button>
-                <button
-                  className="confirm-event-btn"
-                  onClick={handleConfirmEvent}
-                  disabled={selectedCourseData.status !== 'active'}
-                >
-                  Confirm Event
-                </button>
+              <div className="date-item">
+                <span className="date-label">End Date:</span>
+                <span className="date-value">{new Date(selectedCourseData.endDate).toLocaleDateString('en-GB')}</span>
               </div>
             </div>
-          )}
 
-          {!selectedCourse && (
-            <div className="no-selection">
-              <p>Please select a course to view its statistics</p>
+            <div className="action-buttons">
+              <button
+                className="cancel-btn"
+                onClick={handleCancelEvent}
+                disabled={selectedCourseData.status !== 'active'}
+              >
+                Cancel Event
+              </button>
+              <button
+                className="confirm-event-btn"
+                onClick={handleConfirmEvent}
+                disabled={selectedCourseData.status !== 'active'}
+              >
+                Confirm Event
+              </button>
             </div>
-          )}
-        </div>
-      </main>
+          </div>
+        )}
+
+        {!selectedCourse && (
+          <div className="no-selection">
+            <p>Please select a course to view its statistics</p>
+          </div>
+        )}
+      </div>
 
       {showConfirmation && (
         <div className="confirmation-overlay">
@@ -244,11 +214,7 @@ const Statistics = () => {
           </div>
         </div>
       )}
-
-      <footer className="footer">
-        <img src="/eventure-logo.png" alt="Eventure" />
-      </footer>
-    </div>
+    </OrganizationLayout>
   );
 };
 

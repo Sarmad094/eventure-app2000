@@ -1,7 +1,7 @@
 import React from "react";
 import "../Styles/FaqPage.css";
 
-export default function FaqPage({ isOrganization = false, onNavigate, showStatistics, setShowStatistics }) {
+export default function FaqPage({ isOrganization = false }) {
   
   // Profil navigasjon (standard)
   const profileNavigation = [
@@ -37,38 +37,8 @@ export default function FaqPage({ isOrganization = false, onNavigate, showStatis
         </header>
       )}
 
-      {/* Organisasjon header - vises bare hvis organisasjon */}
-      {isOrganization && (
-        <nav className="top-nav">
-          <div className="logo">
-            <img src="/eventure-logo.svg" alt="Eventure" />
-          </div>
-          <div className="nav-links">
-            <button 
-              onClick={() => onNavigate && onNavigate('home')} 
-              className={`nav-button ${!showStatistics ? 'active' : ''}`}
-            >
-              Home
-            </button>
-            <button 
-              onClick={() => onNavigate && onNavigate('statistics')} 
-              className={`nav-button ${showStatistics ? 'active' : ''}`}
-            >
-              Statistics
-            </button>
-            <a href="/faq" onClick={(e) => {
-              e.preventDefault();
-              // Gjør ingenting siden vi allerede er på FAQ
-            }} className="nav-button active">FAQ</a>
-            <a href="/contact" onClick={(e) => {
-              e.preventDefault();
-              onNavigate && onNavigate('/organization-contact');
-            }}>Contact</a>
-          </div>
-        </nav>
-      )}
-
-      <div className={isOrganization ? "organization-home" : "faq-page"}>
+      {/* FAQ innhold - uten organisasjon navbar når isOrganization=true */}
+      <div className={isOrganization ? "" : "faq-page"}>
         <div className="faq-container">
           <div className="faq-card">
             <h1 className="faq-title">Frequently Asked Questions</h1>
@@ -87,8 +57,8 @@ export default function FaqPage({ isOrganization = false, onNavigate, showStatis
           </div>
         </div>
 
-        {/* Footer for organisasjon */}
-        {isOrganization && (
+        {/* Footer kun for ikke-organisasjon siden OrganizationLayout har sin egen footer */}
+        {!isOrganization && (
           <footer className="footer">
             <img src="/eventure-logo.png" alt="Eventure" />
           </footer>

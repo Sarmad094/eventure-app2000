@@ -2,13 +2,13 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../Styles/Login.css"; 
-import { login } from "../Services/userService";  // Merk denne
-import { orgLogin } from "../Services/orgService"; // ← korrekt hvis du har flyttet det hit
-
-
+import { login } from "../Services/userService";
+import { orgLogin } from "../Services/orgService";
+import { useAuth } from "../State management/AuthContext";
 
 const OrgLoginPage = () => {
   const navigate = useNavigate();
+  const { login: authLogin } = useAuth();
   const [formData, setFormData] = useState({ orgId: "", password: "" });
 
   const handleChange = (e) => {
@@ -21,6 +21,7 @@ const OrgLoginPage = () => {
     try {
       const account = await login(formData.orgId, formData.password, "organization");
       console.log("Organization logged in:", account);
+      authLogin(); // Sett autentisering til true
       navigate(`/comphome/`);
     } catch (error) {
       alert(error.message);
