@@ -71,8 +71,8 @@ const Statistics = () => {
     setShowConfirmation(true);
   };
 
-  const handleDeleteEvent = () => {
-    setConfirmationType('delete');
+  const handleConfirmEvent = () => {
+    setConfirmationType('confirm');
     setShowConfirmation(true);
   };
 
@@ -80,9 +80,9 @@ const Statistics = () => {
     if (confirmationType === 'cancel') {
       console.log('Event cancelled:', selectedCourse);
       // Add your cancel logic here
-    } else if (confirmationType === 'delete') {
-      console.log('Event deleted:', selectedCourse);
-      // Add your delete logic here
+    } else if (confirmationType === 'confirm') {
+      console.log('Event confirmed:', selectedCourse);
+      // Add your confirm logic here
     }
     setShowConfirmation(false);
     setSelectedCourse('');
@@ -208,10 +208,11 @@ const Statistics = () => {
                   Cancel Event
                 </button>
                 <button
-                  className="delete-btn"
-                  onClick={handleDeleteEvent}
+                  className="confirm-event-btn"
+                  onClick={handleConfirmEvent}
+                  disabled={selectedCourseData.status !== 'active'}
                 >
-                  Delete Event
+                  Confirm Event
                 </button>
               </div>
             </div>
