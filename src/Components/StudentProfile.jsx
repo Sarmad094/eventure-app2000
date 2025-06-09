@@ -24,6 +24,13 @@ const StudentProfile = () => {
     navigate(path);
   };
 
+  const handleLogout = () => {
+    // Clear any stored user data if needed
+    localStorage.removeItem("likedCourses");
+    // Navigate to WelcomePage
+    navigate('/welcome/1');
+  };
+
   if (!profile) return <div className="loading">Loading...</div>;
 
   return (
@@ -82,9 +89,21 @@ const StudentProfile = () => {
         ) : (
           <p>No applied events</p>
         )}
+
+        {/* Logout Button Section */}
+        <div className="logout-section">
+          <button 
+            className="logout-btn"
+            onClick={handleLogout}
+            type="button"
+          >
+            Log Out
+          </button>
+        </div>
       </div>
     </div>
   );
 };
 
 export default StudentProfile;
+
