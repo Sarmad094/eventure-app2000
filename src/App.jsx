@@ -16,6 +16,7 @@ import Contact from './Components/Contact';
 import StudentConfirm from './StudentConfirm';
 import PaymentPage from './Components/PaymentPage';
 import OrganizationPublish from './Components/OrganizationPublish';
+import Statistics from './Components/Statistics';
 
 import './Styles/StudentConfirm.css';
 import './Styles/CreateOrganization.css';
@@ -28,6 +29,10 @@ import './Styles/OrganizationHome.css';
 import './Styles/OrgLoginPage.css';
 import './Styles/FaqPage.css';
 import './Styles/Contact.css';
+import './Styles/Statistics.css';
+
+
+
 import OrganizationWelcome from './Components/OrganizationWelcome';
 
 // Organization Contact Component
@@ -106,6 +111,7 @@ const App = () => {
                   <li><Link to="/OrganizationWelcome">Welcome organization </Link></li>
                   <li><Link to="/OrganizationPublish">Publish page</Link></li>
                   <li><Link to="/Payment">Payment Page </Link></li>
+                  <li><Link to="/statistics">Statistics</Link></li>
                  </ul>
               </nav>
                              
@@ -127,6 +133,9 @@ const App = () => {
                 <Route path="/OrganizationWelcome" element={<OrganizationWelcome />} />
                 <Route path="/OrganizationPublish" element={<OrganizationPublish />} />
                 <Route path="/payment" element={<PaymentPage />} />
+                <Route path="/statistics" element={<Statistics />} />
+
+
                </Routes>
             </div>
           </EventProvider>

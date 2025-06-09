@@ -19,10 +19,7 @@ const PaymentPage = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Her kan du evt. validere betaling først
-
-    alert('Betaling sendt! (simulert)');
-    navigate('/studentconfirm'); // ✅ Naviger til bekreftelsesside
+    navigate('/studentconfirm');
   };
 
   return (

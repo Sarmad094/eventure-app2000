@@ -3,7 +3,6 @@ import '../Styles/OrganizationHome.css';
 import { useNavigate } from 'react-router-dom';
 
 const OrganizationHome = () => {
-  const [showStatistics, setShowStatistics] = useState(false);
   const [formData, setFormData] = useState({
     courseName: '',
     companyId: '',
@@ -19,19 +18,6 @@ const OrganizationHome = () => {
   });
 
   const navigate = useNavigate();
-
-  const courseStats = {
-    courseName: "IT Microsoft Course",
-    totalSpots: 30,
-    appliedParticipants: 25,
-    paidParticipants: 22,
-    startDate: "2025-03-15",
-    endDate: "2025-06-15",
-    revenue: 107800, // NOK
-    status: "Active",
-    completionRate: 73,
-    waitlist: 5
-  };
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -58,10 +44,17 @@ const OrganizationHome = () => {
           <img src="/eventure-logo.svg" alt="Eventure" />
         </div>
         <div className="nav-links">
-          <button onClick={() => setShowStatistics(false)} className={`nav-button ${!showStatistics ? 'active' : ''}`}>
+          {/* Her fjernet jeg knappen som togglet statistikk og endret slik at Statistics-knappen navigerer til egen side */}
+          <button
+            className="nav-button active"
+            onClick={() => handleNavigation('/')}
+          >
             Home
           </button>
-          <button onClick={() => setShowStatistics(true)} className={`nav-button ${showStatistics ? 'active' : ''}`}>
+          <button
+            className="nav-button"
+            onClick={() => handleNavigation('/statistics')}
+          >
             Statistics
           </button>
           <a href="/faq" onClick={(e) => { e.preventDefault(); handleNavigation('/organization-faq'); }}>FAQ</a>
@@ -69,124 +62,172 @@ const OrganizationHome = () => {
         </div>
       </nav>
 
-      {!showStatistics ? (
-        <main className="main-content">
-          <form onSubmit={handleSubmit} className="event-form">
-            <div className="form-grid">
-              <div className="form-column">
-                <div className="form-group">
-                  <label>Course leader name</label>
-                  <input type="text" name="courseName" value={formData.courseName} onChange={handleInputChange} />
-                </div>
-
-                <div className="form-group">
-                  <label>Company ID</label>
-                  <input type="text" name="companyId" value={formData.companyId} onChange={handleInputChange} />
-                </div>
-
-                <div className="form-group">
-                  <label>Organization name</label>
-                  <input type="text" name="organizationName" value={formData.organizationName} onChange={handleInputChange} />
-                </div>
-
-                <div className="form-group">
-                  <label>Email address</label>
-                  <input type="email" name="email" value={formData.email} onChange={handleInputChange} />
-                </div>
+      <main className="main-content">
+        <form onSubmit={handleSubmit} className="event-form">
+          <div className="form-grid">
+            <div className="form-column">
+              <div className="form-group">
+                <label>Course leader name</label>
+                <input
+                  type="text"
+                  name="courseName"
+                  value={formData.courseName}
+                  onChange={handleInputChange}
+                  className="blue-input"
+                  required
+                />
               </div>
 
-              <div className="form-column">
-                <div className="form-group">
-                  <label>Subject area</label>
-                  <select name="subjectArea" value={formData.subjectArea} onChange={handleInputChange}>
-                    <option value="IT and Informatics">IT and Informatics</option>
-                    <option value="Health and Care">Health and Care</option>
-                    <option value="Construction">Construction</option>
-                    <option value="Education">Education</option>
-                    <option value="Management and Admin">Management and Admin</option>
-                  </select>
-                </div>
-
-                <div className="form-group">
-                  <label>Number of participants</label>
-                  <select name="participants" value={formData.participants} onChange={handleInputChange}>
-                    <option value="10">10</option>
-                    <option value="20">20</option>
-                    <option value="30">30</option>
-                  </select>
-                </div>
-
-                <div className="form-group">
-                  <label>Description</label>
-                  <textarea name="description" value={formData.description} onChange={handleInputChange} />
-                </div>
-
-                <div className="form-group">
-                  <label>Price per participant (NOK)</label>
-                  <div style={{ display: 'flex', alignItems: 'center' }}>
-                    <input type="number" name="price" value={formData.price} onChange={handleInputChange} />
-                    <span style={{ marginLeft: '0.5rem' }}>kr</span>
-                  </div>
-                </div>
+              <div className="form-group">
+                <label>Company ID</label>
+                <input
+                  type="text"
+                  name="companyId"
+                  value={formData.companyId}
+                  onChange={handleInputChange}
+                  className="blue-input"
+                  required
+                />
               </div>
 
-              <div className="form-column">
-                <div className="form-group">
-                  <label>Location</label>
-                  <select name="location" value={formData.location} onChange={handleInputChange}>
-                    <option value="Oslo">Oslo</option>
-                    <option value="Bergen">Bergen</option>
-                    <option value="Trondheim">Trondheim</option>
-                    <option value="Stavanger">Stavanger</option>
-                    <option value="Tromsø">Tromsø</option>
-                  </select>
-                </div>
+              <div className="form-group">
+                <label>Organization name</label>
+                <input
+                  type="text"
+                  name="organizationName"
+                  value={formData.organizationName}
+                  onChange={handleInputChange}
+                  className="blue-input"
+                  required
+                />
+              </div>
 
-                <div className="form-group">
-                  <label>Date</label>
-                  <input type="date" name="date" value={formData.date} onChange={handleInputChange} />
-                </div>
+              <div className="form-group">
+                <label>Email address</label>
+                <input
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleInputChange}
+                  className="blue-input"
+                  required
+                />
               </div>
             </div>
 
-            <div className="terms-section">
-              <label>
-                <input type="checkbox" name="agreeToTerms" checked={formData.agreeToTerms} onChange={handleInputChange} />
-                I agree to the terms
-              </label>
+            <div className="form-column">
+              <div className="form-group">
+                <label>Subject area</label>
+                <select
+                  name="subjectArea"
+                  value={formData.subjectArea}
+                  onChange={handleInputChange}
+                  className="blue-select"
+                >
+                  <option value="IT and Informatics">IT and Informatics</option>
+                  <option value="Health and Care">Health and Care</option>
+                  <option value="Construction">Construction</option>
+                  <option value="Education">Education</option>
+                  <option value="Management and Admin">Management and Admin</option>
+                </select>
+              </div>
+
+              <div className="form-group">
+                <label>Number of participants</label>
+                <select
+                  name="participants"
+                  value={formData.participants}
+                  onChange={handleInputChange}
+                  className="blue-select"
+                >
+                  <option value="10">10</option>
+                  <option value="20">20</option>
+                  <option value="30">30</option>
+                </select>
+              </div>
+
+              <div className="form-group">
+                <label>Description</label>
+                <textarea
+                  name="description"
+                  value={formData.description}
+                  onChange={handleInputChange}
+                  className="blue-textarea"
+                />
+              </div>
+
+              <div className="form-group">
+                <label>Price per participant (NOK)</label>
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+                  <input
+                    type="number"
+                    name="price"
+                    value={formData.price}
+                    onChange={handleInputChange}
+                    className="blue-input"
+                    min="0"
+                    step="1"
+                  />
+                  <span style={{ marginLeft: '0.5rem' }}>kr</span>
+                </div>
+              </div>
             </div>
 
-            <div className="button-group">
-              <button type="submit" className="publish-btn">Publish</button>
-              <button type="button" className="contact-btn" onClick={() => handleNavigation('/organization-contact')}>Contact</button>
-            </div>
-          </form>
-        </main>
-      ) : (
-        <section className="statistics-section">
-          <h3>Course Statistics</h3>
-          <div className="stats-card">
-            <div className="stats-header">
-              <h4>{courseStats.courseName}</h4>
-              <span className={`status-badge ${courseStats.status.toLowerCase()}`}>{courseStats.status}</span>
-            </div>
-            <div className="stats-grid">
-              <div className="stat-item"><span>Total spots: {courseStats.totalSpots}</span></div>
-              <div className="stat-item"><span>Applied: {courseStats.appliedParticipants}</span></div>
-              <div className="stat-item"><span>Paid: {courseStats.paidParticipants}</span></div>
-              <div className="stat-item"><span>Start date: {courseStats.startDate}</span></div>
-              <div className="stat-item"><span>End date: {courseStats.endDate}</span></div>
-              <div className="stat-item"><span>Revenue: {courseStats.revenue.toLocaleString('no-NO')} NOK</span></div>
-              <div className="stat-item"><span>Completion rate: {courseStats.completionRate}%</span></div>
-              <div className="stat-item"><span>Waitlist: {courseStats.waitlist}</span></div>
-            </div>
-            <div className="stats-actions">
-              <button>View Details</button>
-              <button>Export Report</button>
+            <div className="form-column">
+              <div className="form-group">
+                <label>Location</label>
+                <select
+                  name="location"
+                  value={formData.location}
+                  onChange={handleInputChange}
+                  className="blue-select"
+                >
+                  <option value="Oslo">Oslo</option>
+                  <option value="Bergen">Bergen</option>
+                  <option value="Trondheim">Trondheim</option>
+                  <option value="Stavanger">Stavanger</option>
+                  <option value="Tromsø">Tromsø</option>
+                </select>
+              </div>
+
+              <div className="form-group">
+                <label>Date</label>
+                <input
+                  type="date"
+                  name="date"
+                  value={formData.date}
+                  onChange={handleInputChange}
+                  className="blue-input"
+                />
+              </div>
             </div>
           </div>
-        </section>
-      )}
+
+          <div className="terms-section">
+            <label className="blue-checkbox">
+              <input
+                type="checkbox"
+                name="agreeToTerms"
+                checked={formData.agreeToTerms}
+                onChange={handleInputChange}
+                required
+              />
+              I agree to the terms
+            </label>
+          </div>
+
+          <div className="button-group">
+            <button type="submit" className="publish-btn">Publish</button>
+            <button
+              type="button"
+              className="contact-btn"
+              onClick={() => handleNavigation('/organization-contact')}
+            >
+              Contact
+            </button>
+          </div>
+        </form>
+      </main>
 
       <footer className="footer">
         <img src="/eventure-logo.png" alt="Eventure" />
