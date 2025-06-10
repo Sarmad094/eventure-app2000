@@ -13,7 +13,8 @@ const OrganizationHome = () => {
     participants: '10',
     price: '',
     description: '',
-    date: '',
+    startDate: '',
+    endDate: '',
     agreeToTerms: false
   });
 
@@ -183,11 +184,22 @@ const OrganizationHome = () => {
               </div>
 
               <div className="form-group">
-                <label>Date</label>
+                <label>Start Date</label>
                 <input
                   type="date"
-                  name="date"
-                  value={formData.date}
+                  name="startDate"
+                  value={formData.startDate}
+                  onChange={handleInputChange}
+                  className="blue-input"
+                />
+              </div>
+
+              <div className="form-group">
+                <label>End Date</label>
+                <input
+                  type="date"
+                  name="endDate"
+                  value={formData.endDate}
                   onChange={handleInputChange}
                   className="blue-input"
                 />
