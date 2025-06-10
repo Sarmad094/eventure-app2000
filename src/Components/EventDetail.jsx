@@ -1,3 +1,5 @@
+// EventDetail.jsx
+
 import React, { useState, useEffect } from "react";
 import "../Styles/EventDetail.css";
 
@@ -6,7 +8,7 @@ export default function EventDetail(props) {
     event,
     onClose,
     onPay,
-    onLike = () => {}, // fallback
+    onLike = () => {}, // fallback hvis ikke sendt inn
   } = props;
 
   const [isLiked, setIsLiked] = useState(false);
@@ -28,7 +30,7 @@ export default function EventDetail(props) {
 
     localStorage.setItem("likedCourses", JSON.stringify(updated));
     setIsLiked(!isLiked);
-    onLike(event.title); // trygg
+    onLike(event.title);
   };
 
   if (!event) return null;
@@ -48,6 +50,10 @@ export default function EventDetail(props) {
           <div className="event-detail-item">
             <span className="label">End Date</span>
             <span className="value">{event.endDate}</span>
+          </div>
+          <div className="event-detail-item">
+            <span className="label">Location</span>
+            <span className="value">{event.location}</span>
           </div>
           <div className="event-detail-item">
             <span className="label">Participants</span>

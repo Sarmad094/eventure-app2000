@@ -18,6 +18,7 @@ export default function Home() {
       startDate: "2025-02-15",
       endDate: "2025-02-17",
       price: "Free",
+      location: "Lier"
     },
     {
       id: 2,
@@ -28,6 +29,7 @@ export default function Home() {
       startDate: "2025-02-20",
       endDate: "2025-02-25",
       price: "$199",
+      location: "Jevnaker"
     },
     {
       id: 3,
@@ -38,6 +40,7 @@ export default function Home() {
       startDate: "2025-02-25",
       endDate: "2025-02-26",
       price: "$99",
+      location: "Oslo"
     },
   ];
 
