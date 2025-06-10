@@ -5,11 +5,10 @@ import { useAuth } from '../State management/AuthContext';
 
 const OrganizationHome = () => {
   const [formData, setFormData] = useState({
-    courseName: '',
-    companyId: '',
+    OrganizationId: '',
     organizationName: '',
     email: '',
-    subjectArea: 'IT and Informatics',
+    field: 'IT and Informatics',
     location: 'Oslo',
     participants: '10',
     price: '',
@@ -36,9 +35,8 @@ const OrganizationHome = () => {
   };
 
   const handleNavigation = (path) => {
-    // Ikke naviger hvis vi allerede er på home og trykker Home
     if (path === '/' || path === '/comphome') {
-      return; // Gjør ingenting
+      return;
     }
     navigate(path);
   };
@@ -55,27 +53,16 @@ const OrganizationHome = () => {
           <img src="/eventure-logo.svg" alt="Eventure" />
         </div>
         <div className="nav-links">
-          <button
-            className="nav-button active"
-            onClick={() => handleNavigation('/comphome')}
-          >
+          <button className="nav-button active" onClick={() => handleNavigation('/comphome')}>
             Home
           </button>
-          <button
-            className="nav-button"
-            onClick={() => handleNavigation('/statistics')}
-          >
+          <button className="nav-button" onClick={() => handleNavigation('/statistics')}>
             Statistics
           </button>
           <a href="/faq" onClick={(e) => { e.preventDefault(); handleNavigation('/organization-faq'); }}>FAQ</a>
           <a href="/contact" onClick={(e) => { e.preventDefault(); handleNavigation('/organization-contact'); }}>Contact</a>
         </div>
-        <button
-          className="logout-nav-btn"
-          onClick={handleLogout}
-        >
-          Logg ut
-        </button>
+        <button className="logout-nav-btn" onClick={handleLogout}>Logg ut</button>
       </nav>
 
       <main className="main-content">
@@ -83,23 +70,11 @@ const OrganizationHome = () => {
           <div className="form-grid">
             <div className="form-column">
               <div className="form-group">
-                <label>Course leader name</label>
+                <label>Organization Id</label>
                 <input
                   type="text"
-                  name="courseName"
-                  value={formData.courseName}
-                  onChange={handleInputChange}
-                  className="blue-input"
-                  required
-                />
-              </div>
-
-              <div className="form-group">
-                <label>Company ID</label>
-                <input
-                  type="text"
-                  name="companyId"
-                  value={formData.companyId}
+                  name="OrganizationId"
+                  value={formData.OrganizationId}
                   onChange={handleInputChange}
                   className="blue-input"
                   required
@@ -133,10 +108,10 @@ const OrganizationHome = () => {
 
             <div className="form-column">
               <div className="form-group">
-                <label>Subject area</label>
+                <label>Field</label>
                 <select
-                  name="subjectArea"
-                  value={formData.subjectArea}
+                  name="field"
+                  value={formData.field}
                   onChange={handleInputChange}
                   className="blue-select"
                 >
@@ -203,6 +178,7 @@ const OrganizationHome = () => {
                   <option value="Trondheim">Trondheim</option>
                   <option value="Stavanger">Stavanger</option>
                   <option value="Tromsø">Tromsø</option>
+                  <option value="Hønefoss">Hønefoss</option>
                 </select>
               </div>
 
