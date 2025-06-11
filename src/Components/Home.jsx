@@ -15,7 +15,6 @@ export default function Home() {
   const events = [
     {
       id: 1,
-<<<<<<< Updated upstream
       title: "Tech Conference 2025",
       subjectArea: "Technology",
       description: "Explore future trends in tech with industry leaders.",
@@ -46,7 +45,9 @@ export default function Home() {
       endDate: "2025-02-26",
       price: "$99",
       location: "Oslo"
-=======
+    },
+    {
+      id: 4,
       title: "Informatikk Introduksjon",
       subjectArea: "Informatikk",
       location: "Oslo",
@@ -57,7 +58,7 @@ export default function Home() {
       price: "Gratis",
     },
     {
-      id: 2,
+      id: 5,
       title: "Samfunnsfag i Praksis",
       subjectArea: "Samfunnsfag",
       location: "Bergen",
@@ -68,7 +69,7 @@ export default function Home() {
       price: "$50",
     },
     {
-      id: 3,
+      id: 6,
       title: "Avansert Informatikk",
       subjectArea: "Informatikk",
       location: "Trondheim",
@@ -77,7 +78,6 @@ export default function Home() {
       startDate: "2025-08-20",
       endDate: "2025-08-23",
       price: "$100",
->>>>>>> Stashed changes
     },
   ];
 
@@ -161,6 +161,8 @@ export default function Home() {
             <option value="Oslo">Oslo</option>
             <option value="Bergen">Bergen</option>
             <option value="Trondheim">Trondheim</option>
+            <option value="Lier">Lier</option>
+            <option value="Jevnaker">Jevnaker</option>
           </select>
 
           <select name="subjectArea" value={filters.subjectArea} onChange={handleFilterChange}>
@@ -197,3 +199,4 @@ export default function Home() {
     </div>
   );
 }
+
