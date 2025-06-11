@@ -1,38 +1,142 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../Styles/OrganizationHome.css';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../State management/AuthContext';
+import axios from 'axios';
 
 const OrganizationHome = () => {
   const [formData, setFormData] = useState({
-    OrganizationId: '',
-    organizationName: '',
-    email: '',
-    field: 'IT and Informatics',
-    location: 'Oslo',
-    participants: '10',
-    price: '',
-    description: '',
+    title: '',
+    e_description: '',
+    participants: 10,
     startDate: '',
     endDate: '',
+    price: '',
+    organizationId: '',
+    fieldId: '',
+    locationId: '',
     agreeToTerms: false
   });
+
+  const [locations, setLocations] = useState([]);
+  const [fields, setFields] = useState([]);
+  const [organizations, setOrganizations] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [submitMessage, setSubmitMessage] = useState('');
 
   const navigate = useNavigate();
   const { logout } = useAuth();
 
+  // Fetch locations, fields, and organizations on component mount
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [locationsRes, fieldsRes, organizationsRes] = await Promise.all([
+          axios.get('http://localhost:8081/api/locations'),
+          axios.get('http://localhost:8081/api/fields'),
+          axios.get('http://localhost:8081/api/organizations')
+        ]);
+        
+        setLocations(locationsRes.data);
+        setFields(fieldsRes.data);
+        setOrganizations(organizationsRes.data);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+        setSubmitMessage('Error loading form data. Please refresh the page.');
+      }
+    };
+
+    fetchData();
+  }, []);
+
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
+    let processedValue = value;
+
+    // Convert string values to appropriate types
+    if (name === 'participants') {
+      processedValue = parseInt(value, 10);
+    } else if (name === 'price') {
+      processedValue = value === '' ? '' : parseFloat(value);
+    } else if (name === 'organizationId' || name === 'fieldId' || name === 'locationId') {
+      processedValue = value === '' ? '' : parseInt(value, 10);
+    }
+
     setFormData(prev => ({
       ...prev,
-      [name]: type === 'checkbox' ? checked : value
+      [name]: type === 'checkbox' ? checked : processedValue
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Form submitted:', formData);
-    navigate('/OrganizationPublish');
+    setLoading(true);
+    setSubmitMessage('');
+
+    try {
+      // Validate required fields
+      if (!formData.title || !formData.startDate || !formData.endDate) {
+        setSubmitMessage('Please fill in all required fields (Title, Start Date, End Date).');
+        setLoading(false);
+        return;
+      }
+
+      // Validate dates
+      const startDate = new Date(formData.startDate);
+      const endDate = new Date(formData.endDate);
+      
+      if (endDate <= startDate) {
+        setSubmitMessage('End date must be after start date.');
+        setLoading(false);
+        return;
+      }
+
+      // Prepare the event data for submission
+      const eventData = {
+        title: formData.title,
+        e_description: formData.e_description || '',
+        participants: formData.participants,
+        startDate: formData.startDate + 'T00:00:00', // Add time component
+        endDate: formData.endDate + 'T23:59:59', // Add time component
+        price: formData.price === '' ? 0 : parseFloat(formData.price),
+        organizationId: formData.organizationId || null,
+        fieldId: formData.fieldId || null,
+        locationId: formData.locationId || null
+      };
+
+      console.log('Submitting event data:', eventData);
+
+      // Submit to backend
+      const response = await axios.post('http://localhost:8081/api/events', eventData);
+      
+      if (response.status === 200) {
+        setSubmitMessage('Event created successfully!');
+        
+        // Reset form after successful submission
+        setFormData({
+          title: '',
+          e_description: '',
+          participants: 10,
+          startDate: '',
+          endDate: '',
+          price: '',
+          organizationId: '',
+          fieldId: '',
+          locationId: '',
+          agreeToTerms: false
+        });
+
+        // Navigate to success page after a short delay
+        setTimeout(() => {
+          navigate('/OrganizationPublish');
+        }, 2000);
+      }
+    } catch (error) {
+      console.error('Error creating event:', error);
+      setSubmitMessage('Error creating event. Please try again.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleNavigation = (path) => {
@@ -71,11 +175,11 @@ const OrganizationHome = () => {
           <div className="form-grid">
             <div className="form-column">
               <div className="form-group">
-                <label>Organization Id</label>
+                <label>Event Title *</label>
                 <input
                   type="text"
-                  name="OrganizationId"
-                  value={formData.OrganizationId}
+                  name="title"
+                  value={formData.title}
                   onChange={handleInputChange}
                   className="blue-input"
                   required
@@ -83,26 +187,30 @@ const OrganizationHome = () => {
               </div>
 
               <div className="form-group">
-                <label>Organization name</label>
-                <input
-                  type="text"
-                  name="organizationName"
-                  value={formData.organizationName}
+                <label>Organization</label>
+                <select
+                  name="organizationId"
+                  value={formData.organizationId}
                   onChange={handleInputChange}
-                  className="blue-input"
-                  required
-                />
+                  className="blue-select"
+                >
+                  <option value="">Select Organization</option>
+                  {organizations.map((org) => (
+                    <option key={org.orgId} value={org.orgId}>
+                      {org.orgName}
+                    </option>
+                  ))}
+                </select>
               </div>
 
               <div className="form-group">
-                <label>Email address</label>
-                <input
-                  type="email"
-                  name="email"
-                  value={formData.email}
+                <label>Description</label>
+                <textarea
+                  name="e_description"
+                  value={formData.e_description}
                   onChange={handleInputChange}
-                  className="blue-input"
-                  required
+                  className="blue-textarea"
+                  rows="4"
                 />
               </div>
             </div>
@@ -111,16 +219,17 @@ const OrganizationHome = () => {
               <div className="form-group">
                 <label>Field</label>
                 <select
-                  name="field"
-                  value={formData.field}
+                  name="fieldId"
+                  value={formData.fieldId}
                   onChange={handleInputChange}
                   className="blue-select"
                 >
-                  <option value="IT and Informatics">IT and Informatics</option>
-                  <option value="Health and Care">Health and Care</option>
-                  <option value="Construction">Construction</option>
-                  <option value="Education">Education</option>
-                  <option value="Management and Admin">Management and Admin</option>
+                  <option value="">Select Field</option>
+                  {fields.map((field) => (
+                    <option key={field.fieldId} value={field.fieldId}>
+                      {field.fieldName}
+                    </option>
+                  ))}
                 </select>
               </div>
 
@@ -132,20 +241,12 @@ const OrganizationHome = () => {
                   onChange={handleInputChange}
                   className="blue-select"
                 >
-                  <option value="10">10</option>
-                  <option value="20">20</option>
-                  <option value="30">30</option>
+                  <option value={10}>10</option>
+                  <option value={20}>20</option>
+                  <option value={30}>30</option>
+                  <option value={50}>50</option>
+                  <option value={100}>100</option>
                 </select>
-              </div>
-
-              <div className="form-group">
-                <label>Description</label>
-                <textarea
-                  name="description"
-                  value={formData.description}
-                  onChange={handleInputChange}
-                  className="blue-textarea"
-                />
               </div>
 
               <div className="form-group">
@@ -158,7 +259,8 @@ const OrganizationHome = () => {
                     onChange={handleInputChange}
                     className="blue-input"
                     min="0"
-                    step="1"
+                    step="0.01"
+                    placeholder="0 for free event"
                   />
                   <span style={{ marginLeft: '0.5rem' }}>kr</span>
                 </div>
@@ -169,39 +271,41 @@ const OrganizationHome = () => {
               <div className="form-group">
                 <label>Location</label>
                 <select
-                  name="location"
-                  value={formData.location}
+                  name="locationId"
+                  value={formData.locationId}
                   onChange={handleInputChange}
                   className="blue-select"
                 >
-                  <option value="Oslo">Oslo</option>
-                  <option value="Bergen">Bergen</option>
-                  <option value="Trondheim">Trondheim</option>
-                  <option value="Stavanger">Stavanger</option>
-                  <option value="Tromsø">Tromsø</option>
-                  <option value="Hønefoss">Hønefoss</option>
+                  <option value="">Select Location</option>
+                  {locations.map((location) => (
+                    <option key={location.locationId} value={location.locationId}>
+                      {location.locationName}
+                    </option>
+                  ))}
                 </select>
               </div>
 
               <div className="form-group">
-                <label>Start Date</label>
+                <label>Start Date *</label>
                 <input
                   type="date"
                   name="startDate"
                   value={formData.startDate}
                   onChange={handleInputChange}
                   className="blue-input"
+                  required
                 />
               </div>
 
               <div className="form-group">
-                <label>End Date</label>
+                <label>End Date *</label>
                 <input
                   type="date"
                   name="endDate"
                   value={formData.endDate}
                   onChange={handleInputChange}
                   className="blue-input"
+                  required
                 />
               </div>
             </div>
@@ -216,12 +320,20 @@ const OrganizationHome = () => {
                 onChange={handleInputChange}
                 required
               />
-              I agree to the terms
+              I agree to the terms *
             </label>
           </div>
 
+          {submitMessage && (
+            <div className={`submit-message ${submitMessage.includes('Error') ? 'error' : 'success'}`}>
+              {submitMessage}
+            </div>
+          )}
+
           <div className="button-group">
-            <button type="submit" className="publish-btn">Publish</button>
+            <button type="submit" className="publish-btn" disabled={loading}>
+              {loading ? 'Publishing...' : 'Publish'}
+            </button>
             <button
               type="button"
               className="contact-btn"
