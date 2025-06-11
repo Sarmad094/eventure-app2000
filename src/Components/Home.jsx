@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import axios from "axios";
 import "../Styles/Home.css";
 import { useNavigate } from "react-router-dom";
 import EventDetail from "./EventDetail";
@@ -20,10 +21,8 @@ export default function Home() {
   useEffect(() => {
     const fetchLocations = async () => {
       try {
-        const res = await fetch("http://localhost:8081/api/locations");
-        if (!res.ok) throw new Error("Failed to fetch locations");
-        const data = await res.json();
-        setLocations(data);
+        const res = await axios.get("http://localhost:8081/api/locations");
+        setLocations(res.data);
       } catch (err) {
         setError(err.message);
       }
@@ -34,10 +33,8 @@ export default function Home() {
   useEffect(() => {
     const fetchFields = async () => {
       try {
-        const res = await fetch("http://localhost:8081/api/fields");
-        if (!res.ok) throw new Error("Failed to fetch fields");
-        const data = await res.json();
-        setFields(data);
+        const res = await axios.get("http://localhost:8081/api/fields");
+        setFields(res.data);
       } catch (err) {
         setError(err.message);
       }
@@ -48,9 +45,8 @@ export default function Home() {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const response = await fetch("http://localhost:8081/api/events");
-        if (!response.ok) throw new Error("Failed to fetch events");
-        const data = await response.json();
+        const res = await axios.get("http://localhost:8081/api/events");
+        const data = res.data;
 
         const formattedEvents = data.map((ev) => {
           const locationObj = locations.find((loc) => loc.locationId === ev.locationId);
@@ -116,11 +112,9 @@ export default function Home() {
 
   const filteredEvents = events.filter((event) => {
     const matchesSearch = event.title.toLowerCase().includes(searchQuery.toLowerCase());
-
     const matchesLocation =
       !filters.location ||
       (event.location && event.location.toLowerCase().includes(filters.location.toLowerCase()));
-
     const matchesSubjectArea =
       !filters.subjectArea ||
       (event.subjectArea && event.subjectArea.toLowerCase().includes(filters.subjectArea.toLowerCase()));
@@ -133,7 +127,6 @@ export default function Home() {
 
   return (
     <div className="homepage">
-      {/* Blå toppmeny */}
       <header className="header">
         <nav>
           <ul className="nav-links">
