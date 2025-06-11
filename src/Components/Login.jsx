@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../Styles/Login.css";
-import { login } from "../Services/userService";
+import axios from "axios";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -18,16 +18,26 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const user = await login(formData.email, formData.password);
-      console.log("User logged in:", user);
-      navigate(`/home/${user.id}`); 
+      const response = await axios.post('http://localhost:8081/api/students/login', {
+        email: formData.email,
+        password: formData.password
+      });
+      
+      console.log("User logged in:", response.data);
+      // Navigerer med studentId fra response
+      navigate(`/home/${response.data.studentId}`);
     } catch (error) {
-      alert(error.message);
+      console.error("Login error:", error);
+      if (error.response) {
+        alert(error.response.data.message || "Login failed");
+      } else {
+        alert("Cannot connect to server. Please try again.");
+      }
     }
   };
 
   const handleRegister = () => {
-    navigate("/cuser"); 
+    navigate("/cuser");
   };
 
   return (
