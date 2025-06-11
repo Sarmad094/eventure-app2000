@@ -130,6 +130,26 @@
   margin-top: 2rem;
 }
 
+.event-detail-item.participants {
+  grid-column: 1;
+  grid-row: 3;
+}
+
+.event-detail-item.remaining {
+  grid-column: 1;
+  grid-row: 4;
+}
+
+.event-detail-item.location {
+  grid-column: 2;
+  grid-row: 3;
+}
+
+.event-detail-item.price {
+  grid-column: 2;
+  grid-row: 4;
+}
+
 /* Animations */
 @keyframes fadeIn {
   from {

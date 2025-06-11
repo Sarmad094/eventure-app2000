@@ -1,5 +1,3 @@
-// EventDetail.jsx
-
 import React, { useState, useEffect } from "react";
 import "../Styles/EventDetail.css";
 
@@ -8,7 +6,7 @@ export default function EventDetail(props) {
     event,
     onClose,
     onPay,
-    onLike = () => {}, // fallback hvis ikke sendt inn
+    onLike = () => {},
   } = props;
 
   const [isLiked, setIsLiked] = useState(false);
@@ -34,6 +32,8 @@ export default function EventDetail(props) {
   };
 
   if (!event) return null;
+
+  const remainingSlots = 50 - (0); // Midlertidig statisk kapasitet på 50
 
   return (
     <div className="modal-overlay">
@@ -62,6 +62,10 @@ export default function EventDetail(props) {
           <div className="event-detail-item">
             <span className="label">Price</span>
             <span className="value">{event.price} NOK</span>
+          </div>
+          <div className="event-detail-item">
+            <span className="label">Remaining Slots</span>
+            <span className="value">{remainingSlots}</span>
           </div>
         </div>
 
