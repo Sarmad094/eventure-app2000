@@ -1,45 +1,53 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { register } from "../Services/userService"; // Importer userService
 import "../Styles/CreateOrganization.css";
- 
+import { orgRegister } from "../Services/orgService";
+
 const CreateOrganization = () => {
   const [formData, setFormData] = useState({
     orgId: "",
+    orgName: "",
+    email: "",
+    o_field: "", // ✅ FIKSET: Endret fra oField til o_field
     password: "",
     confirmPassword: "",
-    name: "",
   });
- 
+
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
- 
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
- 
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     if (formData.password !== formData.confirmPassword) {
       alert("Passwords do not match!");
       return;
     }
+
     try {
-      const org = await register(
+      // ✅ FIKSET: Bruker orgRegister fra service og sender o_field
+      const response = await orgRegister(
         formData.orgId,
+        formData.orgName,
+        formData.email,
         formData.password,
-        formData.name,
-        "organization"  // Angi at dette er en organisasjon
+        formData.o_field
       );
-      console.log("Organization registered:", org);
+      
+      console.log("Organization registered:", response);
       setMessage("Organization successfully registered!");
       setTimeout(() => navigate("/orglogin"), 1000);
     } catch (error) {
+      console.error("Registration error:", error);
       alert(error.message);
     }
   };
- 
+
   return (
     <div className="register-container">
       <h1>Create an Organization</h1>
@@ -58,14 +66,38 @@ const CreateOrganization = () => {
           />
         </div>
         <div className="form-group">
-          <label htmlFor="name">Organization Name</label>
+          <label htmlFor="orgName">Organization Name</label>
           <input
             type="text"
-            id="name"
-            name="name"
-            value={formData.name}
+            id="orgName"
+            name="orgName"
+            value={formData.orgName}
             onChange={handleChange}
             placeholder="Enter organization name"
+            required
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="email">Email Address</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+            placeholder="Enter email address"
+            required
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="o_field">Organization Field</label>
+          <input
+            type="text"
+            id="o_field"
+            name="o_field" // ✅ FIKSET: Endret fra oField til o_field
+            value={formData.o_field}
+            onChange={handleChange}
+            placeholder="Enter your organization's field"
             required
           />
         </div>
@@ -103,5 +135,5 @@ const CreateOrganization = () => {
     </div>
   );
 };
- 
+
 export default CreateOrganization;

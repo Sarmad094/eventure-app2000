@@ -6,32 +6,64 @@ import { useNavigate, useParams } from "react-router-dom";
 const StudentProfile = () => {
   const [profile, setProfile] = useState(null);
   const navigate = useNavigate();
-  const { studentId } = useParams() || { studentId: "1" }; // Fallback til 1 for testing
+  const { studentId } = useParams();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Hent student data fra backend
-        const response = await axios.get(`http://localhost:8081/api/students/${studentId}`);
-        const studentData = response.data;
+        // Hent student data
+        const studentResponse = await axios.get(`http://localhost:8081/api/students/${studentId}`);
+        const studentData = studentResponse.data;
         
-        // Mock data for liked courses og applied events
-        const likedCourses = [
-          "JavaScript Bootcamp",
-          "AI & Machine Learning Workshop", 
-          "Design Thinking Seminar"
-        ];
+        // Hent bookings for studenten
+        const bookingsResponse = await axios.get(`http://localhost:8081/api/bookings/student/${studentId}`);
+        const bookingsData = bookingsResponse.data;
         
-        const appliedEvents = [
-          { name: "Tech Conference 2025", paymentStatus: "Paid" },
-          { name: "Career Fair", paymentStatus: "Pending" },
-          { name: "Startup Networking", paymentStatus: "Paid" }
-        ];
+        // Hent liked events for studenten  
+        const likedResponse = await axios.get(`http://localhost:8081/api/likedevents/${studentId}`);
+        const likedData = likedResponse.data;
+        
+        // Hent event info for hver booking og liked event
+        const bookingsWithEventInfo = await Promise.all(
+          bookingsData.map(async (booking) => {
+            try {
+              const eventResponse = await axios.get(`http://localhost:8081/api/events/${booking.eventId}`);
+              return {
+                ...booking,
+                eventName: eventResponse.data.eventName || `Event ${booking.eventId}`,
+                paymentStatus: booking.paymentStatus ? "Paid" : "Unpaid"
+              };
+            } catch (error) {
+              return {
+                ...booking,
+                eventName: `Event ${booking.eventId}`,
+                paymentStatus: booking.paymentStatus ? "Paid" : "Unpaid"
+              };
+            }
+          })
+        );
+        
+        const likedEventsWithInfo = await Promise.all(
+          likedData.map(async (liked) => {
+            try {
+              const eventResponse = await axios.get(`http://localhost:8081/api/events/${liked.eventId}`);
+              return {
+                ...liked,
+                eventName: eventResponse.data.eventName || `Event ${liked.eventId}`
+              };
+            } catch (error) {
+              return {
+                ...liked,
+                eventName: `Event ${liked.eventId}`
+              };
+            }
+          })
+        );
 
         setProfile({
           ...studentData,
-          likedCourses,
-          appliedEvents
+          bookings: bookingsWithEventInfo,
+          likedEvents: likedEventsWithInfo
         });
       } catch (error) {
         console.error("Error fetching profile:", error);
@@ -41,31 +73,6 @@ const StudentProfile = () => {
 
     if (studentId) {
       fetchData();
-    } else {
-      // Bruk studentId = 1 som default for testing
-      const testStudentId = "1";
-      axios.get(`http://localhost:8081/api/students/${testStudentId}`)
-        .then(response => {
-          const studentData = response.data;
-          const likedCourses = [
-            "JavaScript Bootcamp",
-            "AI & Machine Learning Workshop", 
-            "Design Thinking Seminar"
-          ];
-          const appliedEvents = [
-            { name: "Tech Conference 2025", paymentStatus: "Paid" },
-            { name: "Career Fair", paymentStatus: "Pending" },
-            { name: "Startup Networking", paymentStatus: "Paid" }
-          ];
-          setProfile({
-            ...studentData,
-            likedCourses,
-            appliedEvents
-          });
-        })
-        .catch(error => {
-          console.error("Error:", error);
-        });
     }
   }, [studentId]);
 
@@ -111,31 +118,32 @@ const StudentProfile = () => {
           <li><strong>Field of Study:</strong> {profile.s_field || 'Not provided'}</li>
         </ul>
 
-        <h2>Liked Courses</h2>
-        {profile.likedCourses.length > 0 ? (
+        <h2>My Bookings</h2>
+        {profile.bookings && profile.bookings.length > 0 ? (
           <ul className="simple-list">
-            {profile.likedCourses.map((course, i) => (
-              <li key={i}>{course}</li>
-            ))}
-          </ul>
-        ) : (
-          <p>No liked courses</p>
-        )}
-
-        <h2>Applied Events & Payment Status</h2>
-        {profile.appliedEvents.length > 0 ? (
-          <ul className="simple-list">
-            {profile.appliedEvents.map((event, i) => (
+            {profile.bookings.map((booking, i) => (
               <li key={i}>
-                {event.name} -{" "}
-                <span className={event.paymentStatus === "Paid" ? "paid" : "pending"}>
-                  {event.paymentStatus}
+                {booking.eventName} - 
+                <span className={booking.paymentStatus === "Paid" ? "paid" : "pending"}>
+                  {booking.paymentStatus}
                 </span>
+                <span className="booking-date"> (Booked: {booking.bookDate})</span>
               </li>
             ))}
           </ul>
         ) : (
-          <p>No applied events</p>
+          <p>No bookings yet</p>
+        )}
+
+        <h2>Liked Events</h2>
+        {profile.likedEvents && profile.likedEvents.length > 0 ? (
+          <ul className="simple-list">
+            {profile.likedEvents.map((liked, i) => (
+              <li key={i}>{liked.eventName}</li>
+            ))}
+          </ul>
+        ) : (
+          <p>No liked events</p>
         )}
 
         {/* Logout Button Section */}
