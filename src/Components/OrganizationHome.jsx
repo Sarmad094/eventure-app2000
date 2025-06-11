@@ -126,9 +126,14 @@ const OrganizationHome = () => {
           agreeToTerms: false
         });
 
-        // Navigate to success page after a short delay
+        // Navigate to success page with event data after a short delay
         setTimeout(() => {
-          navigate('/OrganizationPublish');
+          navigate('/OrganizationPublish', { 
+            state: { 
+              eventId: response.data,
+              eventData: eventData 
+            }
+          });
         }, 2000);
       }
     } catch (error) {
