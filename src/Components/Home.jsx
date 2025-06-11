@@ -6,11 +6,16 @@ import EventDetail from "./EventDetail";
 export default function Home() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedEvent, setSelectedEvent] = useState(null);
+  const [filters, setFilters] = useState({
+    location: "",
+    subjectArea: "",
+  });
   const navigate = useNavigate();
 
   const events = [
     {
       id: 1,
+<<<<<<< Updated upstream
       title: "Tech Conference 2025",
       subjectArea: "Technology",
       description: "Explore future trends in tech with industry leaders.",
@@ -41,6 +46,38 @@ export default function Home() {
       endDate: "2025-02-26",
       price: "$99",
       location: "Oslo"
+=======
+      title: "Informatikk Introduksjon",
+      subjectArea: "Informatikk",
+      location: "Oslo",
+      description: "Bli kjent med informatikkens verden.",
+      participants: 100,
+      startDate: "2025-08-10",
+      endDate: "2025-08-12",
+      price: "Gratis",
+    },
+    {
+      id: 2,
+      title: "Samfunnsfag i Praksis",
+      subjectArea: "Samfunnsfag",
+      location: "Bergen",
+      description: "Lær om samfunn og politikk.",
+      participants: 80,
+      startDate: "2025-08-15",
+      endDate: "2025-08-17",
+      price: "$50",
+    },
+    {
+      id: 3,
+      title: "Avansert Informatikk",
+      subjectArea: "Informatikk",
+      location: "Trondheim",
+      description: "Dypdykk i datastrukturer og algoritmer.",
+      participants: 120,
+      startDate: "2025-08-20",
+      endDate: "2025-08-23",
+      price: "$100",
+>>>>>>> Stashed changes
     },
   ];
 
@@ -60,11 +97,25 @@ export default function Home() {
     setSelectedEvent(null);
   };
 
-  // Når "Pay and Apply" klikkes, naviger til /payment
   const handlePay = (event) => {
-    // Hvis du vil sende med event, kan du bruke context, state eller query params
     navigate("/payment");
   };
+
+  const handleFilterChange = (e) => {
+    const { name, value } = e.target;
+    setFilters((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const filteredEvents = events.filter((event) => {
+    return (
+      event.title.toLowerCase().includes(searchQuery.toLowerCase()) &&
+      (!filters.location || event.location === filters.location) &&
+      (!filters.subjectArea || event.subjectArea === filters.subjectArea)
+    );
+  });
 
   return (
     <div className="homepage">
@@ -74,36 +125,17 @@ export default function Home() {
             <li><a href="#other">Other</a></li>
             <li><a href="#events">Events</a></li>
             <li>
-              <a
-                href="#faq"
-                onClick={(e) => {
-                  e.preventDefault();
-                  handleNavigation("/FaqPage");
-                }}
-              >
+              <a href="#faq" onClick={(e) => { e.preventDefault(); handleNavigation("/FaqPage"); }}>
                 FAQ
               </a>
             </li>
             <li>
-              <a
-                href="#contact"
-                onClick={(e) => {
-                  e.preventDefault();
-                  handleNavigation("/contact");
-                }}
-              >
+              <a href="#contact" onClick={(e) => { e.preventDefault(); handleNavigation("/contact"); }}>
                 Contact
               </a>
             </li>
             <li>
-              <a
-                href="#profile"
-                className="profile"
-                onClick={(e) => {
-                  e.preventDefault();
-                  handleNavigation("/profile");
-                }}
-              >
+              <a href="#profile" className="profile" onClick={(e) => { e.preventDefault(); handleNavigation("/profile"); }}>
                 Profile
               </a>
             </li>
@@ -115,7 +147,7 @@ export default function Home() {
         <h1>Hello Student</h1>
       </div>
 
-      <div className="search-container">
+      <div className="search-filter-container">
         <input
           type="text"
           placeholder="Search events/courses..."
@@ -123,29 +155,38 @@ export default function Home() {
           onChange={handleSearchChange}
           className="search-bar"
         />
-      </div>
+        <div className="filters">
+          <select name="location" value={filters.location} onChange={handleFilterChange}>
+            <option value="">Location</option>
+            <option value="Oslo">Oslo</option>
+            <option value="Bergen">Bergen</option>
+            <option value="Trondheim">Trondheim</option>
+          </select>
 
-      <div className="upcoming-events" id="events">
-        <h2>Upcoming Events</h2>
-        <div className="event-row">
-          {events
-            .filter((event) =>
-              event.title.toLowerCase().includes(searchQuery.toLowerCase())
-            )
-            .map((event) => (
-              <div
-                key={event.id}
-                className="event-card"
-                onClick={() => handleEventClick(event)}
-              >
-                <h3>{event.title}</h3>
-                <p>{event.startDate}</p>
-              </div>
-            ))}
+          <select name="subjectArea" value={filters.subjectArea} onChange={handleFilterChange}>
+            <option value="">Field of subject</option>
+            <option value="Informatikk">Informatikk</option>
+            <option value="Samfunnsfag">Samfunnsfag</option>
+          </select>
         </div>
       </div>
 
-      {/* Event Detail Modal */}
+      <div className="upcoming-events" id="events">
+        <h2 className="centered-title">Upcoming Events</h2>
+        <div className="event-row">
+          {filteredEvents.map((event) => (
+            <div
+              key={event.id}
+              className="event-card"
+              onClick={() => handleEventClick(event)}
+            >
+              <h3>{event.title}</h3>
+              <p>{event.startDate}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
       {selectedEvent && (
         <EventDetail
           event={selectedEvent}
