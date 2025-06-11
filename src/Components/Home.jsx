@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../Styles/Home.css";
 import { useNavigate } from "react-router-dom";
 import EventDetail from "./EventDetail";
@@ -10,76 +10,81 @@ export default function Home() {
     location: "",
     subjectArea: "",
   });
+  const [events, setEvents] = useState([]);
+  const [locations, setLocations] = useState([]);
+  const [fields, setFields] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
 
-  const events = [
-    {
-      id: 1,
-      title: "Tech Conference 2025",
-      subjectArea: "Technology",
-      description: "Explore future trends in tech with industry leaders.",
-      participants: 200,
-      startDate: "2025-02-15",
-      endDate: "2025-02-17",
-      price: "Free",
-      location: "Lier"
-    },
-    {
-      id: 2,
-      title: "Coding Bootcamp",
-      subjectArea: "Programming",
-      description: "Intensive training in full-stack web development.",
-      participants: 150,
-      startDate: "2025-02-20",
-      endDate: "2025-02-25",
-      price: "$199",
-      location: "Jevnaker"
-    },
-    {
-      id: 3,
-      title: "AI Workshop",
-      subjectArea: "Artificial Intelligence",
-      description: "Hands-on with machine learning tools and techniques.",
-      participants: 100,
-      startDate: "2025-02-25",
-      endDate: "2025-02-26",
-      price: "$99",
-      location: "Oslo"
-    },
-    {
-      id: 4,
-      title: "Informatikk Introduksjon",
-      subjectArea: "Informatikk",
-      location: "Oslo",
-      description: "Bli kjent med informatikkens verden.",
-      participants: 100,
-      startDate: "2025-08-10",
-      endDate: "2025-08-12",
-      price: "Gratis",
-    },
-    {
-      id: 5,
-      title: "Samfunnsfag i Praksis",
-      subjectArea: "Samfunnsfag",
-      location: "Bergen",
-      description: "Lær om samfunn og politikk.",
-      participants: 80,
-      startDate: "2025-08-15",
-      endDate: "2025-08-17",
-      price: "$50",
-    },
-    {
-      id: 6,
-      title: "Avansert Informatikk",
-      subjectArea: "Informatikk",
-      location: "Trondheim",
-      description: "Dypdykk i datastrukturer og algoritmer.",
-      participants: 120,
-      startDate: "2025-08-20",
-      endDate: "2025-08-23",
-      price: "$100",
-    },
-  ];
+  useEffect(() => {
+    const fetchLocations = async () => {
+      try {
+        const res = await fetch("http://localhost:8081/api/locations");
+        if (!res.ok) throw new Error("Failed to fetch locations");
+        const data = await res.json();
+        setLocations(data);
+      } catch (err) {
+        setError(err.message);
+      }
+    };
+    fetchLocations();
+  }, []);
+
+  useEffect(() => {
+    const fetchFields = async () => {
+      try {
+        const res = await fetch("http://localhost:8081/api/fields");
+        if (!res.ok) throw new Error("Failed to fetch fields");
+        const data = await res.json();
+        setFields(data);
+      } catch (err) {
+        setError(err.message);
+      }
+    };
+    fetchFields();
+  }, []);
+
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        const response = await fetch("http://localhost:8081/api/events");
+        if (!response.ok) throw new Error("Failed to fetch events");
+        const data = await response.json();
+
+        const formattedEvents = data.map((ev) => {
+          const locationObj = locations.find((loc) => loc.locationId === ev.locationId);
+          const fieldObj = fields.find((fld) => fld.fieldId === ev.fieldId);
+          return {
+            ...ev,
+            startDate: ev.startDate ? ev.startDate.slice(0, 10) : "",
+            endDate: ev.endDate ? ev.endDate.slice(0, 10) : "",
+            location: locationObj ? locationObj.locationName : "Unknown",
+            subjectArea: fieldObj ? fieldObj.fieldName : "Unknown",
+            price:
+              ev.price !== null && ev.price !== undefined
+                ? ev.price === 0
+                  ? "Free"
+                  : ev.price + " NOK"
+                : "N/A",
+            description: ev.e_description || "",
+            participants: ev.participants || 0,
+            title: ev.title || "No title",
+          };
+        });
+
+        setEvents(formattedEvents);
+        setLoading(false);
+      } catch (err) {
+        setError(err.message);
+        setLoading(false);
+      }
+    };
+
+    if (locations.length > 0 && fields.length > 0) {
+      fetchEvents();
+    }
+  }, [locations, fields]);
 
   const handleNavigation = (path) => {
     navigate(path);
@@ -97,7 +102,7 @@ export default function Home() {
     setSelectedEvent(null);
   };
 
-  const handlePay = (event) => {
+  const handlePay = () => {
     navigate("/payment");
   };
 
@@ -110,34 +115,39 @@ export default function Home() {
   };
 
   const filteredEvents = events.filter((event) => {
-    return (
-      event.title.toLowerCase().includes(searchQuery.toLowerCase()) &&
-      (!filters.location || event.location === filters.location) &&
-      (!filters.subjectArea || event.subjectArea === filters.subjectArea)
-    );
+    const matchesSearch = event.title.toLowerCase().includes(searchQuery.toLowerCase());
+
+    const matchesLocation =
+      !filters.location ||
+      (event.location && event.location.toLowerCase().includes(filters.location.toLowerCase()));
+
+    const matchesSubjectArea =
+      !filters.subjectArea ||
+      (event.subjectArea && event.subjectArea.toLowerCase().includes(filters.subjectArea.toLowerCase()));
+
+    return matchesSearch && matchesLocation && matchesSubjectArea;
   });
+
+  if (loading) return <div className="loading">Loading events...</div>;
+  if (error) return <div className="error">Error: {error}</div>;
 
   return (
     <div className="homepage">
+      {/* Blå toppmeny */}
       <header className="header">
-        <nav className="nav">
+        <nav>
           <ul className="nav-links">
-            <li><a href="#other">Other</a></li>
-            <li><a href="#events">Events</a></li>
             <li>
-              <a href="#faq" onClick={(e) => { e.preventDefault(); handleNavigation("/FaqPage"); }}>
-                FAQ
-              </a>
+              <a href="#" onClick={() => handleNavigation("/home/1")}>Home</a>
             </li>
             <li>
-              <a href="#contact" onClick={(e) => { e.preventDefault(); handleNavigation("/contact"); }}>
-                Contact
-              </a>
+              <a href="#" onClick={() => handleNavigation("/profile")}>Profile</a>
             </li>
             <li>
-              <a href="#profile" className="profile" onClick={(e) => { e.preventDefault(); handleNavigation("/profile"); }}>
-                Profile
-              </a>
+              <a href="#" onClick={() => handleNavigation("/contact")}>Contact</a>
+            </li>
+            <li>
+              <a href="#" onClick={() => handleNavigation("/faq")}>FAQ</a>
             </li>
           </ul>
         </nav>
@@ -158,17 +168,20 @@ export default function Home() {
         <div className="filters">
           <select name="location" value={filters.location} onChange={handleFilterChange}>
             <option value="">Location</option>
-            <option value="Oslo">Oslo</option>
-            <option value="Bergen">Bergen</option>
-            <option value="Trondheim">Trondheim</option>
-            <option value="Lier">Lier</option>
-            <option value="Jevnaker">Jevnaker</option>
+            {locations.map((loc) => (
+              <option key={loc.locationId} value={loc.locationName}>
+                {loc.locationName}
+              </option>
+            ))}
           </select>
 
           <select name="subjectArea" value={filters.subjectArea} onChange={handleFilterChange}>
             <option value="">Field of subject</option>
-            <option value="Informatikk">Informatikk</option>
-            <option value="Samfunnsfag">Samfunnsfag</option>
+            {fields.map((fld) => (
+              <option key={fld.fieldId} value={fld.fieldName}>
+                {fld.fieldName}
+              </option>
+            ))}
           </select>
         </div>
       </div>
@@ -176,27 +189,29 @@ export default function Home() {
       <div className="upcoming-events" id="events">
         <h2 className="centered-title">Upcoming Events</h2>
         <div className="event-row">
+          {filteredEvents.length === 0 && <p>No events found.</p>}
           {filteredEvents.map((event) => (
             <div
-              key={event.id}
+              key={event.eventId}
               className="event-card"
               onClick={() => handleEventClick(event)}
             >
               <h3>{event.title}</h3>
               <p>{event.startDate}</p>
+              <p>
+                <em>{event.location}</em>
+              </p>
+              <p>
+                <small>{event.subjectArea}</small>
+              </p>
             </div>
           ))}
         </div>
       </div>
 
       {selectedEvent && (
-        <EventDetail
-          event={selectedEvent}
-          onClose={handleCloseDetail}
-          onPay={handlePay}
-        />
+        <EventDetail event={selectedEvent} onClose={handleCloseDetail} onPay={handlePay} />
       )}
     </div>
   );
 }
-

@@ -100,6 +100,7 @@ const App = () => {
                 <Route path="/corganization" element={<CreateOrganization />} />
                 <Route path="/FaqPage" element={<FaqPage />} />
                 <Route path="/organization-faq" element={<OrganizationFaq />} />
+                <Route path="/faq" element={<FaqPage />} />
                 <Route path="/contact" element={<Contact />} />
                 <Route path="/organization-contact" element={<OrganizationContact />} />
                 <Route path="/" element={<Navigate to="Welcome/1" replace />} />
