@@ -25,7 +25,7 @@ const OrganizationHome = () => {
   const [submitMessage, setSubmitMessage] = useState('');
 
   const navigate = useNavigate();
-  const { logout } = useAuth();
+  const { logout, organizationId } = useAuth();
 
   // Fetch locations, fields, and organizations on component mount
   useEffect(() => {
@@ -40,6 +40,15 @@ const OrganizationHome = () => {
         setLocations(locationsRes.data);
         setFields(fieldsRes.data);
         setOrganizations(organizationsRes.data);
+        
+        // Sett automatisk organisasjonen for innlogget bruker
+        if (organizationId) {
+          setFormData(prev => ({
+            ...prev,
+            organizationId: organizationId
+          }));
+        }
+        
       } catch (error) {
         console.error('Error fetching data:', error);
         setSubmitMessage('Error loading form data. Please refresh the page.');
@@ -47,7 +56,7 @@ const OrganizationHome = () => {
     };
 
     fetchData();
-  }, []);
+  }, [organizationId]);
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -120,7 +129,7 @@ const OrganizationHome = () => {
           startDate: '',
           endDate: '',
           price: '',
-          organizationId: '',
+          organizationId: organizationId || '', // Keep organization set
           fieldId: '',
           locationId: '',
           agreeToTerms: false
@@ -198,6 +207,7 @@ const OrganizationHome = () => {
                   value={formData.organizationId}
                   onChange={handleInputChange}
                   className="blue-select"
+                  disabled={organizationId} // Disable if organization is auto-set
                 >
                   <option value="">Select Organization</option>
                   {organizations.map((org) => (

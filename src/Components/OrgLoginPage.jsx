@@ -1,4 +1,3 @@
-// OrgLoginPage.jsx
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../Styles/Login.css";
@@ -13,6 +12,7 @@ const OrgLoginPage = () => {
     email: "", 
     password: "" 
   });
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -21,13 +21,26 @@ const OrgLoginPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
+    
     try {
       const account = await orgLogin(formData.email, formData.password);
       console.log("Organization logged in:", account);
-      authLogin(); // Sett autentisering til true
+      
+      // Lagre organisasjonsdata i AuthContext
+      // Sjekk ulike mulige property names basert på hva orgLogin returnerer
+      authLogin({
+        organizationId: account.orgId || account.organizationId || account.id,
+        organizationName: account.orgName || account.organizationName || account.name,
+        email: account.email
+      });
+      
       navigate(`/comphome/`);
     } catch (error) {
-      alert(error.message);
+      console.error("Login error:", error);
+      alert(error.message || "Login failed. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -51,6 +64,7 @@ const OrgLoginPage = () => {
               onChange={handleChange}
               className="input"
               required
+              disabled={loading}
             />
           </div>
           <div className="form-group">
@@ -64,16 +78,23 @@ const OrgLoginPage = () => {
               onChange={handleChange}
               className="input"
               required
+              disabled={loading}
             />
           </div>
           <div className="form-group">
-            <button type="submit" className="button">Login</button>
+            <button type="submit" className="button" disabled={loading}>
+              {loading ? 'Logging in...' : 'Login'}
+            </button>
           </div>
         </form>
         <div className="form-footer">
           <p>
             Don't have an account?{" "}
-            <button onClick={handleCreateOrganization} className="link-button">
+            <button 
+              onClick={handleCreateOrganization} 
+              className="link-button"
+              disabled={loading}
+            >
               Create Organization account here
             </button>
           </p>

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import '../Styles/Statistics.css';
 import OrganizationLayout from './OrganizationLayout';
 import axios from 'axios';
+import { useAuth } from '../State management/AuthContext';
 
 const Statistics = () => {
   const [selectedEvent, setSelectedEvent] = useState('');
@@ -12,20 +13,36 @@ const Statistics = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
+  // Get organization data from AuthContext
+  const { organizationId, isAuthenticated } = useAuth();
+
   // Fetch events, bookings, and payments on component mount
   useEffect(() => {
     const fetchData = async () => {
+      // Only fetch if user is authenticated and has organizationId
+      if (!isAuthenticated || !organizationId) {
+        setError('You must be logged in to view statistics.');
+        return;
+      }
+
       setLoading(true);
       try {
         const [eventsRes, bookingsRes, paymentsRes] = await Promise.all([
-          axios.get('http://localhost:8081/api/events'),
+          // Filter events by organization ID
+          axios.get(`http://localhost:8081/api/events?organizationId=${organizationId}`),
           axios.get('http://localhost:8081/api/bookings'),
           axios.get('http://localhost:8081/api/payments')
         ]);
         
-        setEvents(eventsRes.data);
+        // Additional client-side filtering as backup
+        const organizationEvents = eventsRes.data.filter(event => 
+          event.organizationId === organizationId
+        );
+        
+        setEvents(organizationEvents);
         setBookings(bookingsRes.data);
         setPayments(paymentsRes.data);
+        setError('');
       } catch (error) {
         console.error('Error fetching data:', error);
         setError('Error loading data. Please refresh the page.');
@@ -35,7 +52,7 @@ const Statistics = () => {
     };
 
     fetchData();
-  }, []);
+  }, [organizationId, isAuthenticated]);
 
   const selectedEventData = events.find(event => event.eventId === parseInt(selectedEvent));
 
@@ -71,7 +88,15 @@ const Statistics = () => {
   const confirmDelete = async () => {
     try {
       setLoading(true);
-      await axios.delete(`http://localhost:8081/api/events/${selectedEvent}`);
+      
+      // Verify that the event belongs to the logged-in organization before deleting
+      if (selectedEventData.organizationId !== organizationId) {
+        setError('You can only delete events from your own organization.');
+        setLoading(false);
+        return;
+      }
+
+      await axios.delete(`http://localhost:8081/api/events/${selectedEvent}?organizationId=${organizationId}`);
       
       // Remove the deleted event from local state
       setEvents(prevEvents => prevEvents.filter(event => event.eventId !== parseInt(selectedEvent)));
@@ -91,6 +116,19 @@ const Statistics = () => {
   };
 
   const statistics = getEventStatistics(selectedEvent);
+
+  // Show error if not authenticated
+  if (!isAuthenticated || !organizationId) {
+    return (
+      <OrganizationLayout currentPage="statistics">
+        <div className="statistics-container">
+          <div className="error-message" style={{ color: 'red', textAlign: 'center', padding: '2rem' }}>
+            You must be logged in to view statistics.
+          </div>
+        </div>
+      </OrganizationLayout>
+    );
+  }
 
   if (loading && events.length === 0) {
     return (
@@ -132,6 +170,12 @@ const Statistics = () => {
             </select>
           </div>
         </div>
+
+        {events.length === 0 && !loading && (
+          <div className="no-selection">
+            <p>No events found for your organization. Create an event first!</p>
+          </div>
+        )}
 
         {selectedEventData && (
           <div className="stats-display">
@@ -210,7 +254,7 @@ const Statistics = () => {
           </div>
         )}
 
-        {!selectedEvent && !loading && (
+        {!selectedEvent && !loading && events.length > 0 && (
           <div className="no-selection">
             <p>Please select an event to view its statistics</p>
           </div>
