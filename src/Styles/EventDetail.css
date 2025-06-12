@@ -146,7 +146,44 @@
   grid-column: 2;
   grid-row: 4;
 }
+/* Legg til disse i din EventDetail.css */
 
+.value.fully-booked {
+  color: #dc3545 !important;
+  font-weight: bold;
+}
+
+.value.low-availability {
+  color: #ffc107 !important;
+  font-weight: bold;
+}
+
+.already-booked-btn,
+.fully-booked-btn {
+  width: 100%;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.already-booked-btn {
+  background-color: #6c757d;
+  color: white;
+}
+
+.fully-booked-btn {
+  background-color: #dc3545;
+  color: white;
+}
+
+.pay-apply-btn:disabled {
+  background-color: #6c757d;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
 
 @keyframes fadeIn {
   from {
@@ -166,4 +203,5 @@
     transform: translateY(0);
     opacity: 1;
   }
+  
 }

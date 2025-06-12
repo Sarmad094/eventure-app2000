@@ -12,7 +12,11 @@ export default function EventDetail(props) {
 
   const [isLiked, setIsLiked] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
+  const [remainingSlots, setRemainingSlots] = useState(0);
+  const [alreadyBooked, setAlreadyBooked] = useState(false);
+  const [loading, setLoading] = useState(false);
 
+  // Get current user from sessionStorage
   useEffect(() => {
     const userData = sessionStorage.getItem('currentUser');
     if (userData) {
@@ -20,9 +24,12 @@ export default function EventDetail(props) {
     }
   }, []);
 
+  // Check if event is liked and get remaining slots
   useEffect(() => {
     if (currentUser && event) {
       checkIfLiked();
+      fetchRemainingSlots();
+      checkIfAlreadyBooked();
     }
   }, [currentUser, event]);
 
@@ -38,6 +45,30 @@ export default function EventDetail(props) {
     } catch (error) {
       console.error("Error checking like status:", error);
       setIsLiked(false);
+    }
+  };
+
+  const fetchRemainingSlots = async () => {
+    try {
+      const response = await axios.get(`http://localhost:8081/api/events/${event.eventId}/remaining-slots`);
+      setRemainingSlots(response.data);
+    } catch (error) {
+      console.error("Error fetching remaining slots:", error);
+      setRemainingSlots(0);
+    }
+  };
+
+  const checkIfAlreadyBooked = async () => {
+    try {
+      const response = await axios.get(`http://localhost:8081/api/bookings`);
+      const bookings = response.data;
+      const userBooking = bookings.find(booking => 
+        booking.studentId === currentUser.studentId && booking.eventId === event.eventId
+      );
+      setAlreadyBooked(!!userBooking);
+    } catch (error) {
+      console.error("Error checking booking status:", error);
+      setAlreadyBooked(false);
     }
   };
 
@@ -81,12 +112,24 @@ export default function EventDetail(props) {
       alert("Please log in to book an event");
       return;
     }
+
+    if (alreadyBooked) {
+      alert("You have already booked this event!");
+      return;
+    }
+
+    if (remainingSlots <= 0) {
+      alert("Sorry, this event is fully booked!");
+      return;
+    }
+
+    setLoading(true);
     onPay(event);
   };
 
   if (!event) return null;
 
-  const remainingSlots = 50 - (event.participants || 0);
+  const canBook = currentUser && !alreadyBooked && remainingSlots > 0;
 
   return (
     <div className="modal-overlay">
@@ -109,7 +152,7 @@ export default function EventDetail(props) {
             <span className="value">{event.location}</span>
           </div>
           <div className="event-detail-item">
-            <span className="label">Participants</span>
+            <span className="label">Max Participants</span>
             <span className="value">{event.participants}</span>
           </div>
           <div className="event-detail-item">
@@ -118,7 +161,9 @@ export default function EventDetail(props) {
           </div>
           <div className="event-detail-item">
             <span className="label">Remaining Slots</span>
-            <span className="value">{remainingSlots}</span>
+            <span className={`value ${remainingSlots === 0 ? 'fully-booked' : remainingSlots <= 5 ? 'low-availability' : ''}`}>
+              {remainingSlots}
+            </span>
           </div>
         </div>
 
@@ -130,9 +175,24 @@ export default function EventDetail(props) {
           <button className="like-btn" onClick={handleLike}>
             {isLiked ? "♥" : "♡"}
           </button>
-          <button className="pay-apply-btn" onClick={handlePayAndApply}>
-            Pay and Apply
-          </button>
+          
+          {alreadyBooked ? (
+            <button className="already-booked-btn" disabled>
+              Already Booked
+            </button>
+          ) : remainingSlots <= 0 ? (
+            <button className="fully-booked-btn" disabled>
+              Fully Booked
+            </button>
+          ) : (
+            <button 
+              className="pay-apply-btn" 
+              onClick={handlePayAndApply}
+              disabled={loading || !currentUser}
+            >
+              {loading ? "Processing..." : "Pay and Apply"}
+            </button>
+          )}
         </div>
       </div>
     </div>
