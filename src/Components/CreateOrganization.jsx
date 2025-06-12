@@ -60,7 +60,7 @@ const CreateOrganization = () => {
             name="orgId"
             value={formData.orgId}
             onChange={handleChange}
-            placeholder="Enter your organization ID"
+            placeholder="Enter your organization ID (numbers only)"
             required
           />
         </div>

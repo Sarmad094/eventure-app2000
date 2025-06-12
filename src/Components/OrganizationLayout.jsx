@@ -52,7 +52,7 @@ const OrganizationLayout = ({ children, currentPage }) => {
         </div>
         {currentPage === 'home' && (
           <button className="logout-nav-btn" onClick={handleLogout}>
-            Logg ut
+            Log out
           </button>
         )}
       </nav>

@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../Styles/Login.css";
-
 import { orgLogin } from "../Services/orgService";
 import { useAuth } from "../State management/AuthContext";
 
@@ -46,9 +45,13 @@ const OrgLoginPage = () => {
     navigate("/corganization");
   };
 
+  const handleBackToWelcome = () => {
+    navigate("/"); // Assuming '/' is the WelcomePage route
+  };
+
   return (
-    <div className="container">
-      <div className="login-container">
+    <div className="center-content">
+      <div className="login-container card">
         <h1>Organizational Login</h1>
         <form onSubmit={handleSubmit}>
           <div className="form-group">
@@ -80,7 +83,7 @@ const OrgLoginPage = () => {
             />
           </div>
           <div className="form-group">
-            <button type="submit" className="button" disabled={loading}>
+            <button type="submit" className="custom-button" disabled={loading}>
               {loading ? 'Logging in...' : 'Login'}
             </button>
           </div>
@@ -94,6 +97,16 @@ const OrgLoginPage = () => {
               disabled={loading}
             >
               Create Organization account here
+            </button>
+          </p>
+          <p>
+            <button 
+              onClick={handleBackToWelcome} 
+              className="custom-button"
+              disabled={loading}
+              style={{ marginTop: "1rem" }}
+            >
+              ← Back to Welcome
             </button>
           </p>
         </div>

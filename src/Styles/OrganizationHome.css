@@ -64,20 +64,24 @@
 }
 
 .logout-nav-btn {
-    background-color: #dc3545;
+    background-color: var(--primary-blue);
     color: white;
     border: none;
-    padding: 8px 16px;
-    border-radius: 4px;
-    cursor: pointer;
+    padding: 10px 20px;
+    border-radius: 6px;
     font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
     transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 102, 255, 0.25);
 }
 
 .logout-nav-btn:hover {
-    background-color: #c82333;
+    background-color: var(--primary-hover);
     transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 82, 204, 0.3);
 }
+
 
 .main-content {
     text-align: center;

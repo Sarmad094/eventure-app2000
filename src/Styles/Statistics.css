@@ -172,24 +172,6 @@
     cursor: not-allowed;
 }
 
-.confirm-event-btn {
-    background-color: var(--success-green);
-    color: white;
-    box-shadow: 0 2px 4px rgba(40, 167, 69, 0.25);
-}
-
-.confirm-event-btn:hover:not(:disabled) {
-    background-color: #218838;
-    transform: translateY(-1px);
-    box-shadow: 0 3px 6px rgba(40, 167, 69, 0.3);
-}
-
-.confirm-event-btn:disabled {
-    background-color: #cccccc;
-    color: #666666;
-    cursor: not-allowed;
-}
-
 .no-selection {
     text-align: center;
     padding: 60px 20px;
@@ -274,7 +256,7 @@
     transform: translateY(-1px);
 }
 
-/* Responsive Design */
+
 @media (max-width: 768px) {
     .stats-grid {
         grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));

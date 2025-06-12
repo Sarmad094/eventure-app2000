@@ -159,9 +159,7 @@ const OrganizationHome = () => {
   return (
     <div className="organization-home">
       <nav className="top-nav">
-        <div className="logo">
-          <img src="/eventure-logo.svg" alt="Eventure" />
-        </div>
+      
         <div className="nav-links">
           <button className="nav-button active" onClick={() => handleNavigation('/comphome')}>
             Home
@@ -172,7 +170,7 @@ const OrganizationHome = () => {
           <a href="/faq" onClick={(e) => { e.preventDefault(); handleNavigation('/organization-faq'); }}>FAQ</a>
           <a href="/contact" onClick={(e) => { e.preventDefault(); handleNavigation('/organization-contact'); }}>Contact</a>
         </div>
-        <button className="logout-nav-btn" onClick={handleLogout}>Logg ut</button>
+        <button className="logout-nav-btn blue-button" onClick={handleLogout}>Log out</button>
       </nav>
 
       <main className="main-content">
@@ -352,7 +350,7 @@ const OrganizationHome = () => {
       </main>
 
       <footer className="footer">
-        <img src="/eventure-logo.png" alt="Eventure" />
+        
       </footer>
     </div>
   );

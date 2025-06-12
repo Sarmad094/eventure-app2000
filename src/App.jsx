@@ -1,8 +1,9 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes, Link, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import AuthProvider from './State management/AuthContext';
 import UserProvider from './State management/UserContext';
 import { EventProvider } from './State management/EventContext';
+
 import Home from './Components/Home';
 import Login from './Components/Login';
 import CreateUser from './Components/CreateUser';
@@ -18,7 +19,6 @@ import PaymentPage from './Components/PaymentPage';
 import OrganizationPublish from './Components/OrganizationPublish';
 import Statistics from './Components/Statistics';
 import OrganizationLayout from './Components/OrganizationLayout';
-
 
 import './Styles/StudentConfirm.css';
 import './Styles/CreateOrganization.css';
@@ -66,50 +66,26 @@ const App = () => {
       <AuthProvider>
         <UserProvider>
           <EventProvider>
-            <div>
-              <nav>
-                <ul>
-                  <li><Link to="/welcome/1">Welcome</Link></li>
-                  <li><Link to="/home/1">Home</Link></li>
-                  <li><Link to="/login/1">Login</Link></li>
-                  <li><Link to="/profile">Profile</Link></li>
-                  <li><Link to="/cuser">Create User</Link></li>
-                  <li><Link to="/comphome">Company Home</Link></li>
-                  <li><Link to="/orglogin">Company Login</Link></li>
-                  <li><Link to="/corganization">Create organization account</Link></li>
-                  <li><Link to="/organization-faq">Organization FAQ</Link></li>
-                  <li><Link to="/contact">Contact</Link></li>
-                  <li><Link to="/organization-contact">Organization Contact</Link></li>
-                  <li><Link to="/studentconfirm">Student confirm</Link></li>
-                
-                  <li><Link to="/OrganizationPublish">Publish page</Link></li>
-                  <li><Link to="/Payment">Payment Page </Link></li>
-                  <li><Link to="/statistics">Statistics</Link></li>
-                 </ul>
-              </nav>
-                             
-              <Routes>
-                <Route path="/welcome/:id" element={<WelcomePage />} />
-                <Route path="/home/:id" element={<Home />} />
-                <Route path="/login/:id" element={<Login />} />
-                <Route path="/profile" element={<StudentProfile />} />
-                <Route path="/cuser" element={<CreateUser />} />
-                <Route path="/comphome" element={<OrganizationHome />} />
-                <Route path="/orglogin" element={<OrgLoginPage />} />
-                <Route path="/corganization" element={<CreateOrganization />} />
-                <Route path="/FaqPage" element={<FaqPage />} />
-                <Route path="/organization-faq" element={<OrganizationFaq />} />
-                <Route path="/faq" element={<FaqPage />} />
-                <Route path="/contact" element={<Contact />} />
-                <Route path="/organization-contact" element={<OrganizationContact />} />
-                <Route path="/" element={<Navigate to="Welcome/1" replace />} />
-                <Route path="/studentconfirm" element={<StudentConfirm />} />
-            
-                <Route path="/OrganizationPublish" element={<OrganizationPublish />} />
-                <Route path="/payment" element={<PaymentPage />} />
-                <Route path="/statistics" element={<Statistics />} />
-               </Routes>
-            </div>
+            <Routes>
+              <Route path="/welcome/:id" element={<WelcomePage />} />
+              <Route path="/home/:id" element={<Home />} />
+              <Route path="/login/:id" element={<Login />} />
+              <Route path="/profile" element={<StudentProfile />} />
+              <Route path="/cuser" element={<CreateUser />} />
+              <Route path="/comphome" element={<OrganizationHome />} />
+              <Route path="/orglogin" element={<OrgLoginPage />} />
+              <Route path="/corganization" element={<CreateOrganization />} />
+              <Route path="/FaqPage" element={<FaqPage />} />
+              <Route path="/organization-faq" element={<OrganizationFaq />} />
+              <Route path="/faq" element={<FaqPage />} />
+              <Route path="/contact" element={<Contact />} />
+              <Route path="/organization-contact" element={<OrganizationContact />} />
+              <Route path="/studentconfirm" element={<StudentConfirm />} />
+              <Route path="/OrganizationPublish" element={<OrganizationPublish />} />
+              <Route path="/payment" element={<PaymentPage />} />
+              <Route path="/statistics" element={<Statistics />} />
+              <Route path="/" element={<Navigate to="welcome/1" replace />} />
+            </Routes>
           </EventProvider>
         </UserProvider>
       </AuthProvider>

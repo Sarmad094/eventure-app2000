@@ -5,7 +5,16 @@
     height: 100vh;
     background-color: #f4f4f9;
   }
-   
+
+.login-background {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: linear-gradient(135deg, #ffffff, #a3cfff, #66c2ff, #007bb5);
+  position: relative;
+}
+
   .org-login-container .login-container {
     background: white;
     padding: 2rem;
