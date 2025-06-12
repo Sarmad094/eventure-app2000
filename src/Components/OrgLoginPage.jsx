@@ -1,15 +1,18 @@
 // OrgLoginPage.jsx
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "../Styles/Login.css"; 
-import { login } from "../Services/userService";
+import "../Styles/Login.css";
+
 import { orgLogin } from "../Services/orgService";
 import { useAuth } from "../State management/AuthContext";
 
 const OrgLoginPage = () => {
   const navigate = useNavigate();
   const { login: authLogin } = useAuth();
-  const [formData, setFormData] = useState({ orgId: "", password: "" });
+  const [formData, setFormData] = useState({ 
+    email: "", 
+    password: "" 
+  });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -19,7 +22,7 @@ const OrgLoginPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const account = await login(formData.orgId, formData.password, "organization");
+      const account = await orgLogin(formData.email, formData.password);
       console.log("Organization logged in:", account);
       authLogin(); // Sett autentisering til true
       navigate(`/comphome/`);
@@ -38,13 +41,13 @@ const OrgLoginPage = () => {
         <h1>Organizational Login</h1>
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label htmlFor="orgId" className="label">Organization ID</label>
+            <label htmlFor="email" className="label">Email Address</label>
             <input
-              type="text"
-              id="orgId"
-              name="orgId"
-              placeholder="Enter your Organization ID"
-              value={formData.orgId}
+              type="email"
+              id="email"
+              name="email"
+              placeholder="Enter your email address"
+              value={formData.email}
               onChange={handleChange}
               className="input"
               required
