@@ -18,7 +18,7 @@ import PaymentPage from './Components/PaymentPage';
 import OrganizationPublish from './Components/OrganizationPublish';
 import Statistics from './Components/Statistics';
 import OrganizationLayout from './Components/OrganizationLayout';
-import OrganizationWelcome from './Components/OrganizationWelcome';
+
 
 import './Styles/StudentConfirm.css';
 import './Styles/CreateOrganization.css';
@@ -82,7 +82,7 @@ const App = () => {
                   <li><Link to="/contact">Contact</Link></li>
                   <li><Link to="/organization-contact">Organization Contact</Link></li>
                   <li><Link to="/studentconfirm">Student confirm</Link></li>
-                  <li><Link to="/OrganizationWelcome">Welcome organization </Link></li>
+                
                   <li><Link to="/OrganizationPublish">Publish page</Link></li>
                   <li><Link to="/Payment">Payment Page </Link></li>
                   <li><Link to="/statistics">Statistics</Link></li>
@@ -105,7 +105,7 @@ const App = () => {
                 <Route path="/organization-contact" element={<OrganizationContact />} />
                 <Route path="/" element={<Navigate to="Welcome/1" replace />} />
                 <Route path="/studentconfirm" element={<StudentConfirm />} />
-                <Route path="/OrganizationWelcome" element={<OrganizationWelcome />} />
+            
                 <Route path="/OrganizationPublish" element={<OrganizationPublish />} />
                 <Route path="/payment" element={<PaymentPage />} />
                 <Route path="/statistics" element={<Statistics />} />
