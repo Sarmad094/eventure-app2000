@@ -1,4 +1,156 @@
-.button {
-    background-color: white;
-    color: #238aff;
+:root {
+  --primary-blue: #0066ff;
+  --primary-hover: #0052cc;
+  --secondary-blue: #e6f0ff;
+  --accent-blue: #99c2ff;
+  --success-green: #28a745;
+  --light-blue: #f0f7ff;
+  --dark-blue: #003d99;
+}
+
+.publish-container {
+  font-family: Arial, sans-serif;
+  background-color: var(--light-blue);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.publish-card {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 102, 255, 0.15);
+  border-top: 4px solid var(--primary-blue);
+  padding: 30px;
+  max-width: 500px;
+  width: 100%;
+  text-align: center;
+}
+
+.success-title {
+  font-size: 24px;
+  font-weight: bold;
+  color: var(--primary-blue);
+  margin-bottom: 30px;
+  line-height: 1.4;
+}
+
+.event-details {
+  background-color: var(--secondary-blue);
+  border-radius: 8px;
+  border-left: 3px solid var(--primary-blue);
+  padding: 20px;
+  margin-bottom: 30px;
+  text-align: left;
+  transition: all 0.3s ease;
+}
+
+.event-title {
+  font-size: 20px;
+  font-weight: bold;
+  color: var(--primary-blue);
+  margin-bottom: 20px;
+  text-align: center;
+  border-bottom: 2px solid var(--accent-blue);
+  padding-bottom: 8px;
+}
+
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  font-size: 14px;
+  color: var(--dark-blue);
+}
+
+.detail-label {
+  font-weight: 500;
+  margin-right: 8px;
+  color: var(--dark-blue);
+  text-transform: capitalize;
+}
+
+.detail-value {
+  color: #555;
+  font-weight: normal;
+}
+
+.status-active {
+  background-color: var(--success-green);
+  color: white;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.branding-section {
+  margin-bottom: 30px;
+  padding: 20px;
+  background-color: var(--light-blue);
+  border-radius: 8px;
+  border: 1px solid var(--secondary-blue);
+}
+
+.thank-you-text {
+  color: var(--dark-blue);
+  margin-bottom: 15px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.eventure-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.logo-icon {
+  background-color: var(--primary-blue);
+  color: white;
+  font-weight: bold;
+  font-size: 20px;
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 4px rgba(0, 102, 255, 0.25);
+}
+
+.logo-text {
+  font-size: 24px;
+  font-weight: bold;
+  color: var(--primary-blue);
+}
+
+.home-button {
+  background-color: var(--primary-blue);
+  color: white;
+  font-weight: 500;
+  padding: 12px 30px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 16px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  width: 100%;
+  box-shadow: 0 2px 4px rgba(0, 102, 255, 0.25);
+}
+
+.home-button:hover {
+  background-color: var(--primary-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 3px 6px rgba(0, 102, 255, 0.3);
+}
+
+.home-button:active {
+  transform: translateY(0);
 }

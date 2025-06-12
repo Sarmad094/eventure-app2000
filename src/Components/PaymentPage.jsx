@@ -8,18 +8,17 @@ const PaymentPage = () => {
     cardNumber: '',
     expiryDate: '',
     cvv: '',
-    cardName: '', // Legg til cardName felt
+    cardName: '',
   });
-  
+
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [currentUser, setCurrentUser] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  
+
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Get current user from sessionStorage
     const userData = sessionStorage.getItem('currentUser');
     if (userData) {
       setCurrentUser(JSON.parse(userData));
@@ -28,7 +27,6 @@ const PaymentPage = () => {
       return;
     }
 
-    // Get selected event from sessionStorage
     const eventData = sessionStorage.getItem('selectedEvent');
     if (eventData) {
       setSelectedEvent(JSON.parse(eventData));
@@ -47,70 +45,51 @@ const PaymentPage = () => {
       setLoading(true);
       setError('');
 
-      // Create booking with your existing structure
       const bookingData = {
-        bookDate: new Date().toISOString().split('T')[0], // Current date in YYYY-MM-DD format
-        paymentStatus: false, // Set to false initially, will be true after payment
+        bookDate: new Date().toISOString().split('T')[0],
+        paymentStatus: false,
         eventId: selectedEvent.eventId,
-        studentId: currentUser.studentId
+        studentId: currentUser.studentId,
       };
 
-      console.log('Creating booking with data:', bookingData);
       const bookingResponse = await axios.post('http://localhost:8081/api/bookings', bookingData);
       const bookingId = bookingResponse.data;
 
-      console.log('Booking created with ID:', bookingId);
-
-      // Create payment using your existing PaymentController structure
-      // Your backend expects a Payment entity, not a DTO
       const paymentData = {
-        amount: selectedEvent.price === 'Free' ? 0.0 : 
-                selectedEvent.price.toString().includes('NOK') ? 
-                parseFloat(selectedEvent.price.replace(' NOK', '')) : 
-                parseFloat(selectedEvent.price),
-        paymentDate: new Date().toISOString().split('T')[0], // LocalDate format YYYY-MM-DD
-        cardName: formData.cardName, // Bruker cardName fra form i stedet for siste 4 siffer
-        booking: {
-          bookId: bookingId
-        }
+        amount: selectedEvent.price === 'Free' ? 0.0 :
+          selectedEvent.price.toString().includes('NOK') ?
+          parseFloat(selectedEvent.price.replace(' NOK', '')) :
+          parseFloat(selectedEvent.price),
+        paymentDate: new Date().toISOString().split('T')[0],
+        cardName: formData.cardName,
+        booking: { bookId: bookingId },
       };
 
-      console.log('Creating payment with data:', paymentData);
-      const paymentResponse = await axios.post('http://localhost:8081/api/payments', paymentData);
+      await axios.post('http://localhost:8081/api/payments', paymentData);
 
-      console.log('Payment created:', paymentResponse.data);
-
-      // Update booking payment status to true
       const updateBookingData = {
         ...bookingData,
-        paymentStatus: true
+        paymentStatus: true,
       };
 
       await axios.put(`http://localhost:8081/api/bookings/${bookingId}`, updateBookingData);
 
-      // Clear selected event from sessionStorage
       sessionStorage.removeItem('selectedEvent');
-      
-      // Navigate to confirmation
-      navigate('/studentconfirm');
+
+      // ✅ Navigate to confirmation page with bookingId
+      navigate('/studentconfirm', { state: { bookingId } });
 
     } catch (error) {
       console.error('Error creating booking/payment:', error);
-      if (error.response?.data?.message) {
-        setError(error.response.data.message);
-      } else if (error.response?.data) {
-        setError('Failed to process booking. Please try again.');
-      } else {
-        setError('Cannot connect to server. Please try again.');
-      }
+      setError(error.response?.data?.message || 'Failed to process booking. Please try again.');
+    } finally {
       setLoading(false);
     }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    
-    // Basic validation
+
     if (!formData.cardNumber || !formData.expiryDate || !formData.cvv || !formData.cardName) {
       setError('Please fill in all payment details');
       return;
@@ -133,10 +112,10 @@ const PaymentPage = () => {
     return <div>Loading...</div>;
   }
 
-  const eventPrice = selectedEvent.price === 'Free' ? 0 : 
-                    selectedEvent.price.toString().includes('NOK') ? 
-                    parseInt(selectedEvent.price.replace(' NOK', '')) : 
-                    parseInt(selectedEvent.price);
+  const eventPrice = selectedEvent.price === 'Free' ? 0 :
+    selectedEvent.price.toString().includes('NOK') ?
+    parseInt(selectedEvent.price.replace(' NOK', '')) :
+    parseInt(selectedEvent.price);
 
   return (
     <div className="payment-page">
@@ -153,7 +132,6 @@ const PaymentPage = () => {
       <main className="payment-content">
         <h1>Payment</h1>
 
-        {/* Event Summary */}
         <div className="event-summary">
           <h2>Event Details</h2>
           <p><strong>Event:</strong> {selectedEvent.title}</p>
@@ -163,7 +141,7 @@ const PaymentPage = () => {
           <p><strong>Student:</strong> {currentUser.name}</p>
         </div>
 
-        {error && <div className="error-message" style={{color: 'red', marginBottom: '1rem'}}>{error}</div>}
+        {error && <div className="error-message" style={{ color: 'red', marginBottom: '1rem' }}>{error}</div>}
 
         <form className="payment-form" onSubmit={handleSubmit}>
           <div className="form-section">
@@ -208,11 +186,7 @@ const PaymentPage = () => {
             />
           </div>
 
-          <button 
-            type="submit" 
-            className="pay-button"
-            disabled={loading}
-          >
+          <button type="submit" className="pay-button" disabled={loading}>
             {loading ? 'Processing...' : `Pay ${selectedEvent.price === 'Free' ? '(Free)' : selectedEvent.price}`}
           </button>
         </form>
@@ -222,3 +196,4 @@ const PaymentPage = () => {
 };
 
 export default PaymentPage;
+

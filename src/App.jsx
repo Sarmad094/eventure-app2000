@@ -13,7 +13,7 @@ import OrgLoginPage from './Components/OrgLoginPage';
 import CreateOrganization from './Components/CreateOrganization';
 import FaqPage from './Components/FaqPage';
 import Contact from './Components/Contact';
-import StudentConfirm from './StudentConfirm';
+import StudentConfirm from './Components/StudentConfirm';
 import PaymentPage from './Components/PaymentPage';
 import OrganizationPublish from './Components/OrganizationPublish';
 import Statistics from './Components/Statistics';
