@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import axios from "axios";
 import "../Styles/EventDetail.css";
 
 export default function EventDetail(props) {
@@ -10,30 +11,84 @@ export default function EventDetail(props) {
   } = props;
 
   const [isLiked, setIsLiked] = useState(false);
+  const [currentUser, setCurrentUser] = useState(null);
 
+  // Get current user on component mount
   useEffect(() => {
-    const liked = JSON.parse(localStorage.getItem("likedCourses")) || [];
-    setIsLiked(liked.includes(event.title));
-  }, [event.title]);
+    const userData = sessionStorage.getItem('currentUser');
+    if (userData) {
+      setCurrentUser(JSON.parse(userData));
+    }
+  }, []);
 
-  const handleLike = () => {
-    const liked = JSON.parse(localStorage.getItem("likedCourses")) || [];
-    let updated;
+  // Check if event is liked when user or event changes
+  useEffect(() => {
+    if (currentUser && event) {
+      checkIfLiked();
+    }
+  }, [currentUser, event]);
 
-    if (liked.includes(event.title)) {
-      updated = liked.filter((title) => title !== event.title);
-    } else {
-      updated = [...liked, event.title];
+  const checkIfLiked = async () => {
+    try {
+      const response = await axios.get(`http://localhost:8081/api/likedevents/exists`, {
+        params: {
+          studentId: currentUser.studentId,
+          eventId: event.eventId
+        }
+      });
+      setIsLiked(response.data);
+    } catch (error) {
+      console.error("Error checking like status:", error);
+      setIsLiked(false);
+    }
+  };
+
+  const handleLike = async () => {
+    if (!currentUser) {
+      alert("Please log in to like events");
+      return;
     }
 
-    localStorage.setItem("likedCourses", JSON.stringify(updated));
-    setIsLiked(!isLiked);
-    onLike(event.title);
+    try {
+      if (isLiked) {
+        // Unlike event
+        await axios.delete(`http://localhost:8081/api/likedevents/unlike`, {
+          params: {
+            studentId: currentUser.studentId,
+            eventId: event.eventId
+          }
+        });
+        setIsLiked(false);
+        console.log("Event unliked successfully");
+      } else {
+        // Like event
+        await axios.post(`http://localhost:8081/api/likedevents/like`, null, {
+          params: {
+            studentId: currentUser.studentId,
+            eventId: event.eventId
+          }
+        });
+        setIsLiked(true);
+        console.log("Event liked successfully");
+      }
+      onLike(event.title);
+    } catch (error) {
+      console.error("Error:", error);
+      alert("Could not update like status. Please try again.");
+    }
+  };
+
+  const handlePayAndApply = () => {
+    if (!currentUser) {
+      alert("Please log in to book an event");
+      return;
+    }
+    onPay(event);
   };
 
   if (!event) return null;
 
-  const remainingSlots = 50 - (0); // Midlertidig statisk kapasitet på 50
+  const remainingSlots = 50 - (event.participants || 0);
 
   return (
     <div className="modal-overlay">
@@ -61,7 +116,7 @@ export default function EventDetail(props) {
           </div>
           <div className="event-detail-item">
             <span className="label">Price</span>
-            <span className="value">{event.price} NOK</span>
+            <span className="value">{event.price}</span>
           </div>
           <div className="event-detail-item">
             <span className="label">Remaining Slots</span>
@@ -77,7 +132,7 @@ export default function EventDetail(props) {
           <button className="like-btn" onClick={handleLike}>
             {isLiked ? "♥" : "♡"}
           </button>
-          <button className="pay-apply-btn" onClick={() => onPay(event)}>
+          <button className="pay-apply-btn" onClick={handlePayAndApply}>
             Pay and Apply
           </button>
         </div>

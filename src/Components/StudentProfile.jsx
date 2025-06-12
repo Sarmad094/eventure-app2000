@@ -76,12 +76,33 @@ const StudentProfile = () => {
 
         const appliedEvents = await Promise.all(appliedEventsPromises);
 
-        // Get liked courses from sessionStorage (if you want to keep this feature)
-        const likedCourses = JSON.parse(sessionStorage.getItem("likedCourses")) || [];
+        // Get liked events from backend
+        const likedEventsResponse = await axios.get(`http://localhost:8081/api/likedevents/${currentUser.studentId}`);
+        const likedEventsData = likedEventsResponse.data;
+        
+        // Get event details for each liked event
+        const likedEventsWithDetails = await Promise.all(
+          likedEventsData.map(async (likedEvent) => {
+            try {
+              const eventResponse = await axios.get(`http://localhost:8081/api/events/${likedEvent.eventId}`);
+              return {
+                ...likedEvent,
+                eventTitle: eventResponse.data.title || "Unknown Event",
+                eventDate: eventResponse.data.startDate
+              };
+            } catch (error) {
+              console.error("Error fetching event details for liked event:", error);
+              return {
+                ...likedEvent,
+                eventTitle: "Unknown Event"
+              };
+            }
+          })
+        );
 
         setProfile({
           ...studentData,
-          likedCourses,
+          likedEvents: likedEventsWithDetails,
           appliedEvents
         });
 
@@ -103,7 +124,6 @@ const StudentProfile = () => {
   const handleLogout = () => {
     // Clear stored user data
     sessionStorage.removeItem("currentUser");
-    sessionStorage.removeItem("likedCourses");
     sessionStorage.removeItem("selectedEvent");
     
     // Navigate to login page
@@ -147,15 +167,18 @@ const StudentProfile = () => {
           <li><strong>Field of Study:</strong> {profile.s_field || 'Not provided'}</li>
         </ul>
 
-        <h2>Liked Courses</h2>
-        {profile.likedCourses && profile.likedCourses.length > 0 ? (
+        <h2>Liked Events</h2>
+        {profile.likedEvents && profile.likedEvents.length > 0 ? (
           <ul className="simple-list">
-            {profile.likedCourses.map((course, i) => (
-              <li key={i}>{course}</li>
+            {profile.likedEvents.map((likedEvent, i) => (
+              <li key={i}>
+                <strong>{likedEvent.eventTitle}</strong>
+                {likedEvent.eventDate && <small> | Event Date: {likedEvent.eventDate}</small>}
+              </li>
             ))}
           </ul>
         ) : (
-          <p>No liked courses</p>
+          <p>No liked events</p>
         )}
 
         <h2>My Event Bookings & Payment Status</h2>
