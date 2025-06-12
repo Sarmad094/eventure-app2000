@@ -13,27 +13,22 @@ const OrganizationPublish = () => {
   useEffect(() => {
     const fetchEventDetails = async () => {
       try {
-        // Get event data from navigation state
         const { eventId, eventData } = location.state || {};
         
         if (!eventId) {
-          // If no event ID, redirect to home
           navigate('/comphome');
           return;
         }
 
-        // Fetch the complete event details from the database
         const eventResponse = await axios.get(`http://localhost:8081/api/events/${eventId}`);
         const event = eventResponse.data;
 
-        // Fetch related data (organization, field, location)
         const [organizationRes, fieldRes, locationRes] = await Promise.all([
           event.organizationId ? axios.get(`http://localhost:8081/api/organizations/${event.organizationId}`) : Promise.resolve(null),
           event.fieldId ? axios.get(`http://localhost:8081/api/fields/${event.fieldId}`) : Promise.resolve(null),
           event.locationId ? axios.get(`http://localhost:8081/api/locations/${event.locationId}`) : Promise.resolve(null)
         ]);
 
-        // Format the event details
         const formattedEvent = {
           eventId: event.eventId,
           title: event.title || 'No Title',

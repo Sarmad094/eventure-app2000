@@ -8,7 +8,7 @@ const CreateOrganization = () => {
     orgId: "",
     orgName: "",
     email: "",
-    o_field: "", // ✅ FIKSET: Endret fra oField til o_field
+    o_field: "", 
     password: "",
     confirmPassword: "",
   });
@@ -30,7 +30,6 @@ const CreateOrganization = () => {
     }
 
     try {
-      // ✅ FIKSET: Bruker orgRegister fra service og sender o_field
       const response = await orgRegister(
         formData.orgId,
         formData.orgName,
@@ -94,7 +93,7 @@ const CreateOrganization = () => {
           <input
             type="text"
             id="o_field"
-            name="o_field" // ✅ FIKSET: Endret fra oField til o_field
+            name="o_field" 
             value={formData.o_field}
             onChange={handleChange}
             placeholder="Enter your organization's field"

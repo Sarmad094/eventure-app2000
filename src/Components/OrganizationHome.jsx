@@ -27,7 +27,6 @@ const OrganizationHome = () => {
   const navigate = useNavigate();
   const { logout, organizationId } = useAuth();
 
-  // Fetch locations, fields, and organizations on component mount
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -41,7 +40,6 @@ const OrganizationHome = () => {
         setFields(fieldsRes.data);
         setOrganizations(organizationsRes.data);
         
-        // Sett automatisk organisasjonen for innlogget bruker
         if (organizationId) {
           setFormData(prev => ({
             ...prev,
@@ -62,7 +60,6 @@ const OrganizationHome = () => {
     const { name, value, type, checked } = e.target;
     let processedValue = value;
 
-    // Convert string values to appropriate types
     if (name === 'participants') {
       processedValue = parseInt(value, 10);
     } else if (name === 'price') {
@@ -83,14 +80,12 @@ const OrganizationHome = () => {
     setSubmitMessage('');
 
     try {
-      // Validate required fields
       if (!formData.title || !formData.startDate || !formData.endDate) {
         setSubmitMessage('Please fill in all required fields (Title, Start Date, End Date).');
         setLoading(false);
         return;
       }
 
-      // Validate dates
       const startDate = new Date(formData.startDate);
       const endDate = new Date(formData.endDate);
       
@@ -100,13 +95,12 @@ const OrganizationHome = () => {
         return;
       }
 
-      // Prepare the event data for submission
       const eventData = {
         title: formData.title,
         e_description: formData.e_description || '',
         participants: formData.participants,
-        startDate: formData.startDate + 'T00:00:00', // Add time component
-        endDate: formData.endDate + 'T23:59:59', // Add time component
+        startDate: formData.startDate + 'T00:00:00', 
+        endDate: formData.endDate + 'T23:59:59', 
         price: formData.price === '' ? 0 : parseFloat(formData.price),
         organizationId: formData.organizationId || null,
         fieldId: formData.fieldId || null,
@@ -115,13 +109,11 @@ const OrganizationHome = () => {
 
       console.log('Submitting event data:', eventData);
 
-      // Submit to backend
       const response = await axios.post('http://localhost:8081/api/events', eventData);
       
       if (response.status === 200) {
         setSubmitMessage('Event created successfully!');
         
-        // Reset form after successful submission
         setFormData({
           title: '',
           e_description: '',
@@ -129,13 +121,12 @@ const OrganizationHome = () => {
           startDate: '',
           endDate: '',
           price: '',
-          organizationId: organizationId || '', // Keep organization set
+          organizationId: organizationId || '', 
           fieldId: '',
           locationId: '',
           agreeToTerms: false
         });
 
-        // Navigate to success page with event data after a short delay
         setTimeout(() => {
           navigate('/OrganizationPublish', { 
             state: { 
@@ -207,7 +198,7 @@ const OrganizationHome = () => {
                   value={formData.organizationId}
                   onChange={handleInputChange}
                   className="blue-select"
-                  disabled={organizationId} // Disable if organization is auto-set
+                  disabled={organizationId} 
                 >
                   <option value="">Select Organization</option>
                   {organizations.map((org) => (

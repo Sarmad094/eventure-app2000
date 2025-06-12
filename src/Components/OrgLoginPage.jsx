@@ -27,8 +27,6 @@ const OrgLoginPage = () => {
       const account = await orgLogin(formData.email, formData.password);
       console.log("Organization logged in:", account);
       
-      // Lagre organisasjonsdata i AuthContext
-      // Sjekk ulike mulige property names basert på hva orgLogin returnerer
       authLogin({
         organizationId: account.orgId || account.organizationId || account.id,
         organizationName: account.orgName || account.organizationName || account.name,

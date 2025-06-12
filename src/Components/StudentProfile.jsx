@@ -10,12 +10,10 @@ const StudentProfile = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Get current user from sessionStorage
     const userData = sessionStorage.getItem('currentUser');
     if (userData) {
       setCurrentUser(JSON.parse(userData));
     } else {
-      // If no user is logged in, redirect to login
       navigate('/login/1');
       return;
     }
@@ -26,27 +24,21 @@ const StudentProfile = () => {
       if (!currentUser) return;
 
       try {
-        // Fetch student data from backend using the logged-in user's studentId
         const response = await axios.get(`http://localhost:8081/api/students/${currentUser.studentId}`);
         const studentData = response.data;
         
-        // Fetch user's actual bookings from backend
         const bookingsResponse = await axios.get(`http://localhost:8081/api/bookings`);
         const allBookings = bookingsResponse.data;
         
-        // Filter bookings for current user
         const userBookings = allBookings.filter(booking => 
           booking.studentId === currentUser.studentId
         );
 
-        // Get event details and payment info for each booking
         const appliedEventsPromises = userBookings.map(async (booking) => {
           try {
-            // Get event details
             const eventResponse = await axios.get(`http://localhost:8081/api/events/${booking.eventId}`);
             const eventData = eventResponse.data;
             
-            // Get payment info for this booking
             let paymentStatus = "Pending";
             try {
               const paymentResponse = await axios.get(`http://localhost:8081/api/payments/book/${booking.bookId}`);
@@ -54,7 +46,6 @@ const StudentProfile = () => {
                 paymentStatus = "Paid";
               }
             } catch (paymentError) {
-              // No payment found, keep as "Pending"
               console.log("No payment found for booking:", booking.bookId);
             }
 
@@ -76,11 +67,9 @@ const StudentProfile = () => {
 
         const appliedEvents = await Promise.all(appliedEventsPromises);
 
-        // Get liked events from backend
         const likedEventsResponse = await axios.get(`http://localhost:8081/api/likedevents/${currentUser.studentId}`);
         const likedEventsData = likedEventsResponse.data;
         
-        // Get event details for each liked event
         const likedEventsWithDetails = await Promise.all(
           likedEventsData.map(async (likedEvent) => {
             try {
@@ -122,11 +111,9 @@ const StudentProfile = () => {
   };
 
   const handleLogout = () => {
-    // Clear stored user data
     sessionStorage.removeItem("currentUser");
     sessionStorage.removeItem("selectedEvent");
     
-    // Navigate to login page
     navigate('/login/1');
   };
 

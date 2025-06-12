@@ -13,7 +13,6 @@ export default function EventDetail(props) {
   const [isLiked, setIsLiked] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
 
-  // Get current user on component mount
   useEffect(() => {
     const userData = sessionStorage.getItem('currentUser');
     if (userData) {
@@ -21,7 +20,6 @@ export default function EventDetail(props) {
     }
   }, []);
 
-  // Check if event is liked when user or event changes
   useEffect(() => {
     if (currentUser && event) {
       checkIfLiked();

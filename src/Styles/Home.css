@@ -3,16 +3,15 @@
   padding: 20px;
 }
 
-/* Blå toppmeny (header) */
+
 .header {
-  background-color: #007bff; /* Blå farge for menyen */
+  background-color: #007bff; 
   padding: 10px 20px;
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 
-/* Navigasjonslenker */
 .nav-links {
   display: flex;
   list-style: none;
@@ -23,27 +22,24 @@
 
 .nav-links li a {
   text-decoration: none;
-  color: white; /* Hvit tekst */
+  color: white; 
   font-weight: 500;
   transition: color 0.3s ease;
 }
 
 .nav-links li a:hover {
-  color: #cce5ff; /* Lys blå hover */
+  color: #cce5ff; 
 }
 
-/* Profil-lenke kan f.eks. få fetere stil */
 .nav-links li a.profile {
   font-weight: 700;
 }
 
-/* Sentralisert "Hello Student" tekst */
 .hello-message {
   text-align: center;
   margin: 2rem 0;
 }
 
-/* Container for søk og filter */
 .search-filter-container {
   display: flex;
   flex-direction: column;
@@ -51,7 +47,6 @@
   margin: 2rem 0;
 }
 
-/* Søkelinje */
 .search-bar {
   width: 60%;
   padding: 0.6rem 1rem;
@@ -60,7 +55,6 @@
   border: 1px solid #ccc;
 }
 
-/* Filter dropdowns */
 .filters {
   display: flex;
   justify-content: center;
@@ -82,19 +76,16 @@
   color: black;
 }
 
-/* Seksjon for kommende events */
 .upcoming-events {
   margin-top: 3rem;
 }
 
-/* Tittel sentrert */
 .centered-title {
   text-align: center;
   font-size: 1.8rem;
   margin-bottom: 1rem;
 }
 
-/* Rekkefølge av event-kort */
 .event-row {
   display: flex;
   flex-wrap: wrap;
@@ -102,7 +93,6 @@
   justify-content: center;
 }
 
-/* Styling for hvert event-kort */
 .event-card {
   background-color: #f8f8f8;
   padding: 1rem;
@@ -117,7 +107,6 @@
   background-color: #e0e0e0;
 }
 
-/* Lasting og feilmeldinger */
 .loading,
 .error {
   text-align: center;

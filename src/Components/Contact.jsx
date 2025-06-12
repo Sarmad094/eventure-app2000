@@ -3,7 +3,6 @@ import '../Styles/Contact.css';
 
 const Contact = ({ isOrganization = false, onNavigate, showStatistics, setShowStatistics }) => {
 
-  // Profil navigasjon (standard)
   const profileNavigation = [
     { label: 'Home', href: '/home/1' },
     { label: 'Contact', href: '/contact' },
@@ -64,7 +63,6 @@ const Contact = ({ isOrganization = false, onNavigate, showStatistics, setShowSt
             }}>FAQ</a>
             <a href="/contact" onClick={(e) => {
               e.preventDefault();
-              // Gjør ingenting siden vi allerede er på contact
             }} className="nav-button active">Contact</a>
           </div>
         </nav>

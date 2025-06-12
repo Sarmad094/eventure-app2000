@@ -13,13 +13,10 @@ const Statistics = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  // Get organization data from AuthContext
   const { organizationId, isAuthenticated } = useAuth();
 
-  // Fetch events, bookings, and payments on component mount
   useEffect(() => {
     const fetchData = async () => {
-      // Only fetch if user is authenticated and has organizationId
       if (!isAuthenticated || !organizationId) {
         setError('You must be logged in to view statistics.');
         return;
@@ -28,13 +25,11 @@ const Statistics = () => {
       setLoading(true);
       try {
         const [eventsRes, bookingsRes, paymentsRes] = await Promise.all([
-          // Filter events by organization ID
           axios.get(`http://localhost:8081/api/events?organizationId=${organizationId}`),
           axios.get('http://localhost:8081/api/bookings'),
           axios.get('http://localhost:8081/api/payments')
         ]);
         
-        // Additional client-side filtering as backup
         const organizationEvents = eventsRes.data.filter(event => 
           event.organizationId === organizationId
         );
@@ -56,7 +51,6 @@ const Statistics = () => {
 
   const selectedEventData = events.find(event => event.eventId === parseInt(selectedEvent));
 
-  // Calculate statistics for selected event
   const getEventStatistics = (eventId) => {
     if (!eventId) return { totalBookings: 0, totalPayments: 0, totalRevenue: 0 };
 
@@ -89,7 +83,6 @@ const Statistics = () => {
     try {
       setLoading(true);
       
-      // Verify that the event belongs to the logged-in organization before deleting
       if (selectedEventData.organizationId !== organizationId) {
         setError('You can only delete events from your own organization.');
         setLoading(false);
@@ -98,7 +91,6 @@ const Statistics = () => {
 
       await axios.delete(`http://localhost:8081/api/events/${selectedEvent}?organizationId=${organizationId}`);
       
-      // Remove the deleted event from local state
       setEvents(prevEvents => prevEvents.filter(event => event.eventId !== parseInt(selectedEvent)));
       setSelectedEvent('');
       setShowConfirmation(false);
@@ -117,7 +109,6 @@ const Statistics = () => {
 
   const statistics = getEventStatistics(selectedEvent);
 
-  // Show error if not authenticated
   if (!isAuthenticated || !organizationId) {
     return (
       <OrganizationLayout currentPage="statistics">

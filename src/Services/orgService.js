@@ -9,7 +9,7 @@ export const orgLogin = async (email, password) => {
       password
     });
     
-    return response.data; // OrganizationDTO
+    return response.data; 
   } catch (error) {
     if (error.response && error.response.status === 401) {
       throw new Error("Invalid email or password");
@@ -23,16 +23,15 @@ export const orgLogin = async (email, password) => {
 
 export const orgRegister = async (orgId, orgName, email, password, o_field) => {
   try {
-    // ✅ FIKSET: Sender o_field i stedet for oField
     const response = await axios.post(`${API_BASE_URL}/register`, {
       orgId,
       orgName,
       email,
       password,
-      o_field // ✅ FIKSET: Endret fra oField til o_field
+      o_field 
     });
     
-    return response.data; // OrganizationDTO
+    return response.data; 
   } catch (error) {
     if (error.response && error.response.status === 400) {
       throw new Error("Organization ID or Email is already in use");

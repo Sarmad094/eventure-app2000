@@ -20,7 +20,6 @@ export default function Home() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Check if user is logged in
     const userData = sessionStorage.getItem('currentUser');
     if (userData) {
       setCurrentUser(JSON.parse(userData));
@@ -121,7 +120,6 @@ export default function Home() {
       return;
     }
     
-    // Store selected event for payment process
     sessionStorage.setItem('selectedEvent', JSON.stringify(event));
     navigate("/payment");
   };

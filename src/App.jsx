@@ -33,7 +33,6 @@ import './Styles/FaqPage.css';
 import './Styles/Contact.css';
 import './Styles/Statistics.css';
 
-// Organization wrapper components
 const OrganizationContact = () => (
   <OrganizationLayout currentPage="contact">
     <div className="contact-container">

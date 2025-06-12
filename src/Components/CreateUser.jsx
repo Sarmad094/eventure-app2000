@@ -38,7 +38,6 @@ const CreateUser = () => {
       console.log("User registered:", response.data);
       setMessage("User successfully registered!");
       
-      // Auto-login after successful registration
       sessionStorage.setItem('currentUser', JSON.stringify(response.data));
       
       setTimeout(() => navigate("/home/1"), 1000);

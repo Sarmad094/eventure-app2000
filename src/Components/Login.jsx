@@ -31,7 +31,6 @@ const Login = () => {
 
       console.log('Login successful:', response.data);
       
-      // Store user data in sessionStorage
       sessionStorage.setItem('currentUser', JSON.stringify(response.data));
       
       navigate('/home/1');

@@ -1,12 +1,10 @@
 import React, { createContext, useContext, useState } from 'react';
 
-// Create Event Context
 const EventContext = createContext();
 
-// Event Provider Component
 export const EventProvider = ({ children }) => {
-  const [events, setEvents] = useState([]); // Array of events
-  const [bookings, setBookings] = useState([]); // User's bookings
+  const [events, setEvents] = useState([]); 
+  const [bookings, setBookings] = useState([]); 
 
   const addEvent = (event) => {
     setEvents((prev) => [...prev, event]);
@@ -23,7 +21,6 @@ export const EventProvider = ({ children }) => {
   );
 };
 
-// Custom Hook for accessing event context
 export const useEvent = () => {
   const context = useContext(EventContext);
   if (!context) {

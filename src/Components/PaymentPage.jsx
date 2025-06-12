@@ -76,7 +76,6 @@ const PaymentPage = () => {
 
       sessionStorage.removeItem('selectedEvent');
 
-      // ✅ Navigate to confirmation page with bookingId
       navigate('/studentconfirm', { state: { bookingId } });
 
     } catch (error) {

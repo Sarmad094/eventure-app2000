@@ -88,7 +88,6 @@
   border-top: 1px solid #eee;
 }
 
-/* Pay and Apply button styling */
 .pay-apply-btn {
   padding: 0.75rem 1.5rem;
   background-color: #007bff;
@@ -107,23 +106,21 @@
   box-shadow: 0 6px 12px rgba(0, 86, 179, 0.5);
 }
 
-/* Like button styling */
 .like-btn {
   font-size: 1.5rem;
-  color: #e63946; /* rød */
+  color: #e63946; 
   background: none;
   border: none;
   cursor: pointer;
-  margin-right: 1rem; /* avstand til pay-knappen */
+  margin-right: 1rem; 
   transition: transform 0.2s ease, color 0.2s ease;
 }
 
 .like-btn:hover {
   transform: scale(1.2);
-  color: #c1121f; /* mørkere rød ved hover */
+  color: #c1121f; 
 }
 
-/* Container for knappene */
 .event-actions {
   display: flex;
   align-items: center;
@@ -150,7 +147,7 @@
   grid-row: 4;
 }
 
-/* Animations */
+
 @keyframes fadeIn {
   from {
     background-color: rgba(0, 0, 0, 0);

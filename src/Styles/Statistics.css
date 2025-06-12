@@ -1,4 +1,3 @@
-/* Statistics Page Styles - Using the same color scheme as OrganizationHome */
 .statistics-page {
     max-width: 1200px;
     margin: 0 auto;
@@ -198,7 +197,6 @@
     font-size: 18px;
 }
 
-/* Confirmation Modal Styles */
 .confirmation-overlay {
     position: fixed;
     top: 0;

@@ -1,12 +1,10 @@
 import React, { createContext, useContext, useState } from 'react';
 
-// Create User Context
 const UserContext = createContext();
 
-// User Provider Component
 const UserProvider = ({ children }) => {
-  const [userRole, setUserRole] = useState(null); // 'student' or 'company'
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // Login status
+  const [userRole, setUserRole] = useState(null); 
+  const [isLoggedIn, setIsLoggedIn] = useState(false); 
 
   const login = (role) => {
     setUserRole(role);
@@ -25,7 +23,6 @@ const UserProvider = ({ children }) => {
   );
 };
 
-// Custom Hook for accessing user context
 const useUser = () => {
   const context = useContext(UserContext);
   if (!context) {
