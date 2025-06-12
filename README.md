@@ -68,3 +68,93 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+
+# Eventure Frontend
+
+Eventure is a React-based web application for event booking. It connects students with organizations that host courses and events.
+
+## Technologies
+
+- React 18  
+- React Router DOM  
+- Axios  
+- JavaScript (ES6+)  
+- Custom CSS styling  
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js (version X.X or later)  
+- npm or yarn
+
+### Installation
+
+1. Clone the repository:  
+   `git clone https://github.com/username/projectname-frontend.git`
+
+2. Navigate to the project directory:  
+   `cd projectname-frontend`
+
+3. Install dependencies:  
+   `npm install`
+
+4. Start the development server:  
+   `npm run dev`
+
+The application will run at: `http://localhost:3000`
+
+## Environment Variables
+
+The frontend connects to the backend API using:
+
+
+
+This value is hardcoded in service files but can be modified if necessary.
+
+## Available Scripts
+
+- `npm start` – Start development server  
+- `npm run build` – Build the app for production  
+- `npm test` – Run the test suite  
+- `npm run eject` – Eject configuration (irreversible)
+
+## Features
+
+- Student registration and login  
+- Organization login and event publishing  
+- Event browsing, booking, and payment  
+- Responsive design for desktop and mobile
+
+## Important Pages
+
+- `/welcome/1` – Welcome page  
+- `/login/1` – Student login  
+- `/orglogin` – Organization login  
+- `/home/1` – Student homepage  
+- `/comphome` – Organization homepage  
+- `/profile` – Student profile and bookings
+
+## Folder Structure
+
+src/
+├── Components/ # React components
+├── Services/ # API service modules
+├── State management/ # Context providers (AuthContext, etc.)
+├── Styles/ # CSS files
+├── Api/ # Axios configuration and helpers
+└── App.jsx # Main application file with routes
+
+
+## Contributing
+
+1. Fork the repository  
+2. Create a new branch: `git checkout -b feature/your-feature`  
+3. Commit your changes: `git commit -m "Add new feature"`  
+4. Push the branch: `git push origin feature/your-feature`  
+5. Open a pull request
+
+## License
+
+This project is licensed under the MIT License.
