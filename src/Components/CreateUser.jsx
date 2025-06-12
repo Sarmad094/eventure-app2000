@@ -37,7 +37,11 @@ const CreateUser = () => {
       
       console.log("User registered:", response.data);
       setMessage("User successfully registered!");
-      setTimeout(() => navigate("/login/1"), 1000);
+      
+      // Auto-login after successful registration
+      sessionStorage.setItem('currentUser', JSON.stringify(response.data));
+      
+      setTimeout(() => navigate("/home/1"), 1000);
     } catch (error) {
       console.error("Registration error:", error);
       if (error.response) {
@@ -139,7 +143,7 @@ const CreateUser = () => {
         </div>
       </form>
       <div className="form-footer">
-        <p>Already have an account? <a href="/login">Log in here</a></p>
+        <p>Already have an account? <a href="/login/1">Log in here</a></p>
       </div>
     </div>
   );

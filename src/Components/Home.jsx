@@ -16,7 +16,19 @@ export default function Home() {
   const [fields, setFields] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [currentUser, setCurrentUser] = useState(null);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    // Check if user is logged in
+    const userData = sessionStorage.getItem('currentUser');
+    if (userData) {
+      setCurrentUser(JSON.parse(userData));
+    } else {
+      navigate('/login/1');
+      return;
+    }
+  }, [navigate]);
 
   useEffect(() => {
     const fetchLocations = async () => {
@@ -86,6 +98,11 @@ export default function Home() {
     navigate(path);
   };
 
+  const handleLogout = () => {
+    sessionStorage.removeItem('currentUser');
+    navigate('/login/1');
+  };
+
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value);
   };
@@ -98,7 +115,14 @@ export default function Home() {
     setSelectedEvent(null);
   };
 
-  const handlePay = () => {
+  const handlePay = (event) => {
+    if (!currentUser) {
+      alert("Please log in to book an event");
+      return;
+    }
+    
+    // Store selected event for payment process
+    sessionStorage.setItem('selectedEvent', JSON.stringify(event));
     navigate("/payment");
   };
 
@@ -142,12 +166,17 @@ export default function Home() {
             <li>
               <a href="#" onClick={() => handleNavigation("/faq")}>FAQ</a>
             </li>
+            {currentUser && (
+              <li>
+                <a href="#" onClick={handleLogout}>Logout</a>
+              </li>
+            )}
           </ul>
         </nav>
       </header>
 
       <div className="hello-message">
-        <h1>Hello Student</h1>
+        <h1>Hello {currentUser?.name || 'Student'}</h1>
       </div>
 
       <div className="search-filter-container">

@@ -1,88 +1,99 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import "../Styles/Login.css";
-import axios from "axios";
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import '../Styles/Login.css';
 
 const Login = () => {
-  const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    email: "",
-    password: "",
+    email: '',
+    password: ''
   });
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+  
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    setFormData(prev => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
+    setError('');
+
     try {
       const response = await axios.post('http://localhost:8081/api/students/login', {
         email: formData.email,
         password: formData.password
       });
-      
-      console.log("User logged in:", response.data);
-      // Navigerer med studentId fra response
-      navigate(`/home/${response.data.studentId}`);
-    } catch (error) {
-      console.error("Login error:", error);
-      if (error.response) {
-        alert(error.response.data.message || "Login failed");
-      } else {
-        alert("Cannot connect to server. Please try again.");
-      }
-    }
-  };
 
-  const handleRegister = () => {
-    navigate("/cuser");
+      console.log('Login successful:', response.data);
+      
+      // Store user data in sessionStorage
+      sessionStorage.setItem('currentUser', JSON.stringify(response.data));
+      
+      navigate('/home/1');
+      
+    } catch (error) {
+      console.error('Login error:', error);
+      if (error.response?.status === 401) {
+        setError('Invalid email or password');
+      } else {
+        setError('Login failed. Please try again.');
+      }
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <div className="container">
       <div className="login-container">
-        <h1>Login</h1>
-        <form onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label htmlFor="email" className="label">Email</label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              placeholder="Enter your email"
-              value={formData.email}
-              onChange={handleChange}
-              className="input"
-              required
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="password" className="label">Password</label>
-            <input
-              type="password"
-              id="password"
-              name="password"
-              placeholder="Enter your password"
-              value={formData.password}
-              onChange={handleChange}
-              className="input"
-              required
-            />
-          </div>
-          <div className="form-group">
-            <button type="submit" className="button">Login</button>
-          </div>
-        </form>
-        <div className="form-footer">
-          <p>
-            Don't have an account?{" "}
-            <button onClick={handleRegister} className="link-button">
-              Register here
-            </button>
-          </p>
+      <h1>Login</h1>
+      
+      {error && <div className="error-message" style={{color: 'red', marginBottom: '1rem'}}>{error}</div>}
+      
+      <form onSubmit={handleSubmit}>
+        <div className="form-group">
+          <label htmlFor="email">Email</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+            placeholder="Enter your email"
+            required
+            disabled={loading}
+          />
         </div>
+        
+        <div className="form-group">
+          <label htmlFor="password">Password</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            value={formData.password}
+            onChange={handleChange}
+            placeholder="Enter your password"
+            required
+            disabled={loading}
+          />
+        </div>
+        
+        <div className="form-group">
+          <button type="submit" disabled={loading}>
+            {loading ? 'Logging in...' : 'Login'}
+          </button>
+        </div>
+      </form>
+      
+      <div className="form-footer">
+        <p>Don't have an account? <a href="/cuser">Register here</a></p>
+      </div>
       </div>
     </div>
   );

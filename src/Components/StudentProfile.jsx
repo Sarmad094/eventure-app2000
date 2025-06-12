@@ -1,97 +1,133 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "../Styles/StudentProfile.css";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const StudentProfile = () => {
   const [profile, setProfile] = useState(null);
+  const [currentUser, setCurrentUser] = useState(null);
+  const [userBookings, setUserBookings] = useState([]);
   const navigate = useNavigate();
-  const { studentId } = useParams() || { studentId: "1" }; // Fallback til 1 for testing
+
+  useEffect(() => {
+    // Get current user from sessionStorage
+    const userData = sessionStorage.getItem('currentUser');
+    if (userData) {
+      setCurrentUser(JSON.parse(userData));
+    } else {
+      // If no user is logged in, redirect to login
+      navigate('/login/1');
+      return;
+    }
+  }, [navigate]);
 
   useEffect(() => {
     const fetchData = async () => {
+      if (!currentUser) return;
+
       try {
-        // Hent student data fra backend
-        const response = await axios.get(`http://localhost:8081/api/students/${studentId}`);
+        // Fetch student data from backend using the logged-in user's studentId
+        const response = await axios.get(`http://localhost:8081/api/students/${currentUser.studentId}`);
         const studentData = response.data;
         
-        // Mock data for liked courses og applied events
-        const likedCourses = [
-          "JavaScript Bootcamp",
-          "AI & Machine Learning Workshop", 
-          "Design Thinking Seminar"
-        ];
+        // Fetch user's actual bookings from backend
+        const bookingsResponse = await axios.get(`http://localhost:8081/api/bookings`);
+        const allBookings = bookingsResponse.data;
         
-        const appliedEvents = [
-          { name: "Tech Conference 2025", paymentStatus: "Paid" },
-          { name: "Career Fair", paymentStatus: "Pending" },
-          { name: "Startup Networking", paymentStatus: "Paid" }
-        ];
+        // Filter bookings for current user
+        const userBookings = allBookings.filter(booking => 
+          booking.studentId === currentUser.studentId
+        );
+
+        // Get event details and payment info for each booking
+        const appliedEventsPromises = userBookings.map(async (booking) => {
+          try {
+            // Get event details
+            const eventResponse = await axios.get(`http://localhost:8081/api/events/${booking.eventId}`);
+            const eventData = eventResponse.data;
+            
+            // Get payment info for this booking
+            let paymentStatus = "Pending";
+            try {
+              const paymentResponse = await axios.get(`http://localhost:8081/api/payments/book/${booking.bookId}`);
+              if (paymentResponse.data) {
+                paymentStatus = "Paid";
+              }
+            } catch (paymentError) {
+              // No payment found, keep as "Pending"
+              console.log("No payment found for booking:", booking.bookId);
+            }
+
+            return {
+              name: eventData.title || "Unknown Event",
+              paymentStatus: paymentStatus,
+              bookingDate: booking.bookDate,
+              eventDate: eventData.startDate
+            };
+          } catch (error) {
+            console.error("Error fetching event details:", error);
+            return {
+              name: "Unknown Event",
+              paymentStatus: booking.paymentStatus ? "Paid" : "Pending",
+              bookingDate: booking.bookDate
+            };
+          }
+        });
+
+        const appliedEvents = await Promise.all(appliedEventsPromises);
+
+        // Get liked courses from sessionStorage (if you want to keep this feature)
+        const likedCourses = JSON.parse(sessionStorage.getItem("likedCourses")) || [];
 
         setProfile({
           ...studentData,
           likedCourses,
           appliedEvents
         });
+
+        setUserBookings(userBookings);
+
       } catch (error) {
         console.error("Error fetching profile:", error);
         alert("Could not load profile");
       }
     };
 
-    if (studentId) {
-      fetchData();
-    } else {
-      // Bruk studentId = 1 som default for testing
-      const testStudentId = "1";
-      axios.get(`http://localhost:8081/api/students/${testStudentId}`)
-        .then(response => {
-          const studentData = response.data;
-          const likedCourses = [
-            "JavaScript Bootcamp",
-            "AI & Machine Learning Workshop", 
-            "Design Thinking Seminar"
-          ];
-          const appliedEvents = [
-            { name: "Tech Conference 2025", paymentStatus: "Paid" },
-            { name: "Career Fair", paymentStatus: "Pending" },
-            { name: "Startup Networking", paymentStatus: "Paid" }
-          ];
-          setProfile({
-            ...studentData,
-            likedCourses,
-            appliedEvents
-          });
-        })
-        .catch(error => {
-          console.error("Error:", error);
-        });
-    }
-  }, [studentId]);
+    fetchData();
+  }, [currentUser]);
 
   const handleNavigation = (path) => {
     navigate(path);
   };
 
   const handleLogout = () => {
-    // Clear any stored user data if needed
-    localStorage.removeItem("likedCourses");
-    // Navigate to WelcomePage
-    navigate('/welcome/1');
+    // Clear stored user data
+    sessionStorage.removeItem("currentUser");
+    sessionStorage.removeItem("likedCourses");
+    sessionStorage.removeItem("selectedEvent");
+    
+    // Navigate to login page
+    navigate('/login/1');
   };
 
-  if (!profile) return <div className="loading">Loading...</div>;
+  if (!currentUser) {
+    return <div className="loading">Please log in...</div>;
+  }
+
+  if (!profile) {
+    return <div className="loading">Loading profile...</div>;
+  }
 
   return (
     <div className="profile-page">
       <header className="header">
         <nav className="nav">
           <ul className="nav-links">
-            <li><a href="#home" onClick={(e) => { e.preventDefault(); handleNavigation(`/home/${studentId}`); }}>Home</a></li>
+            <li><a href="#home" onClick={(e) => { e.preventDefault(); handleNavigation('/home/1'); }}>Home</a></li>
             <li><a href="#events">Events</a></li>
-            <li><a href="#faq" onClick={(e) => { e.preventDefault(); handleNavigation('/FaqPage'); }}>FAQ</a></li>
+            <li><a href="#faq" onClick={(e) => { e.preventDefault(); handleNavigation('/faq'); }}>FAQ</a></li>
             <li><a href="#contact" onClick={(e) => { e.preventDefault(); handleNavigation('/contact'); }}>Contact</a></li>
-            <li><a href="#profile" className="profile" onClick={(e) => { e.preventDefault(); handleNavigation(`/profile/${studentId}`); }}>Profile</a></li>
+            <li><a href="#profile" className="profile" onClick={(e) => { e.preventDefault(); handleNavigation('/profile'); }}>Profile</a></li>
           </ul>
         </nav>
       </header>
@@ -112,7 +148,7 @@ const StudentProfile = () => {
         </ul>
 
         <h2>Liked Courses</h2>
-        {profile.likedCourses.length > 0 ? (
+        {profile.likedCourses && profile.likedCourses.length > 0 ? (
           <ul className="simple-list">
             {profile.likedCourses.map((course, i) => (
               <li key={i}>{course}</li>
@@ -122,12 +158,15 @@ const StudentProfile = () => {
           <p>No liked courses</p>
         )}
 
-        <h2>Applied Events & Payment Status</h2>
-        {profile.appliedEvents.length > 0 ? (
+        <h2>My Event Bookings & Payment Status</h2>
+        {profile.appliedEvents && profile.appliedEvents.length > 0 ? (
           <ul className="simple-list">
             {profile.appliedEvents.map((event, i) => (
               <li key={i}>
-                {event.name} -{" "}
+                <strong>{event.name}</strong><br/>
+                <small>Booked: {event.bookingDate}</small>
+                {event.eventDate && <small> | Event Date: {event.eventDate}</small>}<br/>
+                Payment Status: {" "}
                 <span className={event.paymentStatus === "Paid" ? "paid" : "pending"}>
                   {event.paymentStatus}
                 </span>
@@ -135,7 +174,7 @@ const StudentProfile = () => {
             ))}
           </ul>
         ) : (
-          <p>No applied events</p>
+          <p>No event bookings yet</p>
         )}
 
         {/* Logout Button Section */}
