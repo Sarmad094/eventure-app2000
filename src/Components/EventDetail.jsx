@@ -23,6 +23,16 @@ export default function EventDetail(props) {
       setCurrentUser(JSON.parse(userData));
     }
   }, []);
+  useEffect(() => {
+  if (event && event.endDate) {
+    const now = new Date();
+    const endDate = new Date(event.endDate);
+
+    if (endDate < now) {
+      onClose(); // Lukk modalen hvis eventet er over
+    }
+  }
+}, [event, onClose]);
 
   // Check if event is liked and get remaining slots
   useEffect(() => {
